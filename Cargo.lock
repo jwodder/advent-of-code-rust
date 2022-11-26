@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "advent-of-code-2022-25a"
+name = "advent-of-code-2021-25a"
 version = "0.1.0"
 dependencies = [
  "adventutil",

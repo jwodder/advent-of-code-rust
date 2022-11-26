@@ -26,6 +26,14 @@ impl<T> Grid<T> {
             .unwrap()
     }
 
+    pub fn get_cell(&self, y: usize, x: usize) -> Option<Cell<'_, T>> {
+        if (0..self.height()).contains(&y) && (0..self.width()).contains(&x) {
+            Some(Cell::new(self, y, x))
+        } else {
+            None
+        }
+    }
+
     pub fn map<U, F>(self, mut f: F) -> Grid<U>
     where
         F: FnMut(T) -> U,
@@ -52,6 +60,22 @@ impl<T> Grid<T> {
             data.push(new_row);
         }
         Ok(Grid { data })
+    }
+
+    pub fn map_cell<U, F>(&self, mut f: F) -> Grid<U>
+    where
+        F: FnMut(Cell<'_, T>) -> U,
+    {
+        let mut data = Vec::with_capacity(self.height());
+        for y in 0..self.height() {
+            let mut new_row = Vec::with_capacity(self.width());
+            for x in 0..self.width() {
+                let cell = Cell::new(self, y, x);
+                new_row.push(f(cell));
+            }
+            data.push(new_row);
+        }
+        Grid { data }
     }
 
     pub fn enumerate(&self) -> Enumerate<'_, T> {
@@ -161,6 +185,160 @@ impl<'a, T> Iterator for Enumerate<'a, T> {
 
 impl<'a, T> FusedIterator for Enumerate<'a, T> {}
 
+pub struct Cell<'a, T> {
+    grid: &'a Grid<T>,
+    y: usize,
+    x: usize,
+}
+
+impl<'a, T> Cell<'a, T> {
+    fn new(grid: &'a Grid<T>, y: usize, x: usize) -> Self {
+        Cell { grid, y, x }
+    }
+
+    pub fn get(&self) -> &T {
+        self.grid.get(self.y, self.x).unwrap()
+    }
+
+    pub fn y(&self) -> usize {
+        self.y
+    }
+
+    pub fn x(&self) -> usize {
+        self.x
+    }
+
+    pub fn coords(&self) -> (usize, usize) {
+        (self.y, self.x)
+    }
+
+    fn ynorth(&self) -> Option<usize> {
+        self.y.checked_sub(1)
+    }
+
+    fn ynorth_wrap(&self) -> usize {
+        self.y
+            .checked_sub(1)
+            .unwrap_or_else(|| self.grid.height() - 1)
+    }
+
+    fn ysouth(&self) -> Option<usize> {
+        let y = self.y + 1;
+        if y >= self.grid.height() {
+            None
+        } else {
+            Some(y)
+        }
+    }
+
+    fn ysouth_wrap(&self) -> usize {
+        self.ysouth().unwrap_or(0)
+    }
+
+    fn xwest(&self) -> Option<usize> {
+        self.x.checked_sub(1)
+    }
+
+    fn xwest_wrap(&self) -> usize {
+        self.x
+            .checked_sub(1)
+            .unwrap_or_else(|| self.grid.width() - 1)
+    }
+
+    fn xeast(&self) -> Option<usize> {
+        let x = self.x + 1;
+        if x >= self.grid.width() {
+            None
+        } else {
+            Some(x)
+        }
+    }
+
+    fn xeast_wrap(&self) -> usize {
+        self.xeast().unwrap_or(0)
+    }
+
+    pub fn north(&self) -> Option<&T> {
+        self.ynorth().and_then(|y| self.grid.get(y, self.x))
+    }
+
+    pub fn north_wrap(&self) -> &T {
+        self.grid.get(self.ynorth_wrap(), self.x).unwrap()
+    }
+
+    pub fn south(&self) -> Option<&T> {
+        self.ysouth().and_then(|y| self.grid.get(y, self.x))
+    }
+
+    pub fn south_wrap(&self) -> &T {
+        self.grid.get(self.ysouth_wrap(), self.x).unwrap()
+    }
+
+    pub fn east(&self) -> Option<&T> {
+        self.xeast().and_then(|x| self.grid.get(self.y, x))
+    }
+
+    pub fn east_wrap(&self) -> &T {
+        self.grid.get(self.y, self.xeast_wrap()).unwrap()
+    }
+
+    pub fn west(&self) -> Option<&T> {
+        self.xwest().and_then(|x| self.grid.get(self.y, x))
+    }
+
+    pub fn west_wrap(&self) -> &T {
+        self.grid.get(self.y, self.xwest_wrap()).unwrap()
+    }
+
+    pub fn north_east(&self) -> Option<&T> {
+        let y = self.ynorth()?;
+        let x = self.xeast()?;
+        Some(self.grid.get(y, x).unwrap())
+    }
+
+    pub fn north_east_wrap(&self) -> &T {
+        let y = self.ynorth_wrap();
+        let x = self.xeast_wrap();
+        self.grid.get(y, x).unwrap()
+    }
+
+    pub fn north_west(&self) -> Option<&T> {
+        let y = self.ynorth()?;
+        let x = self.xwest()?;
+        Some(self.grid.get(y, x).unwrap())
+    }
+
+    pub fn north_west_wrap(&self) -> &T {
+        let y = self.ynorth_wrap();
+        let x = self.xwest_wrap();
+        self.grid.get(y, x).unwrap()
+    }
+
+    pub fn south_east(&self) -> Option<&T> {
+        let y = self.ysouth()?;
+        let x = self.xeast()?;
+        Some(self.grid.get(y, x).unwrap())
+    }
+
+    pub fn south_east_wrap(&self) -> &T {
+        let y = self.ysouth_wrap();
+        let x = self.xeast_wrap();
+        self.grid.get(y, x).unwrap()
+    }
+
+    pub fn south_west(&self) -> Option<&T> {
+        let y = self.ysouth()?;
+        let x = self.xwest()?;
+        Some(self.grid.get(y, x).unwrap())
+    }
+
+    pub fn south_west_wrap(&self) -> &T {
+        let y = self.ysouth_wrap();
+        let x = self.xwest_wrap();
+        self.grid.get(y, x).unwrap()
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -208,5 +386,33 @@ mod test {
         assert_eq!(iter.next(), Some(((2, 2), &9)));
         assert_eq!(iter.next(), None);
         assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_cell_corner() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let cell = gr.get_cell(0, 2).unwrap();
+        assert_eq!(cell.get(), &3);
+        assert_eq!(cell.y(), 0);
+        assert_eq!(cell.x(), 2);
+        assert_eq!(cell.coords(), (0, 2));
+        assert_eq!(cell.north(), None);
+        assert_eq!(cell.north_wrap(), &9);
+        assert_eq!(cell.north_east(), None);
+        assert_eq!(cell.north_east_wrap(), &7);
+        assert_eq!(cell.east(), None);
+        assert_eq!(cell.east_wrap(), &1);
+        assert_eq!(cell.south_east(), None);
+        assert_eq!(cell.south_east_wrap(), &4);
+        assert_eq!(cell.south(), Some(&6));
+        assert_eq!(cell.south_wrap(), &6);
+        assert_eq!(cell.south_west(), Some(&5));
+        assert_eq!(cell.south_west_wrap(), &5);
+        assert_eq!(cell.west(), Some(&2));
+        assert_eq!(cell.west_wrap(), &2);
+        assert_eq!(cell.north_west(), None);
+        assert_eq!(cell.north_west_wrap(), &8);
     }
 }
