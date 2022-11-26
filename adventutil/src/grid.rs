@@ -115,6 +115,18 @@ impl<T> Grid<T> {
     }
 }
 
+impl<T: FromStr> Grid<T> {
+    pub fn parse_words(s: &str) -> Result<Grid<T>, ParseGridError<<T as FromStr>::Err>> {
+        Grid::try_from(
+            s.lines()
+                .map(|l| l.split_whitespace().collect::<Vec<_>>())
+                .collect::<Vec<_>>(),
+        )?
+        .try_map(|s| s.parse::<T>())
+        .map_err(ParseGridError::Parse)
+    }
+}
+
 fn iurem(x: isize, y: usize) -> usize {
     let r = match y.try_into() {
         Ok(y) => x.rem_euclid(y),
@@ -443,6 +455,30 @@ mod test {
             gr,
             Grid {
                 data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]]
+            }
+        );
+    }
+
+    #[test]
+    fn test_parse_grid_i32_words() {
+        let gr = Grid::<i32>::parse_words(concat!(
+            "22 13 17 11  0\n",
+            " 8  2 23  4 24\n",
+            "21  9 14 16  7\n",
+            " 6 10  3 18  5\n",
+            " 1 12 20 15 19\n",
+        ))
+        .unwrap();
+        assert_eq!(
+            gr,
+            Grid {
+                data: vec![
+                    vec![22, 13, 17, 11, 0],
+                    vec![8, 2, 23, 4, 24],
+                    vec![21, 9, 14, 16, 7],
+                    vec![6, 10, 3, 18, 5],
+                    vec![1, 12, 20, 15, 19],
+                ]
             }
         );
     }
