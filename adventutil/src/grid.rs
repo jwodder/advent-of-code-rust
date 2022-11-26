@@ -89,7 +89,7 @@ impl<T> TryFrom<Vec<Vec<T>>> for Grid<T> {
 }
 
 impl<T: FromStr> FromStr for Grid<T> {
-    type Err = GridParseError<<T as FromStr>::Err>;
+    type Err = ParseGridError<<T as FromStr>::Err>;
 
     fn from_str(s: &str) -> Result<Grid<T>, Self::Err> {
         Grid::try_from(
@@ -98,7 +98,7 @@ impl<T: FromStr> FromStr for Grid<T> {
                 .collect::<Vec<_>>(),
         )?
         .try_map(|s| s.parse::<T>())
-        .map_err(GridParseError::Parse)
+        .map_err(ParseGridError::Parse)
     }
 }
 
@@ -111,7 +111,7 @@ pub enum GridFromError {
 }
 
 #[derive(Clone, Copy, Debug, Eq, Error, PartialEq)]
-pub enum GridParseError<E> {
+pub enum ParseGridError<E> {
     #[error("Input is not a grid: {0}")]
     From(#[from] GridFromError),
     #[error("Error parsing cells: {0}")]
