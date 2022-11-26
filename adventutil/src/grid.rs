@@ -82,6 +82,10 @@ impl<T> Grid<T> {
     pub fn enumerate(&self) -> Enumerate<'_, T> {
         Enumerate::new(self)
     }
+
+    pub fn columns(&self) -> Columns<'_, T> {
+        Columns::new(self)
+    }
 }
 
 fn iurem(x: isize, y: usize) -> usize {
@@ -185,6 +189,32 @@ impl<'a, T> Iterator for Enumerate<'a, T> {
 }
 
 impl<'a, T> FusedIterator for Enumerate<'a, T> {}
+
+pub struct Columns<'a, T> {
+    grid: &'a Grid<T>,
+    x: usize,
+}
+
+impl<'a, T> Columns<'a, T> {
+    fn new(grid: &'a Grid<T>) -> Self {
+        Columns { grid, x: 0 }
+    }
+}
+
+impl<'a, T> Iterator for Columns<'a, T> {
+    type Item = Vec<&'a T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.x >= self.grid.width() {
+            return None;
+        }
+        let col = (0..self.grid.height())
+            .map(|y| self.grid.get(y, self.x).unwrap())
+            .collect::<Vec<_>>();
+        self.x += 1;
+        Some(col)
+    }
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Cell<'a, T> {
