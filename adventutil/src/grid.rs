@@ -6,6 +6,10 @@ use thiserror::Error;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Grid<T> {
+    // Invariants:
+    // - `data` is nonempty.
+    // - Every row in `data` is nonempty.
+    // - Every row in `data` has the same length.
     data: Vec<Vec<T>>,
 }
 
@@ -85,6 +89,29 @@ impl<T> Grid<T> {
 
     pub fn columns(&self) -> Columns<'_, T> {
         Columns::new(self)
+    }
+
+    pub fn get_column(&self, x: usize) -> Option<Vec<&T>> {
+        if x < self.width() {
+            Some(
+                (0..self.height())
+                    .map(|y| self.get(y, x).unwrap())
+                    .collect(),
+            )
+        } else {
+            None
+        }
+    }
+
+    pub fn filter_rows<P>(self, predicate: P) -> Option<Grid<T>>
+    where
+        P: FnMut(&Vec<T>) -> bool,
+    {
+        Grid::try_from(self.data.into_iter().filter(predicate).collect::<Vec<_>>()).ok()
+    }
+
+    pub fn into_rows(self) -> impl Iterator<Item = Vec<T>> {
+        self.data.into_iter()
     }
 }
 
@@ -205,16 +232,15 @@ impl<'a, T> Iterator for Columns<'a, T> {
     type Item = Vec<&'a T>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.x >= self.grid.width() {
-            return None;
+        let col = self.grid.get_column(self.x);
+        if col.is_some() {
+            self.x += 1;
         }
-        let col = (0..self.grid.height())
-            .map(|y| self.grid.get(y, self.x).unwrap())
-            .collect::<Vec<_>>();
-        self.x += 1;
-        Some(col)
+        col
     }
 }
+
+impl<'a, T> FusedIterator for Columns<'a, T> {}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Cell<'a, T> {
