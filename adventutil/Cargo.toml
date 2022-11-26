@@ -1,0 +1,8 @@
+[package]
+name = "adventutil"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.65"
+
+[dependencies]
+either = "1.8.0"
