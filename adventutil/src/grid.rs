@@ -23,6 +23,36 @@ impl<T> Grid<T> {
         self.get(iurem(y, self.height()), iurem(x, self.width()))
             .unwrap()
     }
+
+    pub fn map<U, F>(self, mut f: F) -> Grid<U>
+    where
+        F: FnMut(T) -> U,
+    {
+        let mut data = Vec::with_capacity(self.data.len());
+        for row in self.data {
+            let mut new_row = Vec::with_capacity(row.len());
+            for value in row {
+                new_row.push(f(value));
+            }
+            data.push(new_row);
+        }
+        Grid { data }
+    }
+
+    pub fn try_map<U, E, F>(self, mut f: F) -> Result<Grid<U>, E>
+    where
+        F: FnMut(T) -> Result<U, E>,
+    {
+        let mut data = Vec::with_capacity(self.data.len());
+        for row in self.data {
+            let mut new_row = Vec::with_capacity(row.len());
+            for value in row {
+                new_row.push(f(value)?);
+            }
+            data.push(new_row);
+        }
+        Ok(Grid { data })
+    }
 }
 
 fn iurem(x: isize, y: usize) -> usize {
