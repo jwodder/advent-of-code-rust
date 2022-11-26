@@ -1,7 +1,7 @@
 pub mod grid;
 use either::Either;
 use std::fs::File;
-use std::io::{read_to_string, stdin, BufRead, BufReader};
+use std::io::{self, read_to_string, stdin, BufRead, BufReader};
 use std::path::PathBuf;
 use std::str::FromStr;
 
@@ -29,14 +29,19 @@ impl Input {
         }
     }
 
-    pub fn lines(self) -> impl Iterator<Item = String> {
-        match self {
+    pub fn lines(self) -> Lines {
+        Lines::new(match self {
             Input::Stdin => Either::Left(stdin().lines()),
             Input::File(path) => {
                 Either::Right(BufReader::new(File::open(path).expect("Error opening file")).lines())
             }
-        }
-        .map(|l| l.expect("Error reading input"))
+        })
+    }
+
+    // Yields each paragraph with inner newlines converted to '\n' and trailing
+    // newlines removed
+    pub fn paragraphs(self) -> Paragraphs {
+        Paragraphs::new(self.lines())
     }
 
     pub fn parse<T: FromStr>(self) -> T
@@ -52,5 +57,62 @@ impl Input {
     {
         self.lines()
             .map(|s| s.parse::<T>().expect("Error parsing input"))
+    }
+}
+
+type LinesInner = Either<io::Lines<io::StdinLock<'static>>, io::Lines<BufReader<File>>>;
+
+pub struct Lines(LinesInner);
+
+impl Lines {
+    fn new(inner: LinesInner) -> Lines {
+        Lines(inner)
+    }
+}
+
+impl Iterator for Lines {
+    type Item = String;
+
+    fn next(&mut self) -> Option<String> {
+        self.0.next().map(|l| l.expect("Error reading input"))
+    }
+}
+
+pub struct Paragraphs {
+    inner: Lines,
+    buffer: Vec<String>,
+}
+
+impl Paragraphs {
+    fn new(inner: Lines) -> Paragraphs {
+        Paragraphs {
+            inner,
+            buffer: Vec::new(),
+        }
+    }
+}
+
+impl Iterator for Paragraphs {
+    type Item = String;
+
+    fn next(&mut self) -> Option<String> {
+        #[allow(clippy::while_let_on_iterator)]
+        while let Some(ln) = self.inner.next() {
+            if ln.is_empty() {
+                if !self.buffer.is_empty() {
+                    let s = self.buffer.join("\n");
+                    self.buffer.clear();
+                    return Some(s);
+                }
+            } else {
+                self.buffer.push(ln);
+            }
+        }
+        if !self.buffer.is_empty() {
+            let s = self.buffer.join("\n");
+            self.buffer.clear();
+            return Some(s);
+        }
+        None
     }
 }
