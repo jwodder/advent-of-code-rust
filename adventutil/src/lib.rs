@@ -45,4 +45,12 @@ impl Input {
     {
         self.read().parse::<T>().expect("Error parsing input")
     }
+
+    pub fn parse_lines<T: FromStr>(self) -> impl Iterator<Item = T>
+    where
+        <T as FromStr>::Err: std::fmt::Debug,
+    {
+        self.lines()
+            .map(|s| s.parse::<T>().expect("Error parsing input"))
+    }
 }
