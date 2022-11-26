@@ -1,3 +1,4 @@
+pub mod grid;
 use either::Either;
 use std::fs::File;
 use std::io::{read_to_string, stdin, BufRead, BufReader};
