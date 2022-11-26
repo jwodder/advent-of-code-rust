@@ -1,55 +1,66 @@
-use adventutil::grid::{Grid, ParseGridError};
+use adventutil::grid::{Cell, Grid, ParseGridError};
 use adventutil::Input;
 use std::fmt;
 use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum Cell {
+enum Cucumber {
     Empty,
     East,
     South,
 }
 
-impl fmt::Display for Cell {
+impl fmt::Display for Cucumber {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Cell::Empty => write!(f, "."),
-            Cell::East => write!(f, ">"),
-            Cell::South => write!(f, "v"),
+            Cucumber::Empty => write!(f, "."),
+            Cucumber::East => write!(f, ">"),
+            Cucumber::South => write!(f, "v"),
         }
     }
 }
 
-impl FromStr for Cell {
-    type Err = ParseCellError;
+impl FromStr for Cucumber {
+    type Err = ParseCucumberError;
 
-    fn from_str(s: &str) -> Result<Cell, ParseCellError> {
+    fn from_str(s: &str) -> Result<Cucumber, ParseCucumberError> {
         match s {
-            "." => Ok(Cell::Empty),
-            ">" => Ok(Cell::East),
-            "v" => Ok(Cell::South),
-            s => Err(ParseCellError(s.to_string())),
+            "." => Ok(Cucumber::Empty),
+            ">" => Ok(Cucumber::East),
+            "v" => Ok(Cucumber::South),
+            s => Err(ParseCucumberError(s.to_string())),
         }
     }
 }
 
 #[derive(Debug, Error)]
 #[error("Invalid cell: {0:?}")]
-struct ParseCellError(String);
+struct ParseCucumberError(String);
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-struct State(Grid<Cell>);
+struct State(Grid<Cucumber>);
 
 impl State {
-    fn step(self) -> State {
-        todo!()
+    fn step(&self) -> State {
+        State(self.0.map_cell(|cell| match cell.get() {
+            Cucumber::Empty if cell.west_wrap() == Cucumber::East => Cucumber::East,
+            Cucumber::Empty if moves_south(cell.north_wrap()) => Cucumber::South,
+            Cucumber::East if cell.east_wrap() == Cucumber::Empty => {
+                match cell.north_wrap().get() {
+                    Cucumber::South => Cucumber::South,
+                    _ => Cucumber::Empty,
+                }
+            }
+            Cucumber::South if moves_south(cell) => Cucumber::Empty,
+            c => *c,
+        }))
     }
 
     fn stopping_point(mut self) -> usize {
-        let mut i = 0;
+        let mut i = 1;
         loop {
-            let next = self.clone().step();
+            let next = self.step();
             if self == next {
                 return i;
             }
@@ -59,6 +70,15 @@ impl State {
     }
 }
 
+fn moves_south(cell: Cell<'_, Cucumber>) -> bool {
+    cell == Cucumber::South
+        && match cell.south_wrap().get() {
+            Cucumber::Empty => cell.south_west_wrap() != Cucumber::East,
+            Cucumber::East => cell.south_east_wrap() == Cucumber::Empty,
+            Cucumber::South => false,
+        }
+}
+
 impl fmt::Display for State {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.0)
@@ -66,7 +86,7 @@ impl fmt::Display for State {
 }
 
 impl FromStr for State {
-    type Err = ParseGridError<ParseCellError>;
+    type Err = ParseGridError<ParseCucumberError>;
 
     fn from_str(s: &str) -> Result<State, Self::Err> {
         Ok(State(s.parse()?))

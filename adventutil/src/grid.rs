@@ -186,7 +186,7 @@ impl<'a, T> Iterator for Enumerate<'a, T> {
 
 impl<'a, T> FusedIterator for Enumerate<'a, T> {}
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Cell<'a, T> {
     grid: &'a Grid<T>,
     y: usize,
