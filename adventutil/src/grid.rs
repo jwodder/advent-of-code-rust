@@ -19,10 +19,18 @@ impl<T> Grid<T> {
         self.data.get(y).and_then(|row| row.get(x))
     }
 
-    //pub fn get_wrap(&self, y: isize, x: isize) -> &T {
-    //    self.get(y.rem_euclid(self.height()), x.rem_euclid(self.width()))
-    //        .unwrap()
-    //}
+    pub fn get_wrap(&self, y: isize, x: isize) -> &T {
+        self.get(iurem(y, self.height()), iurem(x, self.width()))
+            .unwrap()
+    }
+}
+
+fn iurem(x: isize, y: usize) -> usize {
+    let r = match y.try_into() {
+        Ok(y) => x.rem_euclid(y),
+        Err(_) => panic!("Cannot take remainder with mixed isize and usize: modulus out of range"),
+    };
+    r.try_into().unwrap()
 }
 
 impl<T> TryFrom<Vec<Vec<T>>> for Grid<T> {
