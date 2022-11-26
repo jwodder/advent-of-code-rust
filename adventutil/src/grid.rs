@@ -1,3 +1,4 @@
+use std::iter::FusedIterator;
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -52,6 +53,10 @@ impl<T> Grid<T> {
             data.push(new_row);
         }
         Ok(Grid { data })
+    }
+
+    pub fn enumerate(&self) -> Enumerate<'_, T> {
+        Enumerate::new(self)
     }
 }
 
@@ -113,6 +118,38 @@ pub enum GridParseError<E> {
     Parse(#[source] E),
 }
 
+pub struct Enumerate<'a, T> {
+    grid: &'a Grid<T>,
+    y: usize,
+    x: usize,
+}
+
+impl<'a, T> Enumerate<'a, T> {
+    fn new(grid: &'a Grid<T>) -> Self {
+        Enumerate { grid, y: 0, x: 0 }
+    }
+}
+
+impl<'a, T> Iterator for Enumerate<'a, T> {
+    type Item = ((usize, usize), &'a T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.y >= self.grid.height() {
+            return None;
+        }
+        let cell = self.grid.get(self.y, self.x).unwrap();
+        let r = ((self.y, self.x), cell);
+        self.x += 1;
+        if self.x >= self.grid.width() {
+            self.x = 0;
+            self.y += 1;
+        }
+        Some(r)
+    }
+}
+
+impl<'a, T> FusedIterator for Enumerate<'a, T> {}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -141,5 +178,24 @@ mod test {
                 data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]]
             }
         );
+    }
+
+    #[test]
+    fn test_enumerate() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.enumerate();
+        assert_eq!(iter.next(), Some(((0, 0), &1)));
+        assert_eq!(iter.next(), Some(((0, 1), &2)));
+        assert_eq!(iter.next(), Some(((0, 2), &3)));
+        assert_eq!(iter.next(), Some(((1, 0), &4)));
+        assert_eq!(iter.next(), Some(((1, 1), &5)));
+        assert_eq!(iter.next(), Some(((1, 2), &6)));
+        assert_eq!(iter.next(), Some(((2, 0), &7)));
+        assert_eq!(iter.next(), Some(((2, 1), &8)));
+        assert_eq!(iter.next(), Some(((2, 2), &9)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
     }
 }
