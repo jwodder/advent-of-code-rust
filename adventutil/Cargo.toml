@@ -6,3 +6,4 @@ rust-version = "1.65"
 
 [dependencies]
 either = "1.8.0"
+thiserror = "1.0.37"

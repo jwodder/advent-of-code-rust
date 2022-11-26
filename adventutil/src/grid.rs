@@ -1,5 +1,5 @@
-use std::fmt;
 use std::str::FromStr;
+use thiserror::Error;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Grid<T> {
@@ -83,30 +83,32 @@ impl<T> TryFrom<Vec<Vec<T>>> for Grid<T> {
     }
 }
 
-impl FromStr for Grid<char> {
-    type Err = GridFromError;
+impl<T: FromStr> FromStr for Grid<T> {
+    type Err = GridParseError<<T as FromStr>::Err>;
 
-    fn from_str(s: &str) -> Result<Grid<char>, GridFromError> {
-        s.lines()
-            .map(|l| l.chars().collect::<Vec<_>>())
-            .collect::<Vec<_>>()
-            .try_into()
+    fn from_str(s: &str) -> Result<Grid<T>, Self::Err> {
+        Grid::try_from(
+            s.lines()
+                .map(|l| l.chars().map(|c| c.to_string()).collect::<Vec<_>>())
+                .collect::<Vec<_>>(),
+        )?
+        .try_map(|s| s.parse::<T>())
+        .map_err(GridParseError::Parse)
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Error, PartialEq)]
 pub enum GridFromError {
+    #[error("Input grid is empty")]
     Empty,
+    #[error("Input grid is ragged/uneven")]
     Ragged,
 }
 
-impl fmt::Display for GridFromError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            GridFromError::Empty => write!(f, "Input grid is empty"),
-            GridFromError::Ragged => write!(f, "Input grid is ragged/uneven"),
-        }
-    }
+#[derive(Clone, Copy, Debug, Eq, Error, PartialEq)]
+pub enum GridParseError<E> {
+    #[error("Input is not a grid: {0}")]
+    From(#[from] GridFromError),
+    #[error("Error parsing cells: {0}")]
+    Parse(#[source] E),
 }
-
-impl std::error::Error for GridFromError {}
