@@ -1,5 +1,5 @@
 [workspace]
-members = ["adventutil", "20*/*"]
+members = ["adventutil", "20*/??[ab]"]
 
 [workspace.package]
 edition = "2021"
