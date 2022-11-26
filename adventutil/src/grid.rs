@@ -1,3 +1,4 @@
+use std::fmt;
 use std::iter::FusedIterator;
 use std::str::FromStr;
 use thiserror::Error;
@@ -64,6 +65,18 @@ fn iurem(x: isize, y: usize) -> usize {
         Err(_) => panic!("Cannot take remainder with mixed isize and usize: modulus out of range"),
     };
     r.try_into().unwrap()
+}
+
+impl<T: fmt::Display> fmt::Display for Grid<T> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for row in &self.data {
+            for cell in row {
+                write!(f, "{cell}")?;
+            }
+            writeln!(f)?;
+        }
+        Ok(())
+    }
 }
 
 impl<T> TryFrom<Vec<Vec<T>>> for Grid<T> {

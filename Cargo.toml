@@ -1,2 +1,2 @@
 [workspace]
-members = ["adventutil"]
+members = ["adventutil", "20*/*"]

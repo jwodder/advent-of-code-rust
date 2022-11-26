@@ -1,0 +1,8 @@
+[package]
+name = "advent-of-code-2021-25a"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+thiserror = "1.0.37"
