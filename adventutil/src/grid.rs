@@ -112,3 +112,34 @@ pub enum GridParseError<E> {
     #[error("Error parsing cells: {0}")]
     Parse(#[source] E),
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_parse_grid_char() {
+        let gr = "abc\ndef\nghi\n".parse::<Grid<char>>().unwrap();
+        assert_eq!(
+            gr,
+            Grid {
+                data: vec![
+                    vec!['a', 'b', 'c'],
+                    vec!['d', 'e', 'f'],
+                    vec!['g', 'h', 'i']
+                ]
+            }
+        );
+    }
+
+    #[test]
+    fn test_parse_grid_i32() {
+        let gr = "123\n456\n789\n".parse::<Grid<i32>>().unwrap();
+        assert_eq!(
+            gr,
+            Grid {
+                data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]]
+            }
+        );
+    }
+}
