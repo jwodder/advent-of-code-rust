@@ -1,5 +1,6 @@
 use std::fmt;
 use std::iter::FusedIterator;
+use std::ops::Deref;
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -185,6 +186,7 @@ impl<'a, T> Iterator for Enumerate<'a, T> {
 
 impl<'a, T> FusedIterator for Enumerate<'a, T> {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Cell<'a, T> {
     grid: &'a Grid<T>,
     y: usize,
@@ -258,86 +260,106 @@ impl<'a, T> Cell<'a, T> {
         self.xeast().unwrap_or(0)
     }
 
-    pub fn north(&self) -> Option<&T> {
-        self.ynorth().and_then(|y| self.grid.get(y, self.x))
+    pub fn north(&self) -> Option<Cell<'_, T>> {
+        self.ynorth().and_then(|y| self.grid.get_cell(y, self.x))
     }
 
-    pub fn north_wrap(&self) -> &T {
-        self.grid.get(self.ynorth_wrap(), self.x).unwrap()
+    pub fn north_wrap(&self) -> Cell<'_, T> {
+        self.grid.get_cell(self.ynorth_wrap(), self.x).unwrap()
     }
 
-    pub fn south(&self) -> Option<&T> {
-        self.ysouth().and_then(|y| self.grid.get(y, self.x))
+    pub fn south(&self) -> Option<Cell<'_, T>> {
+        self.ysouth().and_then(|y| self.grid.get_cell(y, self.x))
     }
 
-    pub fn south_wrap(&self) -> &T {
-        self.grid.get(self.ysouth_wrap(), self.x).unwrap()
+    pub fn south_wrap(&self) -> Cell<'_, T> {
+        self.grid.get_cell(self.ysouth_wrap(), self.x).unwrap()
     }
 
-    pub fn east(&self) -> Option<&T> {
-        self.xeast().and_then(|x| self.grid.get(self.y, x))
+    pub fn east(&self) -> Option<Cell<'_, T>> {
+        self.xeast().and_then(|x| self.grid.get_cell(self.y, x))
     }
 
-    pub fn east_wrap(&self) -> &T {
-        self.grid.get(self.y, self.xeast_wrap()).unwrap()
+    pub fn east_wrap(&self) -> Cell<'_, T> {
+        self.grid.get_cell(self.y, self.xeast_wrap()).unwrap()
     }
 
-    pub fn west(&self) -> Option<&T> {
-        self.xwest().and_then(|x| self.grid.get(self.y, x))
+    pub fn west(&self) -> Option<Cell<'_, T>> {
+        self.xwest().and_then(|x| self.grid.get_cell(self.y, x))
     }
 
-    pub fn west_wrap(&self) -> &T {
-        self.grid.get(self.y, self.xwest_wrap()).unwrap()
+    pub fn west_wrap(&self) -> Cell<'_, T> {
+        self.grid.get_cell(self.y, self.xwest_wrap()).unwrap()
     }
 
-    pub fn north_east(&self) -> Option<&T> {
+    pub fn north_east(&self) -> Option<Cell<'_, T>> {
         let y = self.ynorth()?;
         let x = self.xeast()?;
-        Some(self.grid.get(y, x).unwrap())
+        Some(self.grid.get_cell(y, x).unwrap())
     }
 
-    pub fn north_east_wrap(&self) -> &T {
+    pub fn north_east_wrap(&self) -> Cell<'_, T> {
         let y = self.ynorth_wrap();
         let x = self.xeast_wrap();
-        self.grid.get(y, x).unwrap()
+        self.grid.get_cell(y, x).unwrap()
     }
 
-    pub fn north_west(&self) -> Option<&T> {
+    pub fn north_west(&self) -> Option<Cell<'_, T>> {
         let y = self.ynorth()?;
         let x = self.xwest()?;
-        Some(self.grid.get(y, x).unwrap())
+        Some(self.grid.get_cell(y, x).unwrap())
     }
 
-    pub fn north_west_wrap(&self) -> &T {
+    pub fn north_west_wrap(&self) -> Cell<'_, T> {
         let y = self.ynorth_wrap();
         let x = self.xwest_wrap();
-        self.grid.get(y, x).unwrap()
+        self.grid.get_cell(y, x).unwrap()
     }
 
-    pub fn south_east(&self) -> Option<&T> {
+    pub fn south_east(&self) -> Option<Cell<'_, T>> {
         let y = self.ysouth()?;
         let x = self.xeast()?;
-        Some(self.grid.get(y, x).unwrap())
+        Some(self.grid.get_cell(y, x).unwrap())
     }
 
-    pub fn south_east_wrap(&self) -> &T {
+    pub fn south_east_wrap(&self) -> Cell<'_, T> {
         let y = self.ysouth_wrap();
         let x = self.xeast_wrap();
-        self.grid.get(y, x).unwrap()
+        self.grid.get_cell(y, x).unwrap()
     }
 
-    pub fn south_west(&self) -> Option<&T> {
+    pub fn south_west(&self) -> Option<Cell<'_, T>> {
         let y = self.ysouth()?;
         let x = self.xwest()?;
-        Some(self.grid.get(y, x).unwrap())
+        Some(self.grid.get_cell(y, x).unwrap())
     }
 
-    pub fn south_west_wrap(&self) -> &T {
+    pub fn south_west_wrap(&self) -> Cell<'_, T> {
         let y = self.ysouth_wrap();
         let x = self.xwest_wrap();
-        self.grid.get(y, x).unwrap()
+        self.grid.get_cell(y, x).unwrap()
     }
 }
+
+impl<'a, T> Deref for Cell<'a, T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        self.get()
+    }
+}
+
+impl<'a, T: PartialEq> PartialEq<T> for Cell<'a, T> {
+    fn eq(&self, other: &T) -> bool {
+        self.get() == other
+    }
+}
+
+//impl<'a, T: PartialEq> PartialEq<Cell<'a, T>> for T {
+//    fn eq(&self, other: &Cell<'a, T>) -> bool {
+//        self == other.get()
+//    }
+//}
 
 #[cfg(test)]
 mod test {
@@ -399,20 +421,20 @@ mod test {
         assert_eq!(cell.x(), 2);
         assert_eq!(cell.coords(), (0, 2));
         assert_eq!(cell.north(), None);
-        assert_eq!(cell.north_wrap(), &9);
+        assert_eq!(cell.north_wrap(), 9);
         assert_eq!(cell.north_east(), None);
-        assert_eq!(cell.north_east_wrap(), &7);
+        assert_eq!(cell.north_east_wrap(), 7);
         assert_eq!(cell.east(), None);
-        assert_eq!(cell.east_wrap(), &1);
+        assert_eq!(cell.east_wrap(), 1);
         assert_eq!(cell.south_east(), None);
-        assert_eq!(cell.south_east_wrap(), &4);
-        assert_eq!(cell.south(), Some(&6));
-        assert_eq!(cell.south_wrap(), &6);
-        assert_eq!(cell.south_west(), Some(&5));
-        assert_eq!(cell.south_west_wrap(), &5);
-        assert_eq!(cell.west(), Some(&2));
-        assert_eq!(cell.west_wrap(), &2);
+        assert_eq!(cell.south_east_wrap(), 4);
+        assert_eq!(cell.south().unwrap(), 6);
+        assert_eq!(cell.south_wrap(), 6);
+        assert_eq!(cell.south_west().unwrap(), 5);
+        assert_eq!(cell.south_west_wrap(), 5);
+        assert_eq!(cell.west().unwrap(), 2);
+        assert_eq!(cell.west_wrap(), 2);
         assert_eq!(cell.north_west(), None);
-        assert_eq!(cell.north_west_wrap(), &8);
+        assert_eq!(cell.north_west_wrap(), 8);
     }
 }
