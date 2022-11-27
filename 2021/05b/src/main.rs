@@ -1,7 +1,7 @@
+use adventutil::counter::Counter;
 use adventutil::Input;
 use either::Either;
 use std::cmp::{max, min};
-use std::collections::HashMap;
 use std::num::ParseIntError;
 use std::str::FromStr;
 use thiserror::Error;
@@ -81,10 +81,10 @@ fn main() {
 }
 
 fn count_overlaps<I: IntoIterator<Item = Line>>(lines: I) -> usize {
-    let mut counter = HashMap::new();
+    let mut counter = Counter::new();
     for ln in lines {
         for p in ln.points() {
-            *counter.entry(p).or_insert(0) += 1;
+            counter.add(p);
         }
     }
     counter.into_values().filter(|qty| qty > &1).count()
