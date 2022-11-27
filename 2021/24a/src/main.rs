@@ -1,6 +1,6 @@
 use adventutil::Input;
 use std::collections::VecDeque;
-use std::iter::{repeat, FusedIterator};
+use std::iter::FusedIterator;
 use std::num::ParseIntError;
 use std::str::FromStr;
 use thiserror::Error;
@@ -237,7 +237,7 @@ enum ModelNumbers {
 
 impl ModelNumbers {
     fn new(digits: usize) -> ModelNumbers {
-        ModelNumbers::Running(repeat(9).take(digits).collect())
+        ModelNumbers::Running(vec![9; digits])
     }
 }
 
