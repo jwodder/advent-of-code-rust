@@ -297,77 +297,77 @@ impl<'a, T> Cell<'a, T> {
         (self.y, self.x)
     }
 
-    pub fn neighbor(&self, d: Direction) -> Option<Cell<'_, T>> {
+    pub fn neighbor(&self, d: Direction) -> Option<Cell<'a, T>> {
         let (y, x) = self.grid.bounds().move_in(self.coords(), d)?;
         self.grid.get_cell(y, x)
     }
 
-    pub fn neighbor_wrap(&self, d: Direction) -> Cell<'_, T> {
+    pub fn neighbor_wrap(&self, d: Direction) -> Cell<'a, T> {
         let (y, x) = self.grid.bounds().move_in_wrap(self.coords(), d);
         self.grid.get_cell(y, x).unwrap()
     }
 
-    pub fn north(&self) -> Option<Cell<'_, T>> {
+    pub fn north(&self) -> Option<Cell<'a, T>> {
         self.neighbor(Direction::North)
     }
 
-    pub fn north_wrap(&self) -> Cell<'_, T> {
+    pub fn north_wrap(&self) -> Cell<'a, T> {
         self.neighbor_wrap(Direction::North)
     }
 
-    pub fn south(&self) -> Option<Cell<'_, T>> {
+    pub fn south(&self) -> Option<Cell<'a, T>> {
         self.neighbor(Direction::South)
     }
 
-    pub fn south_wrap(&self) -> Cell<'_, T> {
+    pub fn south_wrap(&self) -> Cell<'a, T> {
         self.neighbor_wrap(Direction::South)
     }
 
-    pub fn east(&self) -> Option<Cell<'_, T>> {
+    pub fn east(&self) -> Option<Cell<'a, T>> {
         self.neighbor(Direction::East)
     }
 
-    pub fn east_wrap(&self) -> Cell<'_, T> {
+    pub fn east_wrap(&self) -> Cell<'a, T> {
         self.neighbor_wrap(Direction::East)
     }
 
-    pub fn west(&self) -> Option<Cell<'_, T>> {
+    pub fn west(&self) -> Option<Cell<'a, T>> {
         self.neighbor(Direction::West)
     }
 
-    pub fn west_wrap(&self) -> Cell<'_, T> {
+    pub fn west_wrap(&self) -> Cell<'a, T> {
         self.neighbor_wrap(Direction::West)
     }
 
-    pub fn north_east(&self) -> Option<Cell<'_, T>> {
+    pub fn north_east(&self) -> Option<Cell<'a, T>> {
         self.neighbor(Direction::NorthEast)
     }
 
-    pub fn north_east_wrap(&self) -> Cell<'_, T> {
+    pub fn north_east_wrap(&self) -> Cell<'a, T> {
         self.neighbor_wrap(Direction::NorthEast)
     }
 
-    pub fn north_west(&self) -> Option<Cell<'_, T>> {
+    pub fn north_west(&self) -> Option<Cell<'a, T>> {
         self.neighbor(Direction::NorthWest)
     }
 
-    pub fn north_west_wrap(&self) -> Cell<'_, T> {
+    pub fn north_west_wrap(&self) -> Cell<'a, T> {
         self.neighbor_wrap(Direction::NorthWest)
     }
 
-    pub fn south_east(&self) -> Option<Cell<'_, T>> {
+    pub fn south_east(&self) -> Option<Cell<'a, T>> {
         self.neighbor(Direction::SouthEast)
     }
 
-    pub fn south_east_wrap(&self) -> Cell<'_, T> {
+    pub fn south_east_wrap(&self) -> Cell<'a, T> {
         self.neighbor_wrap(Direction::SouthEast)
     }
 
-    pub fn south_west(&self) -> Option<Cell<'_, T>> {
+    pub fn south_west(&self) -> Option<Cell<'a, T>> {
         self.neighbor(Direction::SouthWest)
     }
 
-    pub fn south_west_wrap(&self) -> Cell<'_, T> {
+    pub fn south_west_wrap(&self) -> Cell<'a, T> {
         self.neighbor_wrap(Direction::SouthWest)
     }
 }
