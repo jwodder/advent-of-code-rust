@@ -4,7 +4,6 @@ use std::collections::{
     HashMap,
 };
 use std::hash::Hash;
-use std::iter::{Extend, FromIterator};
 use std::ops::Index;
 
 #[derive(Clone, Debug)]
