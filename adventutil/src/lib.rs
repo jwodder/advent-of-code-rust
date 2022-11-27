@@ -1,3 +1,4 @@
+pub mod counter;
 pub mod grid;
 use either::Either;
 use std::fs::File;

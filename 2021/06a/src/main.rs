@@ -1,32 +1,30 @@
+use adventutil::counter::Counter;
 use adventutil::Input;
-use std::collections::HashMap;
 
 struct Population {
-    // Mapping from timer values to the number of lanterfish with that value
-    timers: HashMap<u32, usize>,
+    // Counts of the number of lanternfish with each timer value
+    timers: Counter<u32>,
 }
 
 impl Population {
     fn new<I: IntoIterator<Item = u32>>(iter: I) -> Population {
-        let mut timers = HashMap::new();
-        for t in iter {
-            *timers.entry(t).or_insert(0) += 1;
+        Population {
+            timers: iter.into_iter().collect(),
         }
-        Population { timers }
     }
 
     fn size(&self) -> usize {
-        self.timers.values().copied().sum()
+        self.timers.total()
     }
 
     fn step(self) -> Population {
-        let mut timers = HashMap::new();
+        let mut timers = Counter::new();
         for (t, qty) in self.timers {
             if t == 0 {
-                *timers.entry(6).or_insert(0) += qty;
-                *timers.entry(8).or_insert(0) += qty;
+                timers.add_qty(6, qty);
+                timers.add_qty(8, qty);
             } else {
-                *timers.entry(t - 1).or_insert(0) += qty;
+                timers.add_qty(t - 1, qty);
             }
         }
         Population { timers }
