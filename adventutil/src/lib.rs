@@ -58,6 +58,14 @@ impl Input {
         self.lines()
             .map(|s| s.parse::<T>().expect("Error parsing input"))
     }
+
+    // Assumes that the input is just one line of comma-separated values
+    pub fn parse_csv_line<T: FromStr>(self) -> Vec<T>
+    where
+        <T as FromStr>::Err: std::fmt::Debug,
+    {
+        parse_csv(&self.read())
+    }
 }
 
 type LinesInner = Either<io::Lines<io::StdinLock<'static>>, io::Lines<BufReader<File>>>;
@@ -115,4 +123,14 @@ impl Iterator for Paragraphs {
         }
         None
     }
+}
+
+pub fn parse_csv<T: FromStr>(s: &str) -> Vec<T>
+where
+    <T as FromStr>::Err: std::fmt::Debug,
+{
+    s.trim()
+        .split(',')
+        .map(|t| t.parse::<T>().expect("Error parsing input"))
+        .collect()
 }

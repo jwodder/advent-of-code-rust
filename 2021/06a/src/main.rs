@@ -34,13 +34,7 @@ impl Population {
 }
 
 fn main() {
-    let pop = Population::new(
-        Input::from_env()
-            .read()
-            .trim()
-            .split(',')
-            .map(|s| s.parse::<u32>().expect("Error parsing input")),
-    );
+    let pop = Population::new(Input::from_env().parse_csv_line::<u32>());
     println!("{}", size_after_days(pop, 80));
 }
 
