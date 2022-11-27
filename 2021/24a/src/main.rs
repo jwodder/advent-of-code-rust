@@ -1,4 +1,5 @@
 use std::collections::VecDeque;
+use std::iter::{repeat, FusedIterator};
 use std::num::ParseIntError;
 use std::str::FromStr;
 use thiserror::Error;
@@ -224,6 +225,50 @@ enum ParseError {
     InvalidInteger(#[from] ParseIntError),
 }
 
+fn model_numbers(digits: usize) -> ModelNumbers {
+    ModelNumbers::new(digits)
+}
+
+enum ModelNumbers {
+    Running(Vec<i32>),
+    Done,
+}
+
+impl ModelNumbers {
+    fn new(digits: usize) -> ModelNumbers {
+        ModelNumbers::Running(repeat(9).take(digits).collect())
+    }
+}
+
+impl Iterator for ModelNumbers {
+    type Item = Vec<i32>;
+
+    fn next(&mut self) -> Option<Vec<i32>> {
+        match self {
+            ModelNumbers::Running(digits) => {
+                let r = digits.clone();
+                let mut done = true;
+                for i in (0..digits.len()).rev() {
+                    digits[i] -= 1;
+                    if digits[i] == 0 {
+                        digits[i] = 9;
+                    } else {
+                        done = false;
+                        break;
+                    }
+                }
+                if done {
+                    *self = ModelNumbers::Done;
+                }
+                Some(r)
+            }
+            ModelNumbers::Done => None,
+        }
+    }
+}
+
+impl FusedIterator for ModelNumbers {}
+
 fn main() {
     todo!()
 }
@@ -297,9 +342,48 @@ mod test {
             "mod x 2\n",
             "div w 2\n",
             "mod w 2\n",
-        ).parse::<Program>().unwrap();
+        )
+        .parse::<Program>()
+        .unwrap();
         let output = program.run([input]);
         assert_eq!(output, expected);
     }
 
+    #[test]
+    fn test_model_numbers_one_digit() {
+        let mut iter = model_numbers(1);
+        assert_eq!(iter.next().unwrap(), [9]);
+        assert_eq!(iter.next().unwrap(), [8]);
+        assert_eq!(iter.next().unwrap(), [7]);
+        assert_eq!(iter.next().unwrap(), [6]);
+        assert_eq!(iter.next().unwrap(), [5]);
+        assert_eq!(iter.next().unwrap(), [4]);
+        assert_eq!(iter.next().unwrap(), [3]);
+        assert_eq!(iter.next().unwrap(), [2]);
+        assert_eq!(iter.next().unwrap(), [1]);
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_model_numbers_two_digits_len() {
+        let iter = model_numbers(2);
+        assert_eq!(iter.count(), 81);
+    }
+
+    #[test]
+    fn test_model_numbers_two_digits_head() {
+        let mut iter = model_numbers(2);
+        assert_eq!(iter.next().unwrap(), [9, 9]);
+        assert_eq!(iter.next().unwrap(), [9, 8]);
+        assert_eq!(iter.next().unwrap(), [9, 7]);
+        assert_eq!(iter.next().unwrap(), [9, 6]);
+        assert_eq!(iter.next().unwrap(), [9, 5]);
+        assert_eq!(iter.next().unwrap(), [9, 4]);
+        assert_eq!(iter.next().unwrap(), [9, 3]);
+        assert_eq!(iter.next().unwrap(), [9, 2]);
+        assert_eq!(iter.next().unwrap(), [9, 1]);
+        assert_eq!(iter.next().unwrap(), [8, 9]);
+        assert_eq!(iter.next().unwrap(), [8, 8]);
+    }
 }
