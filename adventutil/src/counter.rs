@@ -7,9 +7,18 @@ use std::hash::Hash;
 use std::iter::{Extend, FromIterator};
 use std::ops::Index;
 
+#[derive(Clone, Debug)]
 pub struct Counter<T> {
     inner: HashMap<T, usize>,
 }
+
+impl<T: Eq + Hash> PartialEq for Counter<T> {
+    fn eq(&self, other: &Counter<T>) -> bool {
+        self.inner == other.inner
+    }
+}
+
+impl<T: Eq + Hash> Eq for Counter<T> {}
 
 impl<T> Counter<T> {
     pub fn new() -> Counter<T> {
