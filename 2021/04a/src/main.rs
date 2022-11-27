@@ -1,5 +1,5 @@
 use adventutil::grid::Grid;
-use adventutil::Input;
+use adventutil::{parse_csv, Input};
 use std::collections::HashSet;
 
 #[derive(Debug)]
@@ -66,12 +66,7 @@ impl Bingo {
 
 fn main() {
     let mut paras = Input::from_env().paragraphs();
-    let numbers = paras
-        .next()
-        .unwrap()
-        .split(',')
-        .map(|s| s.parse::<u32>().expect("Error parsing input"))
-        .collect::<Vec<_>>();
+    let numbers = parse_csv::<u32>(&paras.next().unwrap());
     let boards = paras
         .map(|s| Board::new(Grid::<u32>::parse_words(&s).expect("Error parsing input")))
         .collect::<Vec<_>>();
