@@ -1,3 +1,4 @@
+use adventutil::Input;
 use std::collections::VecDeque;
 use std::iter::{repeat, FusedIterator};
 use std::num::ParseIntError;
@@ -270,7 +271,17 @@ impl Iterator for ModelNumbers {
 impl FusedIterator for ModelNumbers {}
 
 fn main() {
-    todo!()
+    let program = Input::from_env().parse::<Program>();
+    for num in model_numbers(14) {
+        if program.run(num.clone()).z == 0 {
+            println!(
+                "{}",
+                num.into_iter().map(|d| d.to_string()).collect::<String>()
+            );
+            return;
+        }
+    }
+    panic!("No valid model numbers found");
 }
 
 #[cfg(test)]
