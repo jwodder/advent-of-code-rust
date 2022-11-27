@@ -113,6 +113,14 @@ impl<T> Grid<T> {
     pub fn into_rows(self) -> impl Iterator<Item = Vec<T>> {
         self.data.into_iter()
     }
+
+    pub fn iter_coords(&self) -> IterCoords {
+        IterCoords::new(self.height(), self.width())
+    }
+
+    pub fn iter_cells(&self) -> IterCells<'_, T> {
+        IterCells::new(self)
+    }
 }
 
 impl<T: FromStr> Grid<T> {
@@ -429,6 +437,84 @@ impl<'a, T: PartialEq> PartialEq<T> for Cell<'a, T> {
 //    }
 //}
 
+pub struct IterCoords {
+    height: usize,
+    width: usize,
+    y: usize,
+    x: usize,
+}
+
+impl IterCoords {
+    fn new(height: usize, width: usize) -> IterCoords {
+        IterCoords {
+            height,
+            width,
+            y: 0,
+            x: 0,
+        }
+    }
+}
+
+impl Iterator for IterCoords {
+    type Item = (usize, usize);
+
+    fn next(&mut self) -> Option<(usize, usize)> {
+        if self.y >= self.height || self.x == self.width {
+            return None;
+        }
+        let yx = (self.y, self.x);
+        self.x += 1;
+        if self.x == self.width {
+            self.x = 0;
+            self.y += 1;
+        }
+        Some(yx)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        if self.y >= self.height || self.x == self.width {
+            return (0, Some(0));
+        }
+        let sz = self.width * (self.height - self.y) - self.x;
+        (sz, Some(sz))
+    }
+}
+
+impl FusedIterator for IterCoords {}
+
+impl ExactSizeIterator for IterCoords {}
+
+pub struct IterCells<'a, T> {
+    inner: IterCoords,
+    grid: &'a Grid<T>,
+}
+
+impl<'a, T> IterCells<'a, T> {
+    fn new(grid: &'a Grid<T>) -> Self {
+        IterCells {
+            inner: grid.iter_coords(),
+            grid,
+        }
+    }
+}
+
+impl<'a, T> Iterator for IterCells<'a, T> {
+    type Item = Cell<'a, T>;
+
+    fn next(&mut self) -> Option<Cell<'a, T>> {
+        let (y, x) = self.inner.next()?;
+        self.grid.get_cell(y, x)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
+    }
+}
+
+impl<'a, T> FusedIterator for IterCells<'a, T> {}
+
+impl<'a, T> ExactSizeIterator for IterCells<'a, T> {}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -528,5 +614,68 @@ mod test {
         assert_eq!(cell.west_wrap(), 2);
         assert_eq!(cell.north_west(), None);
         assert_eq!(cell.north_west_wrap(), 8);
+    }
+
+    #[test]
+    fn test_iter_coords_3x2() {
+        let mut iter = IterCoords::new(3, 2);
+        assert_eq!(iter.size_hint(), (6, Some(6)));
+        assert_eq!(iter.next(), Some((0, 0)));
+        assert_eq!(iter.size_hint(), (5, Some(5)));
+        assert_eq!(iter.next(), Some((0, 1)));
+        assert_eq!(iter.size_hint(), (4, Some(4)));
+        assert_eq!(iter.next(), Some((1, 0)));
+        assert_eq!(iter.size_hint(), (3, Some(3)));
+        assert_eq!(iter.next(), Some((1, 1)));
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        assert_eq!(iter.next(), Some((2, 0)));
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        assert_eq!(iter.next(), Some((2, 1)));
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_iter_coords_0x2() {
+        let mut iter = IterCoords::new(0, 2);
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_iter_coords_3x0() {
+        let mut iter = IterCoords::new(3, 0);
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_iter_coords_0x0() {
+        let mut iter = IterCoords::new(0, 0);
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_iter_cells() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.iter_cells();
+        assert_eq!(iter.next().unwrap(), 1);
+        assert_eq!(iter.next().unwrap(), 2);
+        assert_eq!(iter.next().unwrap(), 3);
+        assert_eq!(iter.next().unwrap(), 4);
+        assert_eq!(iter.next().unwrap(), 5);
+        assert_eq!(iter.next().unwrap(), 6);
+        assert_eq!(iter.next().unwrap(), 7);
+        assert_eq!(iter.next().unwrap(), 8);
+        assert_eq!(iter.next().unwrap(), 9);
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
     }
 }
