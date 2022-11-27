@@ -28,7 +28,7 @@ fn classify(s: &str) -> Classification {
             ']' => return Corrupt(BRACKET_SCORE),
             '}' => return Corrupt(BRACE_SCORE),
             '>' => return Corrupt(ANGLE_SCORE),
-            c => panic!("Unexpect character: {c:?}"),
+            c => panic!("Unexpected character: {c:?}"),
         }
     }
     if stack.is_empty() {
