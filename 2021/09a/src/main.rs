@@ -12,7 +12,7 @@ fn is_low_point(cell: &Cell<'_, u32>) -> bool {
     let height = cell.get();
     for d in Direction::cardinals() {
         if let Some(c) = cell.neighbor(d) {
-            if *c.get() < *height {
+            if *c.get() <= *height {
                 return false;
             }
         }
