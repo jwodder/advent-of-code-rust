@@ -1,6 +1,9 @@
+// This uses a (y, x) coordinate system in which the origin is in the top-left
+// (north-west) corner.
+use std::cmp::Ordering;
 use std::fmt;
 use std::iter::FusedIterator;
-use std::ops::Deref;
+use std::ops::{Deref, Range};
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -20,6 +23,10 @@ impl<T> Grid<T> {
 
     pub fn width(&self) -> usize {
         self.data[0].len()
+    }
+
+    pub fn bounds(&self) -> GridBounds {
+        GridBounds::new(self.height(), self.width())
     }
 
     pub fn get(&self, y: usize, x: usize) -> Option<&T> {
@@ -290,130 +297,78 @@ impl<'a, T> Cell<'a, T> {
         (self.y, self.x)
     }
 
-    fn ynorth(&self) -> Option<usize> {
-        self.y.checked_sub(1)
+    pub fn neighbor(&self, d: Direction) -> Option<Cell<'_, T>> {
+        let (y, x) = self.grid.bounds().move_in(self.coords(), d)?;
+        self.grid.get_cell(y, x)
     }
 
-    fn ynorth_wrap(&self) -> usize {
-        self.y
-            .checked_sub(1)
-            .unwrap_or_else(|| self.grid.height() - 1)
-    }
-
-    fn ysouth(&self) -> Option<usize> {
-        let y = self.y + 1;
-        if y >= self.grid.height() {
-            None
-        } else {
-            Some(y)
-        }
-    }
-
-    fn ysouth_wrap(&self) -> usize {
-        self.ysouth().unwrap_or(0)
-    }
-
-    fn xwest(&self) -> Option<usize> {
-        self.x.checked_sub(1)
-    }
-
-    fn xwest_wrap(&self) -> usize {
-        self.x
-            .checked_sub(1)
-            .unwrap_or_else(|| self.grid.width() - 1)
-    }
-
-    fn xeast(&self) -> Option<usize> {
-        let x = self.x + 1;
-        if x >= self.grid.width() {
-            None
-        } else {
-            Some(x)
-        }
-    }
-
-    fn xeast_wrap(&self) -> usize {
-        self.xeast().unwrap_or(0)
+    pub fn neighbor_wrap(&self, d: Direction) -> Cell<'_, T> {
+        let (y, x) = self.grid.bounds().move_in_wrap(self.coords(), d);
+        self.grid.get_cell(y, x).unwrap()
     }
 
     pub fn north(&self) -> Option<Cell<'_, T>> {
-        self.ynorth().and_then(|y| self.grid.get_cell(y, self.x))
+        self.neighbor(Direction::North)
     }
 
     pub fn north_wrap(&self) -> Cell<'_, T> {
-        self.grid.get_cell(self.ynorth_wrap(), self.x).unwrap()
+        self.neighbor_wrap(Direction::North)
     }
 
     pub fn south(&self) -> Option<Cell<'_, T>> {
-        self.ysouth().and_then(|y| self.grid.get_cell(y, self.x))
+        self.neighbor(Direction::South)
     }
 
     pub fn south_wrap(&self) -> Cell<'_, T> {
-        self.grid.get_cell(self.ysouth_wrap(), self.x).unwrap()
+        self.neighbor_wrap(Direction::South)
     }
 
     pub fn east(&self) -> Option<Cell<'_, T>> {
-        self.xeast().and_then(|x| self.grid.get_cell(self.y, x))
+        self.neighbor(Direction::East)
     }
 
     pub fn east_wrap(&self) -> Cell<'_, T> {
-        self.grid.get_cell(self.y, self.xeast_wrap()).unwrap()
+        self.neighbor_wrap(Direction::East)
     }
 
     pub fn west(&self) -> Option<Cell<'_, T>> {
-        self.xwest().and_then(|x| self.grid.get_cell(self.y, x))
+        self.neighbor(Direction::West)
     }
 
     pub fn west_wrap(&self) -> Cell<'_, T> {
-        self.grid.get_cell(self.y, self.xwest_wrap()).unwrap()
+        self.neighbor_wrap(Direction::West)
     }
 
     pub fn north_east(&self) -> Option<Cell<'_, T>> {
-        let y = self.ynorth()?;
-        let x = self.xeast()?;
-        Some(self.grid.get_cell(y, x).unwrap())
+        self.neighbor(Direction::NorthEast)
     }
 
     pub fn north_east_wrap(&self) -> Cell<'_, T> {
-        let y = self.ynorth_wrap();
-        let x = self.xeast_wrap();
-        self.grid.get_cell(y, x).unwrap()
+        self.neighbor_wrap(Direction::NorthEast)
     }
 
     pub fn north_west(&self) -> Option<Cell<'_, T>> {
-        let y = self.ynorth()?;
-        let x = self.xwest()?;
-        Some(self.grid.get_cell(y, x).unwrap())
+        self.neighbor(Direction::NorthWest)
     }
 
     pub fn north_west_wrap(&self) -> Cell<'_, T> {
-        let y = self.ynorth_wrap();
-        let x = self.xwest_wrap();
-        self.grid.get_cell(y, x).unwrap()
+        self.neighbor_wrap(Direction::NorthWest)
     }
 
     pub fn south_east(&self) -> Option<Cell<'_, T>> {
-        let y = self.ysouth()?;
-        let x = self.xeast()?;
-        Some(self.grid.get_cell(y, x).unwrap())
+        self.neighbor(Direction::SouthEast)
     }
 
     pub fn south_east_wrap(&self) -> Cell<'_, T> {
-        let y = self.ysouth_wrap();
-        let x = self.xeast_wrap();
-        self.grid.get_cell(y, x).unwrap()
+        self.neighbor_wrap(Direction::SouthEast)
     }
 
     pub fn south_west(&self) -> Option<Cell<'_, T>> {
-        let y = self.ysouth()?;
-        let x = self.xwest()?;
-        Some(self.grid.get_cell(y, x).unwrap())
+        self.neighbor(Direction::SouthWest)
     }
 
     pub fn south_west_wrap(&self) -> Cell<'_, T> {
-        let y = self.ysouth_wrap();
-        let x = self.xwest_wrap();
-        self.grid.get_cell(y, x).unwrap()
+        self.neighbor_wrap(Direction::SouthWest)
     }
 }
 
@@ -514,6 +469,140 @@ impl<'a, T> Iterator for IterCells<'a, T> {
 impl<'a, T> FusedIterator for IterCells<'a, T> {}
 
 impl<'a, T> ExactSizeIterator for IterCells<'a, T> {}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub enum Direction {
+    NorthWest,
+    North,
+    NorthEast,
+    West,
+    Here,
+    East,
+    SouthWest,
+    South,
+    SouthEast,
+}
+
+impl Direction {
+    pub fn cardinals() -> Cardinals {
+        Cardinals::new()
+    }
+
+    pub fn decompose(&self) -> (Ordering, Ordering) {
+        use Direction::*;
+        use Ordering::*;
+        match self {
+            NorthWest => (Less, Less),
+            North => (Less, Equal),
+            NorthEast => (Less, Greater),
+            West => (Equal, Less),
+            Here => (Equal, Equal),
+            East => (Equal, Greater),
+            SouthWest => (Greater, Less),
+            South => (Greater, Equal),
+            SouthEast => (Greater, Greater),
+        }
+    }
+}
+
+pub struct Cardinals(usize);
+
+impl Cardinals {
+    fn new() -> Cardinals {
+        Cardinals(0)
+    }
+}
+
+impl Iterator for Cardinals {
+    type Item = Direction;
+
+    fn next(&mut self) -> Option<Direction> {
+        let d = match self.0 {
+            0 => Direction::North,
+            1 => Direction::East,
+            2 => Direction::South,
+            3 => Direction::West,
+            _ => return None,
+        };
+        self.0 += 1;
+        Some(d)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let sz = 4usize.saturating_sub(self.0);
+        (sz, Some(sz))
+    }
+}
+
+impl FusedIterator for Cardinals {}
+
+impl ExactSizeIterator for Cardinals {}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub struct GridBounds {
+    pub height: usize,
+    pub width: usize,
+}
+
+impl GridBounds {
+    pub fn new(height: usize, width: usize) -> GridBounds {
+        GridBounds { height, width }
+    }
+
+    pub fn contains(&self, (y, x): (usize, usize)) -> bool {
+        (0..self.height).contains(&y) && (0..self.width).contains(&x)
+    }
+
+    pub fn move_in(&self, (y, x): (usize, usize), d: Direction) -> Option<(usize, usize)> {
+        let (ydiff, xdiff) = d.decompose();
+        let y = move_in_range(y, 0..self.height, ydiff)?;
+        let x = move_in_range(x, 0..self.width, xdiff)?;
+        Some((y, x))
+    }
+
+    pub fn move_in_wrap(&self, (y, x): (usize, usize), d: Direction) -> (usize, usize) {
+        let (ydiff, xdiff) = d.decompose();
+        let y = move_in_range_wrap(y, 0..self.height, ydiff);
+        let x = move_in_range_wrap(x, 0..self.width, xdiff);
+        (y, x)
+    }
+}
+
+impl IntoIterator for GridBounds {
+    type Item = (usize, usize);
+    type IntoIter = IterCoords;
+
+    fn into_iter(self) -> IterCoords {
+        IterCoords::new(self.height, self.width)
+    }
+}
+
+fn move_in_range(x: usize, range: Range<usize>, delta: Ordering) -> Option<usize> {
+    let x = match delta {
+        Ordering::Less => x.checked_sub(1)?,
+        Ordering::Equal => x,
+        Ordering::Greater => x.checked_add(1)?,
+    };
+    range.contains(&x).then_some(x)
+}
+
+fn move_in_range_wrap(x: usize, range: Range<usize>, delta: Ordering) -> usize {
+    if range.is_empty() {
+        panic!("Empty range");
+    }
+    let x = match delta {
+        Ordering::Less => x.checked_sub(1).unwrap_or(range.end - 1),
+        Ordering::Equal => x,
+        Ordering::Greater => x + 1,
+    };
+    if x < range.start {
+        range.end - 1
+    } else if x >= range.end {
+        range.start
+    } else {
+        x
+    }
+}
 
 #[cfg(test)]
 mod test {
@@ -675,6 +764,22 @@ mod test {
         assert_eq!(iter.next().unwrap(), 7);
         assert_eq!(iter.next().unwrap(), 8);
         assert_eq!(iter.next().unwrap(), 9);
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_cardinals() {
+        let mut iter = Direction::cardinals();
+        assert_eq!(iter.size_hint(), (4, Some(4)));
+        assert_eq!(iter.next(), Some(Direction::North));
+        assert_eq!(iter.size_hint(), (3, Some(3)));
+        assert_eq!(iter.next(), Some(Direction::East));
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        assert_eq!(iter.next(), Some(Direction::South));
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        assert_eq!(iter.next(), Some(Direction::West));
+        assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
         assert_eq!(iter.next(), None);
     }
