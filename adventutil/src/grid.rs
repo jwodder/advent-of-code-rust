@@ -250,6 +250,10 @@ impl GridBounds {
         (0..self.height).contains(&y) && (0..self.width).contains(&x)
     }
 
+    pub fn wrap(&self, (y, x): (isize, isize)) -> Coords {
+        Coords::new(iurem(y, self.height), iurem(x, self.width))
+    }
+
     pub fn move_in<C: Into<(usize, usize)>>(&self, coords: C, d: Direction) -> Option<Coords> {
         let (y, x) = coords.into();
         let (ydiff, xdiff) = d.decompose();
