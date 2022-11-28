@@ -46,6 +46,11 @@ impl<T> Grid<T> {
         }
     }
 
+    // Panics on out-of-bounds
+    pub fn set(&mut self, y: usize, x: usize, value: T) {
+        self.data[y][x] = value;
+    }
+
     pub fn map<U, F>(self, mut f: F) -> Grid<U>
     where
         F: FnMut(T) -> U,
