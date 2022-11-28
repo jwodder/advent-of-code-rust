@@ -1,3 +1,4 @@
+use super::iter::{AdjacentCells, AdjacentWrapCells};
 use super::{Coords, Direction, Grid};
 use std::ops::Deref;
 
@@ -25,6 +26,10 @@ impl<'a, T> Cell<'a, T> {
         self.x
     }
 
+    pub fn grid(&self) -> &'a Grid<T> {
+        self.grid
+    }
+
     pub fn coords(&self) -> Coords {
         Coords::new(self.y, self.x)
     }
@@ -37,6 +42,14 @@ impl<'a, T> Cell<'a, T> {
     pub fn neighbor_wrap(&self, d: Direction) -> Cell<'a, T> {
         let coords = self.grid.bounds().move_in_wrap(self.coords(), d);
         self.grid.get_cell(coords).unwrap()
+    }
+
+    pub fn adjacent(&self) -> AdjacentCells<'a, T> {
+        AdjacentCells::new(self)
+    }
+
+    pub fn adjacent_wrap(&self) -> AdjacentWrapCells<'a, T> {
+        AdjacentWrapCells::new(self)
     }
 
     pub fn north(&self) -> Option<Cell<'a, T>> {
@@ -154,5 +167,47 @@ mod test {
         assert_eq!(cell.west_wrap(), 2);
         assert_eq!(cell.north_west(), None);
         assert_eq!(cell.north_west_wrap(), 8);
+    }
+
+    #[test]
+    fn test_cell_adjacent() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let cell = gr.get_cell((0, 2)).unwrap();
+        let mut iter = cell.adjacent();
+        assert_eq!(iter.next().unwrap(), 2);
+        assert_eq!(iter.next().unwrap(), 5);
+        assert_eq!(iter.next().unwrap(), 6);
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_cell_adjacent_wrap() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let cell = gr.get_cell((0, 2)).unwrap();
+        let mut iter = cell.adjacent_wrap();
+        assert_eq!(iter.size_hint(), (8, Some(8)));
+        assert_eq!(iter.next().unwrap(), 8);
+        assert_eq!(iter.size_hint(), (7, Some(7)));
+        assert_eq!(iter.next().unwrap(), 9);
+        assert_eq!(iter.size_hint(), (6, Some(6)));
+        assert_eq!(iter.next().unwrap(), 7);
+        assert_eq!(iter.size_hint(), (5, Some(5)));
+        assert_eq!(iter.next().unwrap(), 2);
+        assert_eq!(iter.size_hint(), (4, Some(4)));
+        assert_eq!(iter.next().unwrap(), 1);
+        assert_eq!(iter.size_hint(), (3, Some(3)));
+        assert_eq!(iter.next().unwrap(), 5);
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        assert_eq!(iter.next().unwrap(), 6);
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        assert_eq!(iter.next().unwrap(), 4);
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
     }
 }

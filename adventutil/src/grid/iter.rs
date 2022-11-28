@@ -1,4 +1,4 @@
-use super::{Cell, Coords, Direction, Grid};
+use super::{Cell, Coords, Direction, Grid, GridBounds};
 use std::iter::FusedIterator;
 
 pub struct IterCoords {
@@ -212,6 +212,78 @@ impl Iterator for AdjacentDirs {
 impl FusedIterator for AdjacentDirs {}
 
 impl ExactSizeIterator for AdjacentDirs {}
+
+pub struct AdjacentCells<'a, T> {
+    grid: &'a Grid<T>,
+    center: Coords,
+    bounds: GridBounds,
+    inner: AdjacentDirs,
+}
+
+impl<'a, T> AdjacentCells<'a, T> {
+    pub(super) fn new(cell: &Cell<'a, T>) -> Self {
+        let grid = cell.grid();
+        AdjacentCells {
+            grid,
+            center: cell.coords(),
+            bounds: grid.bounds(),
+            inner: Direction::adjacent(),
+        }
+    }
+}
+
+impl<'a, T> Iterator for AdjacentCells<'a, T> {
+    type Item = Cell<'a, T>;
+
+    fn next(&mut self) -> Option<Cell<'a, T>> {
+        #[allow(clippy::while_let_on_iterator)]
+        while let Some(d) = self.inner.next() {
+            if let Some(c) = self.bounds.move_in(self.center, d) {
+                return self.grid.get_cell(c);
+            }
+        }
+        None
+    }
+}
+
+impl<'a, T> FusedIterator for AdjacentCells<'a, T> {}
+
+pub struct AdjacentWrapCells<'a, T> {
+    grid: &'a Grid<T>,
+    center: Coords,
+    bounds: GridBounds,
+    inner: AdjacentDirs,
+}
+
+impl<'a, T> AdjacentWrapCells<'a, T> {
+    pub(super) fn new(cell: &Cell<'a, T>) -> Self {
+        let grid = cell.grid();
+        AdjacentWrapCells {
+            grid,
+            center: cell.coords(),
+            bounds: grid.bounds(),
+            inner: Direction::adjacent(),
+        }
+    }
+}
+
+impl<'a, T> Iterator for AdjacentWrapCells<'a, T> {
+    type Item = Cell<'a, T>;
+
+    fn next(&mut self) -> Option<Cell<'a, T>> {
+        let d = self.inner.next()?;
+        let c = self.bounds.move_in_wrap(self.center, d);
+        self.grid.get_cell(c)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
+    }
+}
+
+impl<'a, T> FusedIterator for AdjacentWrapCells<'a, T> {}
+
+impl<'a, T> ExactSizeIterator for AdjacentWrapCells<'a, T> {}
 
 #[cfg(test)]
 mod test {
