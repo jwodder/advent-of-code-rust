@@ -176,6 +176,43 @@ impl FusedIterator for Cardinals {}
 
 impl ExactSizeIterator for Cardinals {}
 
+pub struct AdjacentDirs(usize);
+
+impl AdjacentDirs {
+    pub(super) fn new() -> AdjacentDirs {
+        AdjacentDirs(0)
+    }
+}
+
+impl Iterator for AdjacentDirs {
+    type Item = Direction;
+
+    fn next(&mut self) -> Option<Direction> {
+        let d = match self.0 {
+            0 => Direction::NorthWest,
+            1 => Direction::North,
+            2 => Direction::NorthEast,
+            3 => Direction::West,
+            4 => Direction::East,
+            5 => Direction::SouthWest,
+            6 => Direction::South,
+            7 => Direction::SouthEast,
+            _ => return None,
+        };
+        self.0 += 1;
+        Some(d)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let sz = 8usize.saturating_sub(self.0);
+        (sz, Some(sz))
+    }
+}
+
+impl FusedIterator for AdjacentDirs {}
+
+impl ExactSizeIterator for AdjacentDirs {}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -300,6 +337,30 @@ mod test {
         assert_eq!(iter.next(), Some(Direction::South));
         assert_eq!(iter.size_hint(), (1, Some(1)));
         assert_eq!(iter.next(), Some(Direction::West));
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_adjacent_dirs() {
+        let mut iter = Direction::adjacent();
+        assert_eq!(iter.size_hint(), (8, Some(8)));
+        assert_eq!(iter.next(), Some(Direction::NorthWest));
+        assert_eq!(iter.size_hint(), (7, Some(7)));
+        assert_eq!(iter.next(), Some(Direction::North));
+        assert_eq!(iter.size_hint(), (6, Some(6)));
+        assert_eq!(iter.next(), Some(Direction::NorthEast));
+        assert_eq!(iter.size_hint(), (5, Some(5)));
+        assert_eq!(iter.next(), Some(Direction::West));
+        assert_eq!(iter.size_hint(), (4, Some(4)));
+        assert_eq!(iter.next(), Some(Direction::East));
+        assert_eq!(iter.size_hint(), (3, Some(3)));
+        assert_eq!(iter.next(), Some(Direction::SouthWest));
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        assert_eq!(iter.next(), Some(Direction::South));
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        assert_eq!(iter.next(), Some(Direction::SouthEast));
         assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
         assert_eq!(iter.next(), None);

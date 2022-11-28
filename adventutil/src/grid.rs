@@ -294,6 +294,10 @@ impl Direction {
         Cardinals::new()
     }
 
+    pub fn adjacent() -> AdjacentDirs {
+        AdjacentDirs::new()
+    }
+
     pub fn decompose(&self) -> (Ordering, Ordering) {
         use Direction::*;
         use Ordering::*;
