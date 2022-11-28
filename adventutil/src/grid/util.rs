@@ -2,11 +2,10 @@ use std::cmp::Ordering;
 use std::ops::Range;
 
 pub(super) fn iurem(x: isize, y: usize) -> usize {
-    let r = match y.try_into() {
-        Ok(y) => x.rem_euclid(y),
-        Err(_) => panic!("Cannot take remainder with mixed isize and usize: modulus out of range"),
-    };
-    r.try_into().unwrap()
+    let y = y
+        .try_into()
+        .expect("Cannot take remainder with mixed isize and usize: modulus out of range");
+    x.rem_euclid(y).try_into().unwrap()
 }
 
 pub(super) fn move_in_range(x: usize, range: Range<usize>, delta: Ordering) -> Option<usize> {
