@@ -8,6 +8,7 @@ pub use self::iter::*;
 use self::util::*;
 use std::cmp::Ordering;
 use std::fmt;
+use std::ops::{Index, IndexMut};
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -54,6 +55,11 @@ impl<T> Grid<T> {
     pub fn set<C: Into<(usize, usize)>>(&mut self, coords: C, value: T) {
         let (y, x) = coords.into();
         self.data[y][x] = value;
+    }
+
+    pub fn get_mut<C: Into<(usize, usize)>>(&mut self, coords: C) -> Option<&mut T> {
+        let (y, x) = coords.into();
+        self.data.get_mut(y).and_then(|row| row.get_mut(x))
     }
 
     pub fn map<U, F>(self, mut f: F) -> Grid<U>
@@ -133,6 +139,20 @@ impl<T> Grid<T> {
 
     pub fn iter_cells(&self) -> IterCells<'_, T> {
         IterCells::new(self)
+    }
+}
+
+impl<C: Into<(usize, usize)>, T> Index<C> for Grid<T> {
+    type Output = T;
+
+    fn index(&self, index: C) -> &T {
+        self.get(index).unwrap()
+    }
+}
+
+impl<C: Into<(usize, usize)>, T> IndexMut<C> for Grid<T> {
+    fn index_mut(&mut self, index: C) -> &mut T {
+        self.get_mut(index).unwrap()
     }
 }
 
