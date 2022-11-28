@@ -1,11 +1,11 @@
-use adventutil::grid::Grid;
+use adventutil::grid::{Coords, Grid};
 use adventutil::{parse_csv, Input};
 use std::collections::HashSet;
 
 #[derive(Debug)]
 struct Board {
     grid: Grid<u32>,
-    marked: HashSet<(usize, usize)>,
+    marked: HashSet<Coords>,
 }
 
 impl Board {
@@ -27,9 +27,9 @@ impl Board {
 
     fn wins(&self) -> bool {
         (0..self.grid.height())
-            .any(|y| (0..self.grid.width()).all(|x| self.marked.contains(&(y, x))))
+            .any(|y| (0..self.grid.width()).all(|x| self.marked.contains(&Coords::new(y, x))))
             || (0..self.grid.width())
-                .any(|x| (0..self.grid.height()).all(|y| self.marked.contains(&(y, x))))
+                .any(|x| (0..self.grid.height()).all(|y| self.marked.contains(&Coords::new(y, x))))
     }
 
     fn score(&self) -> u32 {
@@ -37,7 +37,8 @@ impl Board {
             .map(|y| {
                 (0..self.grid.width())
                     .filter_map(|x| {
-                        (!self.marked.contains(&(y, x))).then(|| self.grid.get(y, x).unwrap())
+                        (!self.marked.contains(&Coords::new(y, x)))
+                            .then(|| self.grid.get((y, x)).unwrap())
                     })
                     .sum::<u32>()
             })
