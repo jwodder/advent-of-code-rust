@@ -33,15 +33,9 @@ impl Board {
     }
 
     fn score(&self) -> u32 {
-        (0..self.grid.height())
-            .map(|y| {
-                (0..self.grid.width())
-                    .filter_map(|x| {
-                        (!self.marked.contains(&Coords::new(y, x)))
-                            .then(|| self.grid.get((y, x)).unwrap())
-                    })
-                    .sum::<u32>()
-            })
+        self.grid
+            .enumerate()
+            .filter_map(|(coords, &v)| (!self.marked.contains(&coords)).then_some(v))
             .sum()
     }
 }
