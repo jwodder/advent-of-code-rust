@@ -49,14 +49,16 @@ impl FusedIterator for IterCoords {}
 impl ExactSizeIterator for IterCoords {}
 
 pub struct Enumerate<'a, T> {
+    inner: IterCoords,
     grid: &'a Grid<T>,
-    y: usize,
-    x: usize,
 }
 
 impl<'a, T> Enumerate<'a, T> {
     pub(super) fn new(grid: &'a Grid<T>) -> Self {
-        Enumerate { grid, y: 0, x: 0 }
+        Enumerate {
+            inner: grid.iter_coords(),
+            grid,
+        }
     }
 }
 
@@ -64,21 +66,19 @@ impl<'a, T> Iterator for Enumerate<'a, T> {
     type Item = (Coords, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.y >= self.grid.height() {
-            return None;
-        }
-        let cell = self.grid.get((self.y, self.x)).unwrap();
-        let r = (Coords::new(self.y, self.x), cell);
-        self.x += 1;
-        if self.x >= self.grid.width() {
-            self.x = 0;
-            self.y += 1;
-        }
-        Some(r)
+        let coords = self.inner.next()?;
+        let value = self.grid.get(coords).unwrap();
+        Some((coords, value))
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
     }
 }
 
 impl<'a, T> FusedIterator for Enumerate<'a, T> {}
+
+impl<'a, T> ExactSizeIterator for Enumerate<'a, T> {}
 
 pub struct IterCells<'a, T> {
     inner: IterCoords,
@@ -132,9 +132,16 @@ impl<'a, T> Iterator for Columns<'a, T> {
         }
         col
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let sz = self.grid.width().saturating_sub(self.x);
+        (sz, Some(sz))
+    }
 }
 
 impl<'a, T> FusedIterator for Columns<'a, T> {}
+
+impl<'a, T> ExactSizeIterator for Columns<'a, T> {}
 
 pub struct Cardinals(usize);
 
@@ -179,15 +186,42 @@ mod test {
             data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
         };
         let mut iter = gr.enumerate();
+        assert_eq!(iter.size_hint(), (9, Some(9)));
         assert_eq!(iter.next(), Some((Coords::new(0, 0), &1)));
+        assert_eq!(iter.size_hint(), (8, Some(8)));
         assert_eq!(iter.next(), Some((Coords::new(0, 1), &2)));
+        assert_eq!(iter.size_hint(), (7, Some(7)));
         assert_eq!(iter.next(), Some((Coords::new(0, 2), &3)));
+        assert_eq!(iter.size_hint(), (6, Some(6)));
         assert_eq!(iter.next(), Some((Coords::new(1, 0), &4)));
+        assert_eq!(iter.size_hint(), (5, Some(5)));
         assert_eq!(iter.next(), Some((Coords::new(1, 1), &5)));
+        assert_eq!(iter.size_hint(), (4, Some(4)));
         assert_eq!(iter.next(), Some((Coords::new(1, 2), &6)));
+        assert_eq!(iter.size_hint(), (3, Some(3)));
         assert_eq!(iter.next(), Some((Coords::new(2, 0), &7)));
+        assert_eq!(iter.size_hint(), (2, Some(2)));
         assert_eq!(iter.next(), Some((Coords::new(2, 1), &8)));
+        assert_eq!(iter.size_hint(), (1, Some(1)));
         assert_eq!(iter.next(), Some((Coords::new(2, 2), &9)));
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_columns() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.columns();
+        assert_eq!(iter.size_hint(), (3, Some(3)));
+        assert_eq!(iter.next(), Some(vec![&1, &4, &7]));
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        assert_eq!(iter.next(), Some(vec![&2, &5, &8]));
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        assert_eq!(iter.next(), Some(vec![&3, &6, &9]));
+        assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
         assert_eq!(iter.next(), None);
     }
