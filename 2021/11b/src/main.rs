@@ -1,0 +1,86 @@
+use adventutil::grid::{Direction, Grid, ParseGridError};
+use adventutil::Input;
+use std::collections::VecDeque;
+use std::iter::repeat_with;
+use std::num::ParseIntError;
+use std::str::FromStr;
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct Octopuses(Grid<u32>);
+
+impl Octopuses {
+    fn step(&mut self) -> usize {
+        let mut flashed = 0;
+        let mut queue = VecDeque::new();
+        for coord in self.0.iter_coords() {
+            self.0[coord] += 1;
+            if self.0[coord] == 10 {
+                flashed += 1;
+                queue.push_back(coord);
+            }
+        }
+        let bounds = self.0.bounds();
+        while let Some(coord) = queue.pop_front() {
+            for d in Direction::adjacent() {
+                if let Some(c) = bounds.move_in(coord, d) {
+                    self.0[c] += 1;
+                    if self.0[c] == 10 {
+                        flashed += 1;
+                        queue.push_back(c);
+                    }
+                }
+            }
+        }
+        for coord in self.0.iter_coords() {
+            if self.0[coord] > 9 {
+                self.0[coord] = 0;
+            }
+        }
+        flashed
+    }
+
+    fn first_synced_flash(&mut self) -> usize {
+        let area = self.0.height() * self.0.width();
+        repeat_with(|| self.step())
+            .position(|f| f == area)
+            .expect("No synchronized flash!")
+            + 1
+    }
+}
+
+impl FromStr for Octopuses {
+    type Err = ParseGridError<ParseIntError>;
+
+    fn from_str(s: &str) -> Result<Octopuses, Self::Err> {
+        s.parse::<Grid<u32>>().map(Octopuses)
+    }
+}
+
+fn main() {
+    let mut octos = Input::from_env().parse::<Octopuses>();
+    println!("{}", octos.first_synced_flash());
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_example() {
+        let mut octos = concat!(
+            "5483143223\n",
+            "2745854711\n",
+            "5264556173\n",
+            "6141336146\n",
+            "6357385478\n",
+            "4167524645\n",
+            "2176841721\n",
+            "6882881134\n",
+            "4846848554\n",
+            "5283751526\n",
+        )
+        .parse::<Octopuses>()
+        .unwrap();
+        assert_eq!(octos.first_synced_flash(), 195);
+    }
+}
