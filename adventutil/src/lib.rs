@@ -1,5 +1,6 @@
 pub mod counter;
 pub mod grid;
+pub mod pullparser;
 use either::Either;
 use std::fs::File;
 use std::io::{self, read_to_string, stdin, BufRead, BufReader};
