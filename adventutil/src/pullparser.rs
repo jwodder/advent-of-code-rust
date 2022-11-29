@@ -103,8 +103,10 @@ pub enum ParseError {
     MissingToken(Token),
     #[error("Trailing characters: {0:?}")]
     Trailing(String),
-    #[error("Invalid string in input: {0:?}")]
-    InvalidStr(String),
+    #[error("Input as a whole is invalid: {0:?}")]
+    Invalid(String),
+    #[error("Invalid token in input: {0:?}")]
+    InvalidToken(String),
     #[error("Invalid sub-parse: {0:#}")]
     InvalidParse(#[from] anyhow::Error),
 }

@@ -1,8 +1,7 @@
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use std::cmp::max;
-use std::num::ParseIntError;
 use std::str::FromStr;
-use thiserror::Error;
 
 struct Present {
     length: u32,
@@ -24,28 +23,16 @@ impl FromStr for Present {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Present, ParseError> {
-        let mut sides = s.split('x');
-        let length = sides.next().ok_or(ParseError::Syntax)?.parse::<u32>()?;
-        let width = sides.next().ok_or(ParseError::Syntax)?.parse::<u32>()?;
-        let height = sides.next().ok_or(ParseError::Syntax)?.parse::<u32>()?;
-        if sides.next().is_some() {
-            Err(ParseError::Syntax)
-        } else {
-            Ok(Present {
-                length,
-                width,
-                height,
-            })
-        }
+        let mut parser = PullParser::new(s);
+        let length = parser.parse_to::<u32, _>('x')?;
+        let width = parser.parse_to::<u32, _>('x')?;
+        let height = parser.parse_to::<u32, _>(Token::Eof)?;
+        Ok(Present {
+            length,
+            width,
+            height,
+        })
     }
-}
-
-#[derive(Debug, Error)]
-enum ParseError {
-    #[error("Malformed input")]
-    Syntax,
-    #[error("Invalid integer: {0}")]
-    InvalidInteger(#[from] ParseIntError),
 }
 
 fn main() {

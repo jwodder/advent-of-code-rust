@@ -12,4 +12,3 @@ publish.workspace = true
 [dependencies]
 adventutil = { path = "../../adventutil" }
 either = "1.8.0"
-thiserror = "1.0.37"
