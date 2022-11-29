@@ -135,20 +135,8 @@ fn solve<I: IntoIterator<Item = Event>>(iter: I) -> usize {
             (state, e) => panic!("Unexpected event {e:?} in state {state:?}"),
         }
     }
-    let (guard_id, sleepytimes) = guards
-        .into_iter()
-        .reduce(|(g1, st1), (g2, st2)| {
-            if st1.total() > st2.total() {
-                (g1, st1)
-            } else {
-                (g2, st2)
-            }
-        })
-        .unwrap();
-    let (minute, _) = sleepytimes
-        .into_iter()
-        .reduce(|(m1, st1), (m2, st2)| if st1 > st2 { (m1, st1) } else { (m2, st2) })
-        .unwrap();
+    let (guard_id, sleepytimes) = guards.into_iter().max_by_key(|(_, st)| st.total()).unwrap();
+    let (minute, _) = sleepytimes.into_iter().max_by_key(|&(_, st)| st).unwrap();
     guard_id * minute
 }
 

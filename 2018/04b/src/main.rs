@@ -138,7 +138,7 @@ fn solve<I: IntoIterator<Item = Event>>(iter: I) -> usize {
     let (guard_id, minute, _) = guards
         .into_iter()
         .flat_map(|(g, st)| st.into_iter().map(move |(m, qty)| (g, m, qty)))
-        .reduce(|g1 @ (_, _, qty1), g2 @ (_, _, qty2)| if qty1 > qty2 { g1 } else { g2 })
+        .max_by_key(|&(_, _, qty)| qty)
         .unwrap();
     guard_id * minute
 }
