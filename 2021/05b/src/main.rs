@@ -1,10 +1,9 @@
 use adventutil::counter::Counter;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use either::Either;
 use std::cmp::{max, min};
-use std::num::ParseIntError;
 use std::str::FromStr;
-use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Line {
@@ -35,24 +34,16 @@ impl Line {
 }
 
 impl FromStr for Line {
-    type Err = ParseLineError;
+    type Err = ParseError;
 
-    fn from_str(s: &str) -> Result<Line, ParseLineError> {
-        let (start, end) = s
-            .split_once("->")
-            .ok_or_else(|| ParseLineError::Syntax(s.to_string()))?;
-        let (sx1, sy1) = start
-            .trim()
-            .split_once(',')
-            .ok_or_else(|| ParseLineError::Syntax(s.to_string()))?;
-        let (sx2, sy2) = end
-            .trim()
-            .split_once(',')
-            .ok_or_else(|| ParseLineError::Syntax(s.to_string()))?;
-        let x1 = sx1.parse::<i32>()?;
-        let y1 = sy1.parse::<i32>()?;
-        let x2 = sx2.parse::<i32>()?;
-        let y2 = sy2.parse::<i32>()?;
+    fn from_str(s: &str) -> Result<Line, ParseError> {
+        let mut parser = PullParser::new(s);
+        let x1 = parser.parse_to::<i32, _>(',')?;
+        let y1 = parser.parse_to::<i32, _>(Token::Whitespace)?;
+        parser.skip("->")?;
+        parser.skip(Token::Whitespace)?;
+        let x2 = parser.parse_to::<i32, _>(',')?;
+        let y2 = parser.parse_to::<i32, _>(Token::Eof)?;
         if x1 == x2 {
             Ok(Line::Vertical { x: x1, y1, y2 })
         } else if y1 == y2 {
@@ -60,19 +51,9 @@ impl FromStr for Line {
         } else if x1.abs_diff(x2) == y1.abs_diff(y2) {
             Ok(Line::Diagonal { x1, y1, x2, y2 })
         } else {
-            Err(ParseLineError::Slanted(s.to_string()))
+            Err(ParseError::Invalid(s.into()))
         }
     }
-}
-
-#[derive(Debug, Error)]
-enum ParseLineError {
-    #[error("Malformed line: {0:?}")]
-    Syntax(String),
-    #[error("Slanted line: {0:?}")]
-    Slanted(String),
-    #[error("Invalid integer in line: {0}")]
-    BadInt(#[from] ParseIntError),
 }
 
 fn main() {

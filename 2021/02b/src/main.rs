@@ -1,7 +1,6 @@
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
-use std::num::ParseIntError;
 use std::str::FromStr;
-use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Command {
@@ -11,31 +10,19 @@ enum Command {
 }
 
 impl FromStr for Command {
-    type Err = ParseCommandError;
+    type Err = ParseError;
 
-    fn from_str(s: &str) -> Result<Command, ParseCommandError> {
-        let words = s.split_whitespace().collect::<Vec<_>>();
-        if words.len() != 2 {
-            return Err(ParseCommandError::WrongWordCount);
-        }
-        let distance = words[1].parse::<u32>()?;
-        match words[0] {
+    fn from_str(s: &str) -> Result<Command, ParseError> {
+        let mut parser = PullParser::new(s);
+        let cmd = parser.scan_to(Token::Whitespace)?;
+        let distance = parser.parse_to::<u32, _>(Token::Eof)?;
+        match cmd {
             "forward" => Ok(Command::Forward(distance)),
             "down" => Ok(Command::Down(distance)),
             "up" => Ok(Command::Up(distance)),
-            s => Err(ParseCommandError::BadCommand(s.to_string())),
+            _ => Err(ParseError::InvalidToken(cmd.into())),
         }
     }
-}
-
-#[derive(Debug, Error)]
-enum ParseCommandError {
-    #[error("Input did not consist of exactly two words")]
-    WrongWordCount,
-    #[error("Invalid distance: {0}")]
-    BadInteger(#[from] ParseIntError),
-    #[error("Invalid command: {0:?}")]
-    BadCommand(String),
 }
 
 struct Location {

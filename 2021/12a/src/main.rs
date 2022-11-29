@@ -1,8 +1,8 @@
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::str::FromStr;
-use thiserror::Error;
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 struct Cave(String);
@@ -52,19 +52,15 @@ impl FromStr for CaveSystem {
     fn from_str(s: &str) -> Result<CaveSystem, ParseError> {
         let mut map: HashMap<Cave, Vec<Cave>> = HashMap::new();
         for ln in s.lines() {
-            let (left, right) = ln.split_once('-').ok_or_else(|| ParseError(ln.into()))?;
-            let left = Cave(left.into());
-            let right = Cave(right.into());
+            let mut parser = PullParser::new(ln);
+            let left = Cave(parser.parse_to::<String, _>('-')?);
+            let right = Cave(parser.parse_to::<String, _>(Token::Eof)?);
             map.entry(left.clone()).or_default().push(right.clone());
             map.entry(right).or_default().push(left);
         }
         Ok(CaveSystem { map })
     }
 }
-
-#[derive(Debug, Error)]
-#[error("Invalid line in map: {0:?}")]
-struct ParseError(String);
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Path {

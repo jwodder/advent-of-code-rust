@@ -23,7 +23,6 @@ name = "advent-of-code-2015-02a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "thiserror",
 ]
 
 [[package]]
@@ -31,7 +30,6 @@ name = "advent-of-code-2015-02b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "thiserror",
 ]
 
 [[package]]
@@ -120,7 +118,6 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "itertools",
- "thiserror",
 ]
 
 [[package]]
@@ -128,7 +125,6 @@ name = "advent-of-code-2018-03b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "thiserror",
 ]
 
 [[package]]
@@ -150,7 +146,6 @@ name = "advent-of-code-2021-02a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "thiserror",
 ]
 
 [[package]]
@@ -158,7 +153,6 @@ name = "advent-of-code-2021-02b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "thiserror",
 ]
 
 [[package]]
@@ -195,7 +189,6 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "either",
- "thiserror",
 ]
 
 [[package]]
@@ -204,7 +197,6 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "either",
- "thiserror",
 ]
 
 [[package]]
@@ -277,7 +269,6 @@ name = "advent-of-code-2021-12a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "thiserror",
 ]
 
 [[package]]
@@ -285,7 +276,6 @@ name = "advent-of-code-2021-12b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "thiserror",
 ]
 
 [[package]]

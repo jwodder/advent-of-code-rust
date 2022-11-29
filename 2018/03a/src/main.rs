@@ -1,10 +1,9 @@
 use adventutil::counter::Counter;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use itertools::{Itertools, Product};
-use std::num::ParseIntError;
 use std::ops::Range;
 use std::str::FromStr;
-use thiserror::Error;
 
 struct Claim {
     #[allow(unused)]
@@ -19,24 +18,16 @@ impl FromStr for Claim {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Claim, ParseError> {
-        let (id, measurements) = s
-            .split_once('@')
-            .ok_or_else(|| ParseError::Syntax(s.into()))?;
-        let id = id.trim().to_string();
-        let (margins, dimens) = measurements
-            .trim()
-            .split_once(": ")
-            .ok_or_else(|| ParseError::Syntax(s.into()))?;
-        let (left_margin, top_margin) = margins
-            .split_once(',')
-            .ok_or_else(|| ParseError::Syntax(s.into()))?;
-        let left_margin = left_margin.parse::<usize>()?;
-        let top_margin = top_margin.parse::<usize>()?;
-        let (width, height) = dimens
-            .split_once('x')
-            .ok_or_else(|| ParseError::Syntax(s.into()))?;
-        let width = width.parse::<usize>()?;
-        let height = height.parse::<usize>()?;
+        let mut parser = PullParser::new(s);
+        parser.skip('#')?;
+        let id = parser.parse_to::<String, _>(Token::Whitespace)?;
+        parser.skip('@')?;
+        parser.skip(Token::Whitespace)?;
+        let left_margin = parser.parse_to::<usize, _>(',')?;
+        let top_margin = parser.parse_to::<usize, _>(':')?;
+        parser.skip(Token::Whitespace)?;
+        let width = parser.parse_to::<usize, _>('x')?;
+        let height = parser.parse_to::<usize, _>(Token::Eof)?;
         Ok(Claim {
             id,
             left_margin,
@@ -55,14 +46,6 @@ impl IntoIterator for Claim {
         (self.left_margin..(self.left_margin + self.width))
             .cartesian_product(self.top_margin..(self.top_margin + self.height))
     }
-}
-
-#[derive(Debug, Error)]
-enum ParseError {
-    #[error("Malformed claim: {0:?}")]
-    Syntax(String),
-    #[error("Invalid integer: {0:?}")]
-    InvalidInteger(#[from] ParseIntError),
 }
 
 fn overlaps<I: IntoIterator<Item = Claim>>(claims: I) -> usize {

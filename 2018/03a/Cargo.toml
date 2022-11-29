@@ -12,4 +12,3 @@ publish.workspace = true
 [dependencies]
 adventutil = { path = "../../adventutil" }
 itertools = "0.10.5"
-thiserror = "1.0.37"
