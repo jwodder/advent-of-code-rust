@@ -1,0 +1,101 @@
+use adventutil::Input;
+use std::num::ParseIntError;
+use std::str::SplitWhitespace;
+use thiserror::Error;
+
+struct Node {
+    #[allow(unused)]
+    children: Vec<Node>,
+    #[allow(unused)]
+    metadata: Vec<usize>,
+    metadata_sum: usize,
+}
+
+impl Node {
+    fn new(children: Vec<Node>, metadata: Vec<usize>) -> Node {
+        let metadata_sum = metadata.iter().copied().sum::<usize>()
+            + children.iter().map(|n| n.metadata_sum).sum::<usize>();
+        Node {
+            children,
+            metadata,
+            metadata_sum,
+        }
+    }
+
+    fn parse_tree(s: &str) -> Result<Node, ParseError> {
+        let mut stream = NumberStream::new(s);
+        let node = Node::parse_node(&mut stream)?;
+        stream.at_end()?;
+        Ok(node)
+    }
+
+    fn parse_node(stream: &mut NumberStream<'_>) -> Result<Node, ParseError> {
+        let child_qty = stream.get()?;
+        let meta_qty = stream.get()?;
+        let mut children = Vec::with_capacity(child_qty);
+        for _ in 0..child_qty {
+            children.push(Node::parse_node(stream)?);
+        }
+        let mut metadata = Vec::with_capacity(meta_qty);
+        for _ in 0..meta_qty {
+            metadata.push(stream.get()?);
+        }
+        Ok(Node::new(children, metadata))
+    }
+}
+
+struct NumberStream<'a> {
+    inner: SplitWhitespace<'a>,
+}
+
+impl<'a> NumberStream<'a> {
+    fn new(s: &'a str) -> Self {
+        NumberStream {
+            inner: s.split_whitespace(),
+        }
+    }
+
+    fn get(&mut self) -> Result<usize, ParseError> {
+        Ok(self
+            .inner
+            .next()
+            .ok_or(ParseError::Short)?
+            .parse::<usize>()?)
+    }
+
+    fn at_end(&mut self) -> Result<(), ParseError> {
+        if self.inner.next().is_none() {
+            Ok(())
+        } else {
+            Err(ParseError::Trailing)
+        }
+    }
+}
+
+#[derive(Debug, Error)]
+enum ParseError {
+    #[error("Input had too few components")]
+    Short,
+    #[error("Input had trailing components")]
+    Trailing,
+    #[error("Invalid integer: {0}")]
+    InvalidInt(#[from] ParseIntError),
+}
+
+fn sum_metadata(s: &str) -> usize {
+    Node::parse_tree(s).unwrap().metadata_sum
+}
+
+fn main() {
+    println!("{}", sum_metadata(&Input::from_env().read()));
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_example1() {
+        assert_eq!(sum_metadata("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2"), 138);
+    }
+}
