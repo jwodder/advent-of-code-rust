@@ -1,4 +1,5 @@
 use std::marker::{Send, Sync};
+use std::num::ParseIntError;
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -113,6 +114,12 @@ pub enum ParseError {
     InvalidToken(String),
     #[error("Invalid sub-parse: {0:#}")]
     InvalidParse(#[from] anyhow::Error),
+}
+
+impl From<ParseIntError> for ParseError {
+    fn from(e: ParseIntError) -> ParseError {
+        ParseError::InvalidParse(anyhow::Error::new(e))
+    }
 }
 
 #[cfg(test)]
