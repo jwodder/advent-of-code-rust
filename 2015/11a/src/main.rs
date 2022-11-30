@@ -12,9 +12,7 @@ impl PasswordIter {
         let mut chars = s.chars().collect::<Vec<_>>();
         if let Some(i) = chars.iter().position(|&c| "iol".contains(c)) {
             chars[i] = next_letter(chars[i]);
-            for c in chars.iter_mut().skip(i + 1) {
-                *c = 'a';
-            }
+            chars[(i + 1)..].fill('a');
         }
         PasswordIter {
             current: s.chars().collect(),
