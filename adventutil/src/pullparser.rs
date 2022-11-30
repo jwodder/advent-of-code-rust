@@ -48,6 +48,10 @@ impl<'a> PullParser<'a> {
             Err(ParseError::Trailing(self.data.into()))
         }
     }
+
+    pub fn into_str(self) -> &'a str {
+        self.data
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
