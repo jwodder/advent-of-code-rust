@@ -22,6 +22,22 @@ pub struct Grid<T> {
 }
 
 impl<T> Grid<T> {
+    pub fn from_fn<F, C>(bounds: GridBounds, mut f: F) -> Grid<T>
+    where
+        F: FnMut(C) -> T,
+        C: From<Coords>,
+    {
+        Grid {
+            data: (0..bounds.height)
+                .map(|y| {
+                    (0..bounds.width)
+                        .map(|x| f(C::from(Coords::new(y, x))))
+                        .collect::<Vec<_>>()
+                })
+                .collect(),
+        }
+    }
+
     pub fn height(&self) -> usize {
         self.data.len()
     }
