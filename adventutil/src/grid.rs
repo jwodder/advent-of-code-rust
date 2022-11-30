@@ -149,6 +149,10 @@ impl<T> Grid<T> {
         self.data.into_iter()
     }
 
+    pub fn into_values(self) -> impl Iterator<Item = T> {
+        self.data.into_iter().flatten()
+    }
+
     pub fn iter_coords(&self) -> IterCoords {
         IterCoords::new(self.height(), self.width())
     }
