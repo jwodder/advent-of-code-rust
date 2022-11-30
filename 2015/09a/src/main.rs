@@ -1,3 +1,4 @@
+use adventutil::index::Index;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use itertools::Itertools;
@@ -30,12 +31,10 @@ impl FromStr for Distance {
 
 fn travelling_santa<I: IntoIterator<Item = Distance>>(iter: I) -> usize {
     let mut distances = HashMap::new();
-    let mut point2id = HashMap::new();
+    let mut point2id = Index::new();
     for d in iter {
-        let qty = point2id.len();
-        let p1 = *point2id.entry(d.point_a).or_insert(qty);
-        let qty = point2id.len();
-        let p2 = *point2id.entry(d.point_b).or_insert(qty);
+        let p1 = point2id.get(d.point_a);
+        let p2 = point2id.get(d.point_b);
         distances.insert((p1, p2), d.dist);
         distances.insert((p2, p1), d.dist);
     }

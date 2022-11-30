@@ -1,5 +1,6 @@
 pub mod counter;
 pub mod grid;
+pub mod index;
 pub mod pullparser;
 use either::Either;
 use std::fs::File;
