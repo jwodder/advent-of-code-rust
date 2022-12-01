@@ -542,7 +542,6 @@ name = "adventutil"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "either",
  "rstest",
  "thiserror",
 ]

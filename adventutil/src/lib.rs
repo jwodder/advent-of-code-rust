@@ -2,7 +2,6 @@ pub mod counter;
 pub mod grid;
 pub mod index;
 pub mod pullparser;
-use either::Either;
 use std::fs::File;
 use std::io::{self, read_to_string, stdin, BufRead, BufReader};
 use std::path::PathBuf;
@@ -12,6 +11,7 @@ use std::str::FromStr;
 pub enum Input {
     Stdin,
     File(PathBuf),
+    Str(&'static str),
 }
 
 impl Input {
@@ -29,16 +29,18 @@ impl Input {
                 File::open(path).expect("Error opening file"),
             ))
             .expect("Error reading file"),
+            Input::Str(s) => s.to_string(),
         }
     }
 
     pub fn lines(self) -> Lines {
-        Lines::new(match self {
-            Input::Stdin => Either::Left(stdin().lines()),
+        match self {
+            Input::Stdin => Lines::Stdin(stdin().lines()),
             Input::File(path) => {
-                Either::Right(BufReader::new(File::open(path).expect("Error opening file")).lines())
+                Lines::File(BufReader::new(File::open(path).expect("Error opening file")).lines())
             }
-        })
+            Input::Str(s) => Lines::Str(s.lines()),
+        }
     }
 
     // Yields each paragraph with inner newlines converted to '\n' and trailing
@@ -51,7 +53,11 @@ impl Input {
     where
         <T as FromStr>::Err: std::fmt::Debug,
     {
-        self.read().parse::<T>().expect("Error parsing input")
+        match self {
+            Input::Str(s) => s.parse::<T>(),
+            input => input.read().parse::<T>(),
+        }
+        .expect("Error parsing input")
     }
 
     pub fn parse_lines<T: FromStr>(self) -> impl Iterator<Item = T>
@@ -71,21 +77,27 @@ impl Input {
     }
 }
 
-type LinesInner = Either<io::Lines<io::StdinLock<'static>>, io::Lines<BufReader<File>>>;
-
-pub struct Lines(LinesInner);
-
-impl Lines {
-    fn new(inner: LinesInner) -> Lines {
-        Lines(inner)
+impl From<&'static str> for Input {
+    fn from(s: &'static str) -> Input {
+        Input::Str(s)
     }
+}
+
+pub enum Lines {
+    Stdin(io::Lines<io::StdinLock<'static>>),
+    File(io::Lines<BufReader<File>>),
+    Str(std::str::Lines<'static>),
 }
 
 impl Iterator for Lines {
     type Item = String;
 
     fn next(&mut self) -> Option<String> {
-        self.0.next().map(|l| l.expect("Error reading input"))
+        match self {
+            Lines::Stdin(i) => i.next().map(|r| r.expect("Error reading input")),
+            Lines::File(i) => i.next().map(|r| r.expect("Error reading input")),
+            Lines::Str(i) => i.next().map(|s| s.to_string()),
+        }
     }
 }
 
