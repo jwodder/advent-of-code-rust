@@ -1,16 +1,17 @@
+use adventutil::maxn::maxn;
 use adventutil::Input;
 
 fn solve(input: Input) -> usize {
-    let mut calories = input
-        .paragraphs()
-        .map(|s| {
+    maxn(
+        3,
+        input.paragraphs().map(|s| {
             s.lines()
                 .map(|t| t.parse::<usize>().unwrap())
                 .sum::<usize>()
-        })
-        .collect::<Vec<_>>();
-    calories.sort();
-    calories[(calories.len() - 3)..].iter().sum()
+        }),
+    )
+    .into_iter()
+    .sum()
 }
 
 fn main() {

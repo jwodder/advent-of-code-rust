@@ -1,6 +1,7 @@
 pub mod counter;
 pub mod grid;
 pub mod index;
+pub mod maxn;
 pub mod pullparser;
 use std::fs::File;
 use std::io::{self, read_to_string, stdin, BufRead, BufReader};

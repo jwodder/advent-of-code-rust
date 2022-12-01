@@ -1,35 +1,12 @@
 use adventutil::grid::{Cell, Direction, Grid};
+use adventutil::maxn::maxn;
 use adventutil::Input;
 use std::collections::{HashSet, VecDeque};
 
-struct Max3(VecDeque<usize>);
-
-impl Max3 {
-    fn new() -> Max3 {
-        Max3(VecDeque::from([0; 3]))
-    }
-
-    fn put(&mut self, value: usize) {
-        match self.0.binary_search(&value) {
-            Ok(0) | Err(0) => (),
-            Ok(i) | Err(i) => {
-                self.0.insert(i, value);
-                self.0.pop_front();
-            }
-        }
-    }
-
-    fn product(self) -> usize {
-        self.0.into_iter().product()
-    }
-}
-
 fn solve(grid: Grid<u32>) -> usize {
-    let mut maxes = Max3::new();
-    for p in grid.iter_cells().filter(is_low_point) {
-        maxes.put(basin_size(p))
-    }
-    maxes.product()
+    maxn(3, grid.iter_cells().filter(is_low_point).map(basin_size))
+        .into_iter()
+        .product()
 }
 
 fn is_low_point(cell: &Cell<'_, u32>) -> bool {
