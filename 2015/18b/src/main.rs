@@ -1,4 +1,4 @@
-use adventutil::grid::{Coords, Grid, ParseGridError};
+use adventutil::grid::{Grid, ParseGridError};
 use adventutil::Input;
 use std::char::ParseCharError;
 use std::str::FromStr;
@@ -7,11 +7,10 @@ struct ConwayLights(Grid<bool>);
 
 impl ConwayLights {
     fn step(self) -> ConwayLights {
-        ConwayLights(Grid::from_fn(self.0.bounds(), |coords: Coords| {
-            ((coords.y == 0 || coords.y == self.0.height() - 1)
-                && (coords.x == 0 || coords.x == self.0.width() - 1))
+        ConwayLights(self.0.map_cells(|cell| {
+            ((cell.y() == 0 || cell.y() == self.0.height() - 1)
+                && (cell.x() == 0 || cell.x() == self.0.width() - 1))
                 || {
-                    let cell = self.0.get_cell(coords).unwrap();
                     let live_neighbors = cell.adjacent().filter(|c| *c.get()).count();
                     matches!((cell.get(), live_neighbors), (_, 3) | (true, 2))
                 }

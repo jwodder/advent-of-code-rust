@@ -106,7 +106,7 @@ impl<T> Grid<T> {
         Ok(Grid { data })
     }
 
-    pub fn map_cell<U, F>(&self, mut f: F) -> Grid<U>
+    pub fn map_cells<U, F>(&self, mut f: F) -> Grid<U>
     where
         F: FnMut(Cell<'_, T>) -> U,
     {

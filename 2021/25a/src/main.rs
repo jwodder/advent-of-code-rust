@@ -43,7 +43,7 @@ struct State(Grid<Cucumber>);
 
 impl State {
     fn step(&self) -> State {
-        State(self.0.map_cell(|cell| match cell.get() {
+        State(self.0.map_cells(|cell| match cell.get() {
             Cucumber::Empty if cell.west_wrap() == Cucumber::East => Cucumber::East,
             Cucumber::Empty if moves_south(cell.north_wrap()) => Cucumber::South,
             Cucumber::East if cell.east_wrap() == Cucumber::Empty => {
