@@ -56,7 +56,7 @@ impl Input {
     {
         match self {
             Input::Str(s) => s.parse::<T>(),
-            input => input.read().parse::<T>(),
+            input => input.read().trim().parse::<T>(),
         }
         .expect("Error parsing input")
     }
