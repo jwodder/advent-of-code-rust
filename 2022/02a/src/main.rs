@@ -39,7 +39,7 @@ impl RPS {
             "X" => RPS::Rock,
             "Y" => RPS::Paper,
             "Z" => RPS::Scissors,
-            s => panic!("Invalid column 1 value: {s:?}"),
+            s => panic!("Invalid column 2 value: {s:?}"),
         }
     }
 }
