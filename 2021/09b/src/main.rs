@@ -1,7 +1,7 @@
+use adventutil::closure::one2many_closure;
 use adventutil::grid::{Cell, Direction, Grid};
 use adventutil::maxn::maxn;
 use adventutil::Input;
-use std::collections::{HashSet, VecDeque};
 
 fn solve(grid: Grid<u32>) -> usize {
     maxn(3, grid.iter_cells().filter(is_low_point).map(basin_size))
@@ -22,20 +22,14 @@ fn is_low_point(cell: &Cell<'_, u32>) -> bool {
 }
 
 fn basin_size(cell: Cell<'_, u32>) -> usize {
-    let mut seen = HashSet::new();
-    seen.insert(cell.coords());
-    let mut queue = VecDeque::new();
-    queue.push_back(cell);
-    while let Some(c) = queue.pop_front() {
-        for d in Direction::cardinals() {
-            if let Some(c2) = c.neighbor(d) {
-                if *c2.get() < 9 && seen.insert(c2.coords()) {
-                    queue.push_back(c2);
-                }
-            }
-        }
-    }
-    seen.len()
+    let grid = cell.grid();
+    let bounds = grid.bounds();
+    one2many_closure(cell.coords(), |c| {
+        Direction::cardinals()
+            .filter_map(move |d| bounds.move_in(c, d))
+            .filter(|&c2| *grid.get(c2).unwrap() < 9)
+    })
+    .len()
 }
 
 fn main() {
