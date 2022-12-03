@@ -56,7 +56,7 @@ impl Input {
         <T as FromStr>::Err: std::fmt::Debug,
     {
         match self {
-            Input::Str(s) => s.parse::<T>(),
+            Input::Str(s) => s.trim().parse::<T>(),
             input => input.read().trim().parse::<T>(),
         }
         .expect("Error parsing input")
