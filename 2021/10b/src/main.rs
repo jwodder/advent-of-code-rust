@@ -1,11 +1,11 @@
 use adventutil::Input;
 
-const PAREN_SCORE: usize = 1;
-const BRACKET_SCORE: usize = 2;
-const BRACE_SCORE: usize = 3;
-const ANGLE_SCORE: usize = 4;
+const PAREN_SCORE: u64 = 1;
+const BRACKET_SCORE: u64 = 2;
+const BRACE_SCORE: u64 = 3;
+const ANGLE_SCORE: u64 = 4;
 
-fn score_line<S: AsRef<str>>(s: S) -> Option<usize> {
+fn score_line<S: AsRef<str>>(s: S) -> Option<u64> {
     let mut stack = Vec::new();
     for c in s.as_ref().chars() {
         match c {
@@ -39,7 +39,7 @@ fn score_line<S: AsRef<str>>(s: S) -> Option<usize> {
     }
 }
 
-fn score<I, S>(iter: I) -> usize
+fn score<I, S>(iter: I) -> u64
 where
     I: IntoIterator<Item = S>,
     S: AsRef<str>,
@@ -65,7 +65,7 @@ mod test {
     #[case("(((({<>}<{<{<>}{[]{[]{}", 1480781)]
     #[case("{<[[]]>}<{[{[{[]{()[[[]", 995444)]
     #[case("<{([{{}}[<[[[<>{}]]]>[]]", 294)]
-    fn test_score_line(#[case] s: &str, #[case] score: usize) {
+    fn test_score_line(#[case] s: &str, #[case] score: u64) {
         assert_eq!(score_line(s).unwrap(), score);
     }
 
