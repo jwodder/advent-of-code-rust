@@ -1,4 +1,4 @@
-use adventutil::Input;
+use adventutil::{unordered_pairs, Input};
 use std::collections::VecDeque;
 
 fn solve(input: Input, preamble_size: usize) -> u64 {
@@ -8,7 +8,7 @@ fn solve(input: Input, preamble_size: usize) -> u64 {
         preceding.push_back(iter.next().expect("Input lacks complete preamble"));
     }
     for n in iter {
-        if !is_sum(&preceding, n) {
+        if !is_sum(preceding.make_contiguous(), n) {
             return n;
         }
         preceding.push_back(n);
@@ -17,15 +17,8 @@ fn solve(input: Input, preamble_size: usize) -> u64 {
     panic!("No solution found");
 }
 
-fn is_sum(numbers: &VecDeque<u64>, n: u64) -> bool {
-    for i in 0..numbers.len() {
-        for j in (i + 1)..numbers.len() {
-            if numbers[i] != numbers[j] && numbers[i] + numbers[j] == n {
-                return true;
-            }
-        }
-    }
-    false
+fn is_sum(numbers: &[u64], n: u64) -> bool {
+    unordered_pairs(numbers).any(|(&n1, &n2)| n1 != n2 && n1 + n2 == n)
 }
 
 fn main() {

@@ -1,12 +1,10 @@
-use adventutil::Input;
+use adventutil::{unordered_pairs, Input};
 
 fn solve(input: Input) -> u32 {
     let entries = input.parse_lines::<u32>().collect::<Vec<_>>();
-    for i in 0..entries.len() {
-        for j in (i + 1)..entries.len() {
-            if entries[i] + entries[j] == 2020 {
-                return entries[i] * entries[j];
-            }
+    for (&e1, &e2) in unordered_pairs(&entries) {
+        if e1 + e2 == 2020 {
+            return e1 * e2;
         }
     }
     panic!("No solution found");

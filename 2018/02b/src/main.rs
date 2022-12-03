@@ -1,4 +1,4 @@
-use adventutil::Input;
+use adventutil::{unordered_pairs, Input};
 
 fn solve<I, S>(iter: I) -> String
 where
@@ -6,17 +6,15 @@ where
     S: AsRef<str>,
 {
     let strs = iter.into_iter().collect::<Vec<_>>();
-    for i in 0..strs.len() {
-        for j in (i + 1)..strs.len() {
-            let s1 = strs[i].as_ref();
-            let s2 = strs[j].as_ref();
-            if let Some(k) = diff_index(s1, s2) {
-                return s1
-                    .chars()
-                    .enumerate()
-                    .filter_map(|(i, c)| (i != k).then_some(c))
-                    .collect();
-            }
+    for (s1, s2) in unordered_pairs(&strs) {
+        let s1 = s1.as_ref();
+        let s2 = s2.as_ref();
+        if let Some(k) = diff_index(s1, s2) {
+            return s1
+                .chars()
+                .enumerate()
+                .filter_map(|(i, c)| (i != k).then_some(c))
+                .collect();
         }
     }
     panic!("No matching box IDs found");

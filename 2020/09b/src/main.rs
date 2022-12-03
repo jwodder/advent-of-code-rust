@@ -1,4 +1,4 @@
-use adventutil::Input;
+use adventutil::{unordered_pairs, Input};
 use itertools::{Itertools, MinMaxResult::*};
 use std::cmp::Ordering;
 
@@ -38,14 +38,7 @@ fn find_invalid(numbers: &[u64], preamble_size: usize) -> u64 {
 }
 
 fn is_sum(numbers: &[u64], n: u64) -> bool {
-    for i in 0..numbers.len() {
-        for j in (i + 1)..numbers.len() {
-            if numbers[i] != numbers[j] && numbers[i] + numbers[j] == n {
-                return true;
-            }
-        }
-    }
-    false
+    unordered_pairs(numbers).any(|(&n1, &n2)| n1 != n2 && n1 + n2 == n)
 }
 
 fn main() {
