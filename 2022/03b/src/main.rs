@@ -5,12 +5,11 @@ use std::collections::HashSet;
 fn solve(input: Input) -> u32 {
     input
         .lines()
-        .chunks(3)
-        .into_iter()
-        .map(|mut w| {
-            let rs1 = w.next().unwrap().chars().collect::<HashSet<_>>();
-            let rs2 = w.next().unwrap().chars().collect::<HashSet<_>>();
-            let rs3 = w.next().unwrap().chars().collect::<HashSet<_>>();
+        .tuples()
+        .map(|(s1, s2, s3)| {
+            let rs1 = s1.chars().collect::<HashSet<_>>();
+            let rs2 = s2.chars().collect::<HashSet<_>>();
+            let rs3 = s3.chars().collect::<HashSet<_>>();
             priority(
                 rs1.intersection(&rs2.intersection(&rs3).copied().collect())
                     .next()
