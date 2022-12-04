@@ -11,4 +11,3 @@ publish.workspace = true
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
-either = "1.8.0"

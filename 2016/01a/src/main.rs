@@ -1,3 +1,4 @@
+use adventutil::gridgeom::{Point, Vector};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use std::str::FromStr;
@@ -25,33 +26,31 @@ impl FromStr for Instruction {
 }
 
 struct Position {
-    pos: (i32, i32),
-    facing: (i32, i32),
+    pos: Point,
+    facing: Vector,
 }
 
 impl Position {
     fn new() -> Position {
         Position {
-            pos: (0, 0),
-            facing: (0, 1),
+            pos: Point::ORIGIN,
+            facing: Vector::NORTH,
         }
     }
 
     fn domove(self, i: Instruction) -> Position {
-        let (face_x, face_y, dist) = match i {
-            // Rotation matrix: [[0, -1], [1, 0]]
-            Instruction::Left(d) => (-self.facing.1, self.facing.0, d),
-            // Rotation matrix: [[0, 1], [-1, 0]]
-            Instruction::Right(d) => (self.facing.1, -self.facing.0, d),
+        let (facing, dist) = match i {
+            Instruction::Left(d) => (self.facing.turn_left(), d),
+            Instruction::Right(d) => (self.facing.turn_right(), d),
         };
         Position {
-            pos: (self.pos.0 + face_x * dist, self.pos.1 + face_y * dist),
-            facing: (face_x, face_y),
+            pos: self.pos + facing * dist,
+            facing,
         }
     }
 
     fn distance(&self) -> i32 {
-        self.pos.0.abs() + self.pos.1.abs()
+        (self.pos - Point::ORIGIN).taxicab_len()
     }
 }
 

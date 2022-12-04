@@ -1,3 +1,4 @@
+use adventutil::gridgeom::{Point, Vector};
 use adventutil::pullparser::ParseError;
 use adventutil::Input;
 use std::str::FromStr;
@@ -38,34 +39,29 @@ impl FromStr for Instruction {
 }
 
 fn solve(input: Input) -> i32 {
-    let (mut ship_x, mut ship_y) = (0, 0);
-    let (mut waypoint_x, mut waypoint_y) = (10, 1);
+    let mut ship = Point::ORIGIN;
+    let mut waypoint = Vector { x: 10, y: 1 };
     for instruction in input.parse_lines::<Instruction>() {
         use Instruction::*;
         match instruction {
-            North(dist) => waypoint_y += dist,
-            South(dist) => waypoint_y -= dist,
-            East(dist) => waypoint_x += dist,
-            West(dist) => waypoint_x -= dist,
+            North(dist) => waypoint += Vector::NORTH * dist,
+            South(dist) => waypoint += Vector::SOUTH * dist,
+            East(dist) => waypoint += Vector::EAST * dist,
+            West(dist) => waypoint += Vector::WEST * dist,
             Left(angle) => {
                 for _ in 0..(angle / 90) {
-                    // Rotation matrix: [[0, -1], [1, 0]]
-                    (waypoint_x, waypoint_y) = (-waypoint_y, waypoint_x);
+                    waypoint = waypoint.turn_left();
                 }
             }
             Right(angle) => {
                 for _ in 0..(angle / 90) {
-                    // Rotation matrix: [[0, 1], [-1, 0]]
-                    (waypoint_x, waypoint_y) = (waypoint_y, -waypoint_x);
+                    waypoint = waypoint.turn_right();
                 }
             }
-            Forward(dist) => {
-                ship_x += waypoint_x * dist;
-                ship_y += waypoint_y * dist;
-            }
+            Forward(dist) => ship += waypoint * dist,
         }
     }
-    ship_x.abs() + ship_y.abs()
+    (ship - Point::ORIGIN).taxicab_len()
 }
 
 fn main() {

@@ -1,3 +1,4 @@
+use adventutil::gridgeom::{Point, Vector};
 use adventutil::pullparser::ParseError;
 use adventutil::Input;
 use std::str::FromStr;
@@ -37,57 +38,32 @@ impl FromStr for Instruction {
     }
 }
 
-struct Facing {
-    xdir: i32,
-    ydir: i32,
-}
-
-impl Facing {
-    fn turn_left(self, angle: i32) -> Facing {
-        let mut xdir = self.xdir;
-        let mut ydir = self.ydir;
-        for _ in 0..(angle / 90) {
-            // Rotation matrix: [[0, -1], [1, 0]]
-            (xdir, ydir) = (-ydir, xdir);
-        }
-        Facing { xdir, ydir }
-    }
-
-    fn turn_right(self, angle: i32) -> Facing {
-        let mut xdir = self.xdir;
-        let mut ydir = self.ydir;
-        for _ in 0..(angle / 90) {
-            // Rotation matrix: [[0, 1], [-1, 0]]
-            (xdir, ydir) = (ydir, -xdir);
-        }
-        Facing { xdir, ydir }
-    }
-
-    fn displacement(&self, distance: i32) -> (i32, i32) {
-        (self.xdir * distance, self.ydir * distance)
-    }
-}
-
 fn solve(input: Input) -> i32 {
-    let mut facing = Facing { xdir: 1, ydir: 0 }; // east
-    let (mut x, mut y) = (0, 0);
+    let mut facing = Vector::EAST;
+    let mut pos = Point::ORIGIN;
     for instruction in input.parse_lines::<Instruction>() {
         use Instruction::*;
         match instruction {
-            North(dist) => y += dist,
-            South(dist) => y -= dist,
-            East(dist) => x += dist,
-            West(dist) => x -= dist,
-            Left(angle) => facing = facing.turn_left(angle),
-            Right(angle) => facing = facing.turn_right(angle),
+            North(dist) => pos += Vector::NORTH * dist,
+            South(dist) => pos += Vector::SOUTH * dist,
+            East(dist) => pos += Vector::EAST * dist,
+            West(dist) => pos += Vector::WEST * dist,
+            Left(angle) => {
+                for _ in 0..(angle / 90) {
+                    facing = facing.turn_left();
+                }
+            }
+            Right(angle) => {
+                for _ in 0..(angle / 90) {
+                    facing = facing.turn_right();
+                }
+            }
             Forward(dist) => {
-                let (xdiff, ydiff) = facing.displacement(dist);
-                x += xdiff;
-                y += ydiff;
+                pos += facing * dist;
             }
         }
     }
-    x.abs() + y.abs()
+    (pos - Point::ORIGIN).taxicab_len()
 }
 
 fn main() {

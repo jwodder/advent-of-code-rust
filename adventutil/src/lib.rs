@@ -1,6 +1,7 @@
 pub mod closure;
 pub mod counter;
 pub mod grid;
+pub mod gridgeom;
 pub mod index;
 pub mod maxn;
 pub mod pullparser;
