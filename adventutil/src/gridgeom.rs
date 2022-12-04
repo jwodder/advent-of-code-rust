@@ -93,6 +93,23 @@ impl AddAssign<Vector> for Vector {
     }
 }
 
+impl Sub<Vector> for Point {
+    type Output = Point;
+
+    fn sub(self, rhs: Vector) -> Point {
+        Point {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
+    }
+}
+
+impl SubAssign<Vector> for Point {
+    fn sub_assign(&mut self, rhs: Vector) {
+        *self = *self - rhs;
+    }
+}
+
 impl Sub<Vector> for Vector {
     type Output = Vector;
 
@@ -168,14 +185,16 @@ impl Sum for Vector {
 
 // The returned points include `p+v` but not `p` (If `v` is the zero vector,
 // the collection is empty)
+// Points are returned in the order they are "encountered" when going from `p`
+// to `p+v`.
 // TODO: Make this return an iterator instead of a Vec
 pub fn points_added(p: Point, v: Vector) -> Result<Vec<Point>, NotCardinalError> {
     match v {
         Vector { x: 0, y: 0 } => Ok(Vec::new()),
         Vector { x, y: 0 } if x > 0 => Ok((1..=x).map(|i| p + Vector { x: i, y: 0 }).collect()),
-        Vector { x, y: 0 } if x < 0 => Ok((x..-1).map(|i| p + Vector { x: i, y: 0 }).collect()),
+        Vector { x, y: 0 } if x < 0 => Ok((1..=-x).map(|i| p - Vector { x: i, y: 0 }).collect()),
         Vector { x: 0, y } if y > 0 => Ok((1..=y).map(|j| p + Vector { x: 0, y: j }).collect()),
-        Vector { x: 0, y } if y < 0 => Ok((y..-1).map(|j| p + Vector { x: 0, y: j }).collect()),
+        Vector { x: 0, y } if y < 0 => Ok((1..=-y).map(|j| p - Vector { x: 0, y: j }).collect()),
         v => Err(NotCardinalError(v)),
     }
 }
