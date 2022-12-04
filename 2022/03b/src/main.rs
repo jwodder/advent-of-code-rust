@@ -10,12 +10,7 @@ fn solve(input: Input) -> u32 {
             let rs1 = s1.chars().collect::<HashSet<_>>();
             let rs2 = s2.chars().collect::<HashSet<_>>();
             let rs3 = s3.chars().collect::<HashSet<_>>();
-            priority(
-                rs1.intersection(&rs2.intersection(&rs3).copied().collect())
-                    .next()
-                    .copied()
-                    .unwrap(),
-            )
+            priority(rs1.intersection(&(&rs2 & &rs3)).next().copied().unwrap())
         })
         .sum()
 }

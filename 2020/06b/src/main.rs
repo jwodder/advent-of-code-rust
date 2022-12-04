@@ -7,7 +7,7 @@ fn solve(input: Input) -> usize {
         .map(|para| {
             para.lines()
                 .map(|s| s.chars().collect::<HashSet<char>>())
-                .reduce(|accum, newset| accum.intersection(&newset).copied().collect())
+                .reduce(|accum, newset| &accum & &newset)
                 .unwrap()
                 .len()
         })
