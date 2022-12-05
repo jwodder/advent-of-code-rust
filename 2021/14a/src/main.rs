@@ -21,11 +21,10 @@ impl FromStr for Rule {
 
     fn from_str(s: &str) -> Result<Rule, ParseError> {
         let mut parser = PullParser::new(s);
-        let pair = parser.parse_to::<String, _>(Token::Whitespace)?;
+        let pair = parser.parse_to::<String, _>(" -> ")?;
         if pair.chars().count() != 2 {
             return Err(ParseError::InvalidToken(pair));
         }
-        parser.skip("-> ")?;
         let insert = parser.parse_to::<char, _>(Token::Eof)?;
         Ok(Rule { pair, insert })
     }
