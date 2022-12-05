@@ -107,3 +107,39 @@ fn solve(input: Input) -> String {
 fn main() {
     println!("{}", solve(Input::from_env()));
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_example1() {
+        let input = Input::from(concat!(
+            "6,10\n",
+            "0,14\n",
+            "9,10\n",
+            "0,3\n",
+            "10,4\n",
+            "4,11\n",
+            "6,0\n",
+            "6,12\n",
+            "4,1\n",
+            "0,13\n",
+            "10,12\n",
+            "3,4\n",
+            "3,0\n",
+            "8,4\n",
+            "1,10\n",
+            "2,14\n",
+            "8,10\n",
+            "9,0\n",
+            "\n",
+            "fold along y=7\n",
+            "fold along x=5\n",
+        ));
+        assert_eq!(
+            solve(input),
+            "#####\n#...#\n#...#\n#...#\n#####\n.....\n.....\n"
+        );
+    }
+}
