@@ -5,7 +5,9 @@ pub mod gridgeom;
 pub mod index;
 pub mod maxn;
 pub mod pullparser;
+use std::collections::{hash_map::Entry, HashMap, HashSet};
 use std::fs::File;
+use std::hash::Hash;
 use std::io::{self, read_to_string, stdin, BufRead, BufReader};
 use std::iter::FusedIterator;
 use std::path::PathBuf;
@@ -243,6 +245,46 @@ impl<'a, T> Iterator for UnorderedPairs<'a, T> {
 impl<'a, T> FusedIterator for UnorderedPairs<'a, T> {}
 
 impl<'a, T> ExactSizeIterator for UnorderedPairs<'a, T> {}
+
+/// Returns the length of the shortest path from `start` to `end`.  `func` must
+/// be a function that takes a vertex `v` and returns an iterable of all of its
+/// neighbors and their distances from `v`.  Returns `None` if there is no
+/// route to `end`.
+pub fn dijkstra_length<T, F, I>(start: T, end: T, mut func: F) -> Option<u32>
+where
+    T: Eq + Hash + Clone,
+    F: FnMut(&T) -> I,
+    I: IntoIterator<Item = (T, u32)>,
+{
+    let mut visited = HashSet::new();
+    let mut distances = HashMap::from([(start.clone(), 0)]);
+    let mut current = start;
+    loop {
+        for (p, d) in func(&current) {
+            if !visited.contains(&p) {
+                let newdist = distances[&current] + d;
+                match distances.entry(p.clone()) {
+                    Entry::Vacant(e) => {
+                        e.insert(newdist);
+                    }
+                    Entry::Occupied(mut e) if *e.get() > newdist => {
+                        e.insert(newdist);
+                    }
+                    _ => (),
+                }
+            }
+        }
+        visited.insert(current);
+        if visited.contains(&end) {
+            return Some(distances[&end]);
+        }
+        current = distances
+            .iter()
+            .filter(|&(k, _)| !visited.contains(k))
+            .min_by_key(|&(_, &dist)| dist)
+            .map(|(k, _)| k.clone())?;
+    }
+}
 
 #[cfg(test)]
 mod test {
