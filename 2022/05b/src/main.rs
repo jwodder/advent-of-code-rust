@@ -32,25 +32,14 @@ impl FromStr for Crates {
         let columns = iter.next().unwrap().split_ascii_whitespace().count();
         let mut stacks = vec![Vec::new(); columns];
         for ln in iter {
-            for (i, cell) in ln.chars().chunks(4).into_iter().enumerate() {
-                let cell = cell.collect::<String>();
-                let cell = cell.trim();
-                if !cell.is_empty() {
-                    let c = parse_cell(cell)?;
+            for (i, c) in ln.chars().skip(1).step_by(4).enumerate() {
+                if !c.is_ascii_whitespace() {
                     stacks[i].push(c);
                 }
             }
         }
         Ok(Crates { stacks })
     }
-}
-
-fn parse_cell(s: &str) -> Result<char, ParseError> {
-    let mut parser = PullParser::new(s);
-    parser.skip('[')?;
-    let c = parser.parse_to::<char, _>(']')?;
-    parser.eof()?;
-    Ok(c)
 }
 
 struct Movement {
