@@ -1,4 +1,7 @@
-use std::collections::HashMap;
+use std::collections::{
+    hash_map::{IntoKeys, IntoValues},
+    HashMap,
+};
 use std::hash::Hash;
 
 pub struct Index<T>(HashMap<T, usize>);
@@ -22,6 +25,14 @@ impl<T> Index<T> {
 
     pub fn is_empty(&self) -> bool {
         self.0.is_empty()
+    }
+
+    pub fn into_keys(self) -> IntoKeys<T, usize> {
+        self.0.into_keys()
+    }
+
+    pub fn into_indices(self) -> IntoValues<T, usize> {
+        self.0.into_values()
     }
 }
 
