@@ -12,32 +12,30 @@ impl Intcode {
         while i < self.0.len() {
             match self.0[i] % 100 {
                 1 => {
-                    let modes = get_modes(self.0[i], 3);
-                    self.set_param_at(
-                        i + 3,
-                        self.get_param_at(i + 1, modes[0]) + self.get_param_at(i + 2, modes[1]),
-                        modes[2],
+                    let params = self.get_params(i, 3);
+                    self.write_to_param(
+                        params[2],
+                        self.eval_param(params[0]) + self.eval_param(params[1]),
                     );
                     i += 4;
                 }
                 2 => {
-                    let modes = get_modes(self.0[i], 3);
-                    self.set_param_at(
-                        i + 3,
-                        self.get_param_at(i + 1, modes[0]) * self.get_param_at(i + 2, modes[1]),
-                        modes[2],
+                    let params = self.get_params(i, 3);
+                    self.write_to_param(
+                        params[2],
+                        self.eval_param(params[0]) * self.eval_param(params[1]),
                     );
                     i += 4;
                 }
                 3 => {
-                    let modes = get_modes(self.0[i], 1);
+                    let params = self.get_params(i, 1);
                     let value = input.pop_front().expect("Out of input");
-                    self.set_param_at(i + 1, value, modes[0]);
+                    self.write_to_param(params[0], value);
                     i += 2;
                 }
                 4 => {
-                    let modes = get_modes(self.0[i], 1);
-                    output.push(self.get_param_at(i + 1, modes[0]));
+                    let params = self.get_params(i, 1);
+                    output.push(self.eval_param(params[0]));
                     i += 2;
                 }
                 99 => return output,
@@ -47,27 +45,33 @@ impl Intcode {
         output
     }
 
-    fn get_param_at(&self, address: usize, mode: ParamMode) -> i32 {
-        let param = self.0[address];
-        match mode {
-            ParamMode::Position => *self
-                .0
-                .get(usize::try_from(param).expect("Parameter out of usize range"))
-                .expect("Parameter out of bounds"),
-            ParamMode::Immediate => param,
+    fn get_params(&self, op_index: usize, qty: usize) -> Vec<Parameter> {
+        let mut params = Vec::with_capacity(qty);
+        let mut opcode = self.0[op_index] / 100;
+        for i in (op_index + 1)..(op_index + 1 + qty) {
+            match opcode % 10 {
+                0 => params.push(Parameter::Address(
+                    usize::try_from(self.0[i]).expect("Address out of usize range"),
+                )),
+                1 => params.push(Parameter::Value(self.0[i])),
+                n => panic!("Invalid parameter mode {n}"),
+            }
+            opcode /= 10;
+        }
+        params
+    }
+
+    fn eval_param(&self, param: Parameter) -> i32 {
+        match param {
+            Parameter::Address(addr) => self.0[addr],
+            Parameter::Value(value) => value,
         }
     }
 
-    fn set_param_at(&mut self, address: usize, value: i32, mode: ParamMode) {
-        let param = self.0[address];
-        match mode {
-            ParamMode::Position => {
-                *self
-                    .0
-                    .get_mut(usize::try_from(param).expect("Parameter out of usize range"))
-                    .expect("Parameter out of bounds") = value
-            }
-            ParamMode::Immediate => panic!("Cannot set immediate-mode parameter"),
+    fn write_to_param(&mut self, param: Parameter, value: i32) {
+        match param {
+            Parameter::Address(addr) => self.0[addr] = value,
+            Parameter::Value(_) => panic!("Cannot set immediate-mode parameter"),
         }
     }
 }
@@ -85,23 +89,9 @@ impl FromStr for Intcode {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum ParamMode {
-    Position,
-    Immediate,
-}
-
-fn get_modes(mut opcode: i32, qty: usize) -> Vec<ParamMode> {
-    let mut modes = Vec::with_capacity(qty);
-    opcode /= 100;
-    for _ in 0..qty {
-        match opcode % 10 {
-            0 => modes.push(ParamMode::Position),
-            1 => modes.push(ParamMode::Immediate),
-            n => panic!("Invalid parameter mode {n}"),
-        }
-        opcode /= 10;
-    }
-    modes
+enum Parameter {
+    Address(usize),
+    Value(i32),
 }
 
 fn solve(input: Input) -> i32 {
