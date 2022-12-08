@@ -8,7 +8,7 @@ use std::ops::Index;
 
 #[derive(Clone, Debug)]
 pub struct Counter<T> {
-    inner: HashMap<T, usize>,
+    inner: HashMap<T, u64>,
 }
 
 impl<T: Eq + Hash> PartialEq for Counter<T> {
@@ -26,7 +26,7 @@ impl<T> Counter<T> {
         }
     }
 
-    pub fn into_values(self) -> IntoValues<T, usize> {
+    pub fn into_values(self) -> IntoValues<T, u64> {
         self.inner.into_values()
     }
 }
@@ -36,11 +36,11 @@ impl<T: Eq + Hash> Counter<T> {
         *self.inner.entry(value).or_insert(0) += 1;
     }
 
-    pub fn add_qty(&mut self, value: T, qty: usize) {
+    pub fn add_qty(&mut self, value: T, qty: u64) {
         *self.inner.entry(value).or_insert(0) += qty;
     }
 
-    pub fn total(&self) -> usize {
+    pub fn total(&self) -> u64 {
         self.inner.values().copied().sum()
     }
 }
@@ -74,18 +74,18 @@ where
     T: Eq + Hash + Borrow<U>,
     U: Eq + Hash,
 {
-    type Output = usize;
+    type Output = u64;
 
-    fn index(&self, key: &U) -> &usize {
+    fn index(&self, key: &U) -> &u64 {
         self.inner.get(key).unwrap_or(&0)
     }
 }
 
 impl<T> IntoIterator for Counter<T> {
-    type Item = (T, usize);
-    type IntoIter = IntoIter<T, usize>;
+    type Item = (T, u64);
+    type IntoIter = IntoIter<T, u64>;
 
-    fn into_iter(self) -> IntoIter<T, usize> {
+    fn into_iter(self) -> IntoIter<T, u64> {
         self.inner.into_iter()
     }
 }

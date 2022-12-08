@@ -30,7 +30,7 @@ impl FromStr for Rule {
     }
 }
 
-fn solve(input: Input) -> usize {
+fn solve(input: Input) -> u64 {
     let (mut template, rules) = input
         .paragraphs()
         .collect_tuple()

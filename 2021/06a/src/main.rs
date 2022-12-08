@@ -13,7 +13,7 @@ impl Population {
         }
     }
 
-    fn size(&self) -> usize {
+    fn size(&self) -> u64 {
         self.timers.total()
     }
 
@@ -36,7 +36,7 @@ fn main() {
     println!("{}", size_after_days(pop, 80));
 }
 
-fn size_after_days(mut pop: Population, days: usize) -> usize {
+fn size_after_days(mut pop: Population, days: usize) -> u64 {
     for _ in 0..days {
         pop = pop.step();
     }
