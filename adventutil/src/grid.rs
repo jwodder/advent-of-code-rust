@@ -27,6 +27,7 @@ impl<T> Grid<T> {
         F: FnMut(C) -> T,
         C: From<Coords>,
     {
+        // TODO: Panic if `bounds` is empty
         Grid {
             data: (0..bounds.height)
                 .map(|y| {
