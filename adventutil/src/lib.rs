@@ -3,6 +3,7 @@ pub mod counter;
 pub mod grid;
 pub mod gridgeom;
 pub mod index;
+pub mod intcode;
 pub mod maxn;
 pub mod pullparser;
 use std::collections::{hash_map::Entry, HashMap, HashSet};
