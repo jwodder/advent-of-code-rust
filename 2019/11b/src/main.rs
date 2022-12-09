@@ -78,7 +78,7 @@ impl IntcodeIO for Hull {
 fn solve(input: Input) -> String {
     let mut program = input.parse::<Intcode>();
     let mut hull = Hull::new();
-    program.run(&mut hull);
+    program.run(&mut hull).unwrap();
     hull.painting()
 }
 

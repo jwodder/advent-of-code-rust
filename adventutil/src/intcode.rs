@@ -1,6 +1,7 @@
 use std::collections::{HashMap, VecDeque};
-use std::num::ParseIntError;
+use std::num::{ParseIntError, TryFromIntError};
 use std::str::FromStr;
+use thiserror::Error;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Intcode {
@@ -18,80 +19,81 @@ impl Intcode {
         }
     }
 
-    pub fn run<IO: IntcodeIO>(&mut self, io: &mut IO) {
+    pub fn run<IO: IntcodeIO>(&mut self, io: &mut IO) -> Result<(), IntcodeError> {
         let mut i = 0;
-        // TODO: Will the program counter ever legimately progress into
-        // `extra_memory`?
-        while i < self.program.len() {
-            match self.program[i] % 100 {
+        loop {
+            match self.get(i) % 100 {
                 1 => {
-                    let params = self.get_params(i, 3);
+                    let params = self.get_params(i, 3)?;
                     self.write_to_param(
                         params[2],
                         self.eval_param(params[0]) + self.eval_param(params[1]),
-                    );
+                    )?;
                     i += 4;
                 }
                 2 => {
-                    let params = self.get_params(i, 3);
+                    let params = self.get_params(i, 3)?;
                     self.write_to_param(
                         params[2],
                         self.eval_param(params[0]) * self.eval_param(params[1]),
-                    );
+                    )?;
                     i += 4;
                 }
                 3 => {
-                    let params = self.get_params(i, 1);
+                    let params = self.get_params(i, 1)?;
                     let value = io.recv();
-                    self.write_to_param(params[0], value);
+                    self.write_to_param(params[0], value)?;
                     i += 2;
                 }
                 4 => {
-                    let params = self.get_params(i, 1);
+                    let params = self.get_params(i, 1)?;
                     io.send(self.eval_param(params[0]));
                     i += 2;
                 }
                 5 => {
-                    let params = self.get_params(i, 2);
+                    let params = self.get_params(i, 2)?;
                     if self.eval_param(params[0]) != 0 {
-                        i = usize::try_from(self.eval_param(params[1]))
-                            .expect("Parameter out of usize range");
+                        i = value2addr(self.eval_param(params[1]))?;
                     } else {
                         i += 3;
                     }
                 }
                 6 => {
-                    let params = self.get_params(i, 2);
+                    let params = self.get_params(i, 2)?;
                     if self.eval_param(params[0]) == 0 {
-                        i = usize::try_from(self.eval_param(params[1]))
-                            .expect("Parameter out of usize range");
+                        i = value2addr(self.eval_param(params[1]))?;
                     } else {
                         i += 3;
                     }
                 }
                 7 => {
-                    let params = self.get_params(i, 3);
+                    let params = self.get_params(i, 3)?;
                     self.write_to_param(
                         params[2],
                         i64::from(self.eval_param(params[0]) < self.eval_param(params[1])),
-                    );
+                    )?;
                     i += 4;
                 }
                 8 => {
-                    let params = self.get_params(i, 3);
+                    let params = self.get_params(i, 3)?;
                     self.write_to_param(
                         params[2],
                         i64::from(self.eval_param(params[0]) == self.eval_param(params[1])),
-                    );
+                    )?;
                     i += 4;
                 }
                 9 => {
-                    let params = self.get_params(i, 1);
+                    let params = self.get_params(i, 1)?;
                     self.relative_base += self.eval_param(params[0]);
                     i += 2;
                 }
-                99 => return,
-                n => panic!("Invalid opcode {n}"),
+                99 => return Ok(()),
+                n => {
+                    return Err(IntcodeError::InvalidOpcode {
+                        opcode: n,
+                        index: i,
+                    })
+                }
             }
         }
     }
@@ -112,24 +114,26 @@ impl Intcode {
         }
     }
 
-    fn get_params(&self, op_index: usize, qty: usize) -> Vec<Parameter> {
+    fn get_params(&self, op_index: usize, qty: usize) -> Result<Vec<Parameter>, IntcodeError> {
         let mut params = Vec::with_capacity(qty);
-        let mut opcode = self.program[op_index] / 100;
+        let mut opcode = self.get(op_index) / 100;
         for i in (op_index + 1)..(op_index + 1 + qty) {
             match opcode % 10 {
-                0 => params.push(Parameter::Address(
-                    usize::try_from(self.program[i]).expect("Address out of usize range"),
-                )),
-                1 => params.push(Parameter::Value(self.program[i])),
-                2 => params.push(Parameter::Address(
-                    usize::try_from(self.program[i] + self.relative_base)
-                        .expect("Address out of usize range"),
-                )),
-                n => panic!("Invalid parameter mode {n}"),
+                0 => params.push(Parameter::Address(value2addr(self.get(i))?)),
+                1 => params.push(Parameter::Value(self.get(i))),
+                2 => params.push(Parameter::Address(value2addr(
+                    self.get(i) + self.relative_base,
+                )?)),
+                n => {
+                    return Err(IntcodeError::InvalidParamMode {
+                        mode: n,
+                        index: op_index,
+                    })
+                }
             }
             opcode /= 10;
         }
-        params
+        Ok(params)
     }
 
     fn eval_param(&self, param: Parameter) -> i64 {
@@ -139,11 +143,12 @@ impl Intcode {
         }
     }
 
-    fn write_to_param(&mut self, param: Parameter, value: i64) {
+    fn write_to_param(&mut self, param: Parameter, value: i64) -> Result<(), IntcodeError> {
         match param {
             Parameter::Address(addr) => self.set(addr, value),
-            Parameter::Value(_) => panic!("Cannot set immediate-mode parameter"),
+            Parameter::Value(_) => return Err(IntcodeError::WriteToImmediate),
         }
+        Ok(())
     }
 }
 
@@ -163,6 +168,18 @@ impl FromStr for Intcode {
 enum Parameter {
     Address(usize),
     Value(i64),
+}
+
+#[derive(Debug, Error)]
+pub enum IntcodeError {
+    #[error("Invalid opcode {opcode} at program index {index}")]
+    InvalidOpcode { opcode: i64, index: usize },
+    #[error("Invalid parameter mode {mode} in opcode at program index {index}")]
+    InvalidParamMode { mode: i64, index: usize },
+    #[error("Address value {value} out of usize range: {source}")]
+    Value2AddrError { value: i64, source: TryFromIntError },
+    #[error("Cannot write to immediate-mode parameter")]
+    WriteToImmediate,
 }
 
 pub trait IntcodeIO {
@@ -196,4 +213,8 @@ impl IntcodeIO for VecIO {
     fn send(&mut self, value: i64) {
         self.output.push(value);
     }
+}
+
+fn value2addr(value: i64) -> Result<usize, IntcodeError> {
+    usize::try_from(value).map_err(|source| IntcodeError::Value2AddrError { value, source })
 }

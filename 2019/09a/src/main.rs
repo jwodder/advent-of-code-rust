@@ -4,7 +4,7 @@ use adventutil::Input;
 fn solve(input: Input) -> i64 {
     let mut program = input.parse::<Intcode>();
     let mut io = VecIO::from([1]);
-    program.run(&mut io);
+    program.run(&mut io).unwrap();
     match io.output.len() {
         1 => io.output[0],
         n => panic!("Got {n} outputs, expected 1"),
@@ -25,7 +25,7 @@ mod test {
             .parse::<Intcode>()
             .unwrap();
         let mut io = VecIO::default();
-        program.run(&mut io);
+        program.run(&mut io).unwrap();
         assert_eq!(
             io.output,
             [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99]
@@ -38,7 +38,7 @@ mod test {
             .parse::<Intcode>()
             .unwrap();
         let mut io = VecIO::default();
-        program.run(&mut io);
+        program.run(&mut io).unwrap();
         assert_eq!(io.output.len(), 1);
         assert_eq!(io.output[0].to_string().len(), 16);
     }
@@ -47,7 +47,7 @@ mod test {
     fn test_example3() {
         let mut program = "104,1125899906842624,99".parse::<Intcode>().unwrap();
         let mut io = VecIO::default();
-        program.run(&mut io);
+        program.run(&mut io).unwrap();
         assert_eq!(io.output, [1125899906842624]);
     }
 }
