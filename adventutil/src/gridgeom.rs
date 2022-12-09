@@ -202,3 +202,50 @@ pub fn points_added(p: Point, v: Vector) -> Result<Vec<Point>, NotCardinalError>
 #[derive(Debug, Error)]
 #[error("Vector is not a cardinal direction: {0:?}")]
 pub struct NotCardinalError(Vector);
+
+pub struct PointBounds {
+    pub min_x: i32,
+    pub min_y: i32,
+    pub max_x: i32,
+    pub max_y: i32,
+}
+
+impl PointBounds {
+    pub fn height(&self) -> i32 {
+        self.max_y - self.min_y + 1
+    }
+
+    pub fn width(&self) -> i32 {
+        self.max_x - self.min_x + 1
+    }
+
+    // Treats the Point coordinate system as being oriented in a normal
+    // Cartesian fashion, not in a graphics-display fashion
+    pub fn ulcorner(&self) -> Point {
+        Point {
+            x: self.min_x,
+            y: self.max_y,
+        }
+    }
+
+    pub fn with_point(self, point: Point) -> PointBounds {
+        PointBounds {
+            min_x: self.min_x.min(point.x),
+            min_y: self.min_y.min(point.y),
+            max_x: self.max_x.max(point.x),
+            max_y: self.max_y.max(point.y),
+        }
+    }
+
+    pub fn for_points<I: IntoIterator<Item = Point>>(iter: I) -> Option<PointBounds> {
+        let mut iter = iter.into_iter();
+        let Point { y, x } = iter.next()?;
+        let bounds = PointBounds {
+            min_x: x,
+            min_y: y,
+            max_x: x,
+            max_y: y,
+        };
+        Some(iter.fold(bounds, |bounds, p| bounds.with_point(p)))
+    }
+}
