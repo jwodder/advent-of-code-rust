@@ -1,0 +1,13 @@
+[package]
+name = "advent-of-code-2019-10b"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2019, problem 10b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
