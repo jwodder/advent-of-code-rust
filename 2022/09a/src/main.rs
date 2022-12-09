@@ -49,16 +49,9 @@ fn solve(input: Input) -> usize {
         for p in points_added(head_pos, motion.into_vector()).unwrap() {
             head_pos = p;
             let body = head_pos - tail_pos;
-            if body.x.abs() == 2 {
+            if body.x.abs() > 1 || body.y.abs() > 1 {
                 tail_pos.x += body.x.signum();
-                if body.y.abs() == 1 {
-                    tail_pos.y += body.y.signum();
-                }
-            } else if body.y.abs() == 2 {
                 tail_pos.y += body.y.signum();
-                if body.x.abs() == 1 {
-                    tail_pos.x += body.x.signum();
-                }
             }
             visited.insert(tail_pos);
         }
