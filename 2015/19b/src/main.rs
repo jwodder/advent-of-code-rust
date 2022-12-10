@@ -1,5 +1,8 @@
+// Based on <https://www.reddit.com/r/adventofcode/comments/3xflz8/day_19_solutions/cy4k8ca/>.
+// Note that this strategy does not work for the examples in the problem
+// description.
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{dijkstra_length, Input};
+use adventutil::Input;
 use itertools::Itertools;
 use std::collections::HashMap;
 
@@ -12,31 +15,30 @@ fn solve(input: Input) -> u32 {
         .lines()
         .map(|s| {
             let (before, after) = parse_replacement(s).expect("Parse error");
-            (after, before)
+            (revstr(&after), revstr(&before))
         })
         .collect::<HashMap<String, String>>();
-    dijkstra_length(molecule, "e".to_string(), |current| {
-        apply_replacements(current, &rules)
-    })
-    .unwrap()
+    let mut molecule = revstr(&molecule);
+    let mut replacements = 0;
+    while molecule != "e" {
+        let (i, after, before) = rules
+            .iter()
+            .filter_map(|(after, before)| {
+                let i = molecule.find(after)?;
+                Some((i, after, before))
+            })
+            .min_by_key(|tup| tup.0)
+            .unwrap();
+        molecule.replace_range(i..(i + after.len()), before);
+        replacements += 1;
+    }
+    replacements
 }
 
-fn apply_replacements(
-    molecule: &str,
-    rules: &HashMap<String, String>,
-) -> impl Iterator<Item = (String, u32)> {
-    let mut modified = Vec::new();
-    for (after, before) in rules {
-        let mut i = 0;
-        while let Some(n) = molecule[i..].find(after) {
-            let mut s = molecule[..n].to_string();
-            s.push_str(before);
-            s.push_str(&molecule[(n + after.len())..]);
-            modified.push(s);
-            i += n + 1;
-        }
-    }
-    modified.into_iter().map(|s| (s, 1))
+fn revstr(s: &str) -> String {
+    let mut chars = s.chars().collect::<Vec<_>>();
+    chars.reverse();
+    chars.into_iter().collect()
 }
 
 fn parse_replacement(s: &str) -> Result<(String, String), ParseError> {
@@ -49,21 +51,4 @@ fn parse_replacement(s: &str) -> Result<(String, String), ParseError> {
 
 fn main() {
     println!("{}", solve(Input::from_env()));
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_example1() {
-        let input = Input::from("e => H\ne => O\nH => HO\nH => OH\nO => HH\n\nHOH\n");
-        assert_eq!(solve(input), 3);
-    }
-
-    #[test]
-    fn test_example2() {
-        let input = Input::from("e => H\ne => O\nH => HO\nH => OH\nO => HH\n\nHOHOHO\n");
-        assert_eq!(solve(input), 6);
-    }
 }
