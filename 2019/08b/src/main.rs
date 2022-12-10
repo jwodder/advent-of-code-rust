@@ -35,6 +35,6 @@ mod test {
     #[test]
     fn test_example1() {
         let input = Input::from("0222112222120000");
-        assert_eq!(solve(input, 2, 2), "01\n10\n");
+        assert_eq!(solve(input, 2, 2), "01\n10");
     }
 }
