@@ -1,5 +1,4 @@
 use adventutil::Input;
-use itertools::Itertools;
 
 struct Partition {
     // The weights of the packages in the passenger compartment, in ascending
@@ -77,11 +76,23 @@ fn solve(input: Input) -> u64 {
 ///
 /// The sum of the elements in `values` must be twice `target_weight`.
 fn partitionable(values: &[u64], target_weight: u64) -> bool {
-    values
-        .iter()
-        .copied()
-        .powerset()
-        .any(|s| s.into_iter().sum::<u64>() == target_weight)
+    let t = usize::try_from(target_weight).unwrap();
+    let n = values.len();
+    let mut tbl = vec![vec![false; t + 1]; n + 1];
+    for row in tbl.iter_mut() {
+        row[0] = true;
+    }
+    for m in 1..=n {
+        for b in 1..=t {
+            let am = usize::try_from(values[m - 1]).unwrap();
+            if b < am {
+                tbl[m][b] = tbl[m - 1][b];
+            } else {
+                tbl[m][b] = tbl[m - 1][b] || tbl[m - 1][b - am];
+            }
+        }
+    }
+    tbl[n][t]
 }
 
 fn main() {

@@ -348,7 +348,6 @@ name = "advent-of-code-2015-24a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "itertools",
 ]
 
 [[package]]

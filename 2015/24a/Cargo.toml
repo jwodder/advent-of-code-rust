@@ -11,4 +11,3 @@ publish.workspace = true
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
-itertools = "0.10.5"
