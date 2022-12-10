@@ -1211,7 +1211,6 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "rstest 0.15.0",
- "thiserror",
 ]
 
 [[package]]

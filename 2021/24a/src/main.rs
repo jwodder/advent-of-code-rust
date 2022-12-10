@@ -1,9 +1,8 @@
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use std::collections::VecDeque;
 use std::iter::FusedIterator;
-use std::num::ParseIntError;
 use std::str::FromStr;
-use thiserror::Error;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Program {
@@ -138,39 +137,38 @@ impl FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
-        let mut words = s.split_whitespace();
-        match words.next() {
-            Some("inp") => {
-                let var = words.next().ok_or(ParseError::Short)?.parse::<Variable>()?;
+        let mut parser = PullParser::new(s);
+        match parser.scan_to(Token::Whitespace)? {
+            "inp" => {
+                let var = parser.parse_to::<Variable, _>(Token::Eof)?;
                 Ok(Instruction::Inp(var))
             }
-            Some("add") => {
-                let left = words.next().ok_or(ParseError::Short)?.parse::<Variable>()?;
-                let right = words.next().ok_or(ParseError::Short)?.parse::<VarOrNum>()?;
+            "add" => {
+                let left = parser.parse_to::<Variable, _>(Token::Whitespace)?;
+                let right = parser.parse_to::<VarOrNum, _>(Token::Eof)?;
                 Ok(Instruction::Add(left, right))
             }
-            Some("mul") => {
-                let left = words.next().ok_or(ParseError::Short)?.parse::<Variable>()?;
-                let right = words.next().ok_or(ParseError::Short)?.parse::<VarOrNum>()?;
+            "mul" => {
+                let left = parser.parse_to::<Variable, _>(Token::Whitespace)?;
+                let right = parser.parse_to::<VarOrNum, _>(Token::Eof)?;
                 Ok(Instruction::Mul(left, right))
             }
-            Some("div") => {
-                let left = words.next().ok_or(ParseError::Short)?.parse::<Variable>()?;
-                let right = words.next().ok_or(ParseError::Short)?.parse::<VarOrNum>()?;
+            "div" => {
+                let left = parser.parse_to::<Variable, _>(Token::Whitespace)?;
+                let right = parser.parse_to::<VarOrNum, _>(Token::Eof)?;
                 Ok(Instruction::Div(left, right))
             }
-            Some("mod") => {
-                let left = words.next().ok_or(ParseError::Short)?.parse::<Variable>()?;
-                let right = words.next().ok_or(ParseError::Short)?.parse::<VarOrNum>()?;
+            "mod" => {
+                let left = parser.parse_to::<Variable, _>(Token::Whitespace)?;
+                let right = parser.parse_to::<VarOrNum, _>(Token::Eof)?;
                 Ok(Instruction::Mod(left, right))
             }
-            Some("eql") => {
-                let left = words.next().ok_or(ParseError::Short)?.parse::<Variable>()?;
-                let right = words.next().ok_or(ParseError::Short)?.parse::<VarOrNum>()?;
+            "eql" => {
+                let left = parser.parse_to::<Variable, _>(Token::Whitespace)?;
+                let right = parser.parse_to::<VarOrNum, _>(Token::Eof)?;
                 Ok(Instruction::Eql(left, right))
             }
-            Some(s) => Err(ParseError::UnknownInstruction(s.to_string())),
-            None => Err(ParseError::Short),
+            s => Err(ParseError::InvalidToken(s.into())),
         }
     }
 }
@@ -192,7 +190,7 @@ impl FromStr for Variable {
             "x" => Ok(Variable::X),
             "y" => Ok(Variable::Y),
             "z" => Ok(Variable::Z),
-            s => Err(ParseError::InvalidVariable(s.to_string())),
+            s => Err(ParseError::InvalidToken(s.into())),
         }
     }
 }
@@ -212,18 +210,6 @@ impl FromStr for VarOrNum {
             Err(_) => Ok(VarOrNum::Num(s.parse::<i32>()?)),
         }
     }
-}
-
-#[derive(Debug, Error)]
-enum ParseError {
-    #[error("Invalid variable name: {0:?}")]
-    InvalidVariable(String),
-    #[error("Unknown instruction: {0:?}")]
-    UnknownInstruction(String),
-    #[error("Input ended abruptly")]
-    Short,
-    #[error("Invalid integer: {0}")]
-    InvalidInteger(#[from] ParseIntError),
 }
 
 fn model_numbers(digits: usize) -> ModelNumbers {
@@ -270,18 +256,18 @@ impl Iterator for ModelNumbers {
 
 impl FusedIterator for ModelNumbers {}
 
-fn main() {
-    let program = Input::from_env().parse::<Program>();
+fn solve(input: Input) -> String {
+    let program = input.parse::<Program>();
     for num in model_numbers(14) {
         if program.run(num.clone()).z == 0 {
-            println!(
-                "{}",
-                num.into_iter().map(|d| d.to_string()).collect::<String>()
-            );
-            return;
+            return num.into_iter().map(|d| d.to_string()).collect::<String>();
         }
     }
     panic!("No valid model numbers found");
+}
+
+fn main() {
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
