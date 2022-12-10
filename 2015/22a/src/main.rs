@@ -58,22 +58,7 @@ impl Battle {
         }
         let cost = spell.cost();
         self.mana = self.mana.checked_sub(cost)?;
-        match spell {
-            Spell::MagicMissile => self.boss.hp -= 4,
-            Spell::Drain => {
-                self.boss.hp -= 2;
-                self.player_hp += 2;
-            }
-            effecter => {
-                let (effect, duration) = effecter.as_effect()?;
-                let e = effect as usize;
-                if self.effects[e] > 0 {
-                    return None;
-                }
-                self.effects[e] = duration;
-                effect.start(self);
-            }
-        }
+        spell.apply(self)?;
         self.tick();
         if self.won() {
             return Some(cost);
@@ -93,6 +78,18 @@ impl Battle {
                 }
             }
         }
+    }
+
+    // Returns `None` if the effect could not be started due to another
+    // instance of the same effect already being in ... effect
+    fn start_effect(&mut self, effect: Effect, duration: usize) -> Option<()> {
+        let e = effect as usize;
+        if self.effects[e] > 0 {
+            return None;
+        }
+        self.effects[e] = duration;
+        effect.start(self);
+        Some(())
     }
 
     fn won(&self) -> bool {
@@ -126,15 +123,21 @@ impl Spell {
         }
     }
 
-    fn as_effect(&self) -> Option<(Effect, usize)> {
+    // Returns `None` if the spell could not be cast due to it creating an
+    // effect already in ... effect
+    fn apply(&self, battle: &mut Battle) -> Option<()> {
         use Spell::*;
         match self {
-            MagicMissile => None,
-            Drain => None,
-            Shield => Some((Effect::Shield, 6)),
-            Poison => Some((Effect::Poison, 6)),
-            Recharge => Some((Effect::Recharge, 5)),
+            MagicMissile => battle.boss.hp -= 4,
+            Drain => {
+                battle.boss.hp -= 2;
+                battle.player_hp += 2;
+            }
+            Shield => battle.start_effect(Effect::Shield, 6)?,
+            Poison => battle.start_effect(Effect::Poison, 6)?,
+            Recharge => battle.start_effect(Effect::Recharge, 5)?,
         }
+        Some(())
     }
 }
 
