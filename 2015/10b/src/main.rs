@@ -9,7 +9,8 @@ fn look_and_say(s: &str) -> String {
         .collect()
 }
 
-fn solve(mut s: String) -> usize {
+fn solve(input: Input) -> usize {
+    let mut s = input.read();
     for _ in 0..50 {
         s = look_and_say(s.trim());
     }
@@ -17,7 +18,7 @@ fn solve(mut s: String) -> usize {
 }
 
 fn main() {
-    println!("{}", solve(Input::from_env().read()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]

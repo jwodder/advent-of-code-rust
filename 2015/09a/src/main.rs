@@ -29,10 +29,10 @@ impl FromStr for Distance {
     }
 }
 
-fn travelling_santa<I: IntoIterator<Item = Distance>>(iter: I) -> usize {
+fn solve(input: Input) -> usize {
     let mut distances = HashMap::new();
     let mut point2id = Index::new();
-    for d in iter {
+    for d in input.parse_lines::<Distance>() {
         let p1 = point2id.get(d.point_a);
         let p2 = point2id.get(d.point_b);
         distances.insert((p1, p2), d.dist);
@@ -51,10 +51,7 @@ fn travelling_santa<I: IntoIterator<Item = Distance>>(iter: I) -> usize {
 }
 
 fn main() {
-    println!(
-        "{}",
-        travelling_santa(Input::from_env().parse_lines::<Distance>())
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -63,13 +60,11 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let distances = [
-            "London to Dublin = 464",
-            "London to Belfast = 518",
-            "Dublin to Belfast = 141",
-        ]
-        .into_iter()
-        .map(|s| s.parse::<Distance>().unwrap());
-        assert_eq!(travelling_santa(distances), 605);
+        let input = Input::from(concat!(
+            "London to Dublin = 464\n",
+            "London to Belfast = 518\n",
+            "Dublin to Belfast = 141\n",
+        ));
+        assert_eq!(solve(input), 605);
     }
 }

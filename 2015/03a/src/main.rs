@@ -1,12 +1,12 @@
 use adventutil::Input;
 use std::collections::HashSet;
 
-fn visited(s: &str) -> usize {
+fn solve(input: Input) -> usize {
     let mut seen = HashSet::new();
     seen.insert((0, 0));
     let mut x = 0;
     let mut y = 0;
-    for c in s.chars() {
+    for c in input.read().chars() {
         match c {
             '^' => y += 1,
             '>' => x += 1,
@@ -20,7 +20,7 @@ fn visited(s: &str) -> usize {
 }
 
 fn main() {
-    println!("{}", visited(&Input::from_env().read()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -32,7 +32,8 @@ mod test {
     #[case(">", 2)]
     #[case("^>v<", 4)]
     #[case("^v^v^v^v^v", 2)]
-    fn test_visited(#[case] s: &str, #[case] qty: usize) {
-        assert_eq!(visited(s), qty);
+    fn test_visited(#[case] s: &'static str, #[case] qty: usize) {
+        let input = Input::from(s);
+        assert_eq!(solve(input), qty);
     }
 }

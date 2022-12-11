@@ -57,12 +57,14 @@ fn is_valid(s: &str) -> bool {
             .any(|(i, j)| i + 1 < j)
 }
 
-fn next_password(s: &str) -> String {
-    PasswordIter::new(s).find(|p| is_valid(p)).unwrap()
+fn solve(input: Input) -> String {
+    PasswordIter::new(input.read().trim())
+        .find(|p| is_valid(p))
+        .unwrap()
 }
 
 fn main() {
-    println!("{}", next_password(Input::from_env().read().trim()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -83,7 +85,8 @@ mod test {
     #[rstest]
     #[case("abcdefgh", "abcdffaa")]
     #[case("ghijklmn", "ghjaabcc")]
-    fn test_next_password(#[case] before: &str, #[case] after: &str) {
-        assert_eq!(next_password(before), after);
+    fn test_next_password(#[case] before: &'static str, #[case] after: &str) {
+        let input = Input::from(before);
+        assert_eq!(solve(input), after);
     }
 }

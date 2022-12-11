@@ -23,13 +23,13 @@ impl Santa {
     }
 }
 
-fn visited(s: &str) -> usize {
+fn solve(input: Input) -> usize {
     let mut seen = HashSet::new();
     let start = Santa::new();
     seen.insert(start);
     let mut locs = [start, start];
     let mut index = 0;
-    for c in s.chars() {
+    for c in input.read().chars() {
         locs[index].domove(c);
         seen.insert(locs[index]);
         index = 1 - index;
@@ -38,7 +38,7 @@ fn visited(s: &str) -> usize {
 }
 
 fn main() {
-    println!("{}", visited(&Input::from_env().read()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -50,7 +50,8 @@ mod test {
     #[case("^v", 3)]
     #[case("^>v<", 3)]
     #[case("^v^v^v^v^v", 11)]
-    fn test_visited(#[case] s: &str, #[case] qty: usize) {
-        assert_eq!(visited(s), qty);
+    fn test_visited(#[case] s: &'static str, #[case] qty: usize) {
+        let input = Input::from(s);
+        assert_eq!(solve(input), qty);
     }
 }

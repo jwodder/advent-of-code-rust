@@ -1,8 +1,8 @@
 use adventutil::Input;
 
-fn first_basement(s: &str) -> usize {
+fn solve(input: Input) -> usize {
     let mut floor = 0;
-    for (i, c) in (1..).zip(s.chars()) {
+    for (i, c) in (1..).zip(input.read().chars()) {
         match c {
             '(' => floor += 1,
             ')' => {
@@ -18,7 +18,7 @@ fn first_basement(s: &str) -> usize {
 }
 
 fn main() {
-    println!("{}", first_basement(&Input::from_env().read()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -29,7 +29,8 @@ mod test {
     #[rstest]
     #[case(")", 1)]
     #[case("()())", 5)]
-    fn test_first_basement(#[case] s: &str, #[case] pos: usize) {
-        assert_eq!(first_basement(s), pos);
+    fn test_first_basement(#[case] s: &'static str, #[case] pos: usize) {
+        let input = Input::from(s);
+        assert_eq!(solve(input), pos);
     }
 }

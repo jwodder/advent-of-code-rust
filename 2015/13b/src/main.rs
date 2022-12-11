@@ -35,10 +35,10 @@ impl FromStr for Preference {
     }
 }
 
-fn arrange_seats<I: IntoIterator<Item = Preference>>(iter: I) -> i32 {
+fn solve(input: Input) -> i32 {
     let mut happinesses = HashMap::new();
     let mut person2id = Index::new();
-    for p in iter {
+    for p in input.parse_lines::<Preference>() {
         let p1 = person2id.get(p.person);
         let p2 = person2id.get(p.neighbor);
         happinesses.insert((p1, p2), p.happiness);
@@ -64,8 +64,5 @@ fn score_with_zero<I: IntoIterator<Item = i32>>(iter: I) -> i32 {
 }
 
 fn main() {
-    println!(
-        "{}",
-        arrange_seats(Input::from_env().parse_lines::<Preference>())
-    );
+    println!("{}", solve(Input::from_env()));
 }

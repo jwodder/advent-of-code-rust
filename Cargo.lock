@@ -55,6 +55,7 @@ dependencies = [
  "adventutil",
  "hex",
  "md-5",
+ "rstest",
 ]
 
 [[package]]

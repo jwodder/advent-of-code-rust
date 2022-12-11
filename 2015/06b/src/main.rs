@@ -48,9 +48,9 @@ impl FromStr for Instruction {
     }
 }
 
-fn follow_instructions<I: IntoIterator<Item = Instruction>>(iter: I) -> usize {
+fn solve(input: Input) -> usize {
     let mut lit = Grid::<usize>::from_fn::<_, Coords>(GridBounds::new(1000, 1000), |_| 0);
-    for i in iter {
+    for i in input.parse_lines::<Instruction>() {
         match i {
             i @ Instruction::Toggle(_, _) => {
                 for c in i.covered() {
@@ -73,8 +73,5 @@ fn follow_instructions<I: IntoIterator<Item = Instruction>>(iter: I) -> usize {
 }
 
 fn main() {
-    println!(
-        "{}",
-        follow_instructions(Input::from_env().parse_lines::<Instruction>())
-    );
+    println!("{}", solve(Input::from_env()));
 }

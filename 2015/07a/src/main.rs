@@ -35,10 +35,10 @@ impl State {
     }
 }
 
-fn follow_instructions<I: IntoIterator<Item = Instruction>>(iter: I) -> u16 {
+fn solve(input: Input) -> u16 {
     let mut state = State::new();
-    let mut unfollowed = iter
-        .into_iter()
+    let mut unfollowed = input
+        .parse_lines::<Instruction>()
         .map(|i| (i.output().clone(), i))
         .collect::<HashMap<Wire, Instruction>>();
     let target = Wire("a".into());
@@ -214,10 +214,7 @@ impl FromStr for WireOrNum {
 }
 
 fn main() {
-    println!(
-        "{}",
-        follow_instructions(Input::from_env().parse_lines::<Instruction>())
-    )
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]

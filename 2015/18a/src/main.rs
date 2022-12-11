@@ -26,7 +26,8 @@ impl FromStr for ConwayLights {
     }
 }
 
-fn solve(mut lights: ConwayLights, steps: usize) -> usize {
+fn solve(input: Input, steps: usize) -> usize {
+    let mut lights = input.parse::<ConwayLights>();
     for _ in 0..steps {
         lights = lights.step();
     }
@@ -34,7 +35,7 @@ fn solve(mut lights: ConwayLights, steps: usize) -> usize {
 }
 
 fn main() {
-    println!("{}", solve(Input::from_env().parse::<ConwayLights>(), 100));
+    println!("{}", solve(Input::from_env(), 100));
 }
 
 #[cfg(test)]
@@ -43,9 +44,7 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let lights = ".#.#.#\n...##.\n#....#\n..#...\n#.#..#\n####..\n"
-            .parse::<ConwayLights>()
-            .unwrap();
-        assert_eq!(solve(lights, 4), 4);
+        let input = Input::from(".#.#.#\n...##.\n#....#\n..#...\n#.#..#\n####..\n");
+        assert_eq!(solve(input, 4), 4);
     }
 }

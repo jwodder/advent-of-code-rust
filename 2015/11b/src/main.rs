@@ -61,11 +61,12 @@ fn next_password(s: &str) -> String {
     PasswordIter::new(s).find(|p| is_valid(p)).unwrap()
 }
 
+fn solve(input: Input) -> String {
+    next_password(&next_password(input.read().trim()))
+}
+
 fn main() {
-    println!(
-        "{}",
-        next_password(&next_password(Input::from_env().read().trim()))
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]

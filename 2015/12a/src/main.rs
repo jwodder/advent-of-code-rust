@@ -27,10 +27,10 @@ impl IntParser {
     }
 }
 
-fn sum_nums(s: &str) -> i32 {
+fn solve(input: Input) -> i32 {
     let mut total = 0;
     let mut parser = None;
-    for c in s.chars() {
+    for c in input.read().chars() {
         if parser.is_none() && (c == '-' || c.is_ascii_digit()) {
             parser = Some(IntParser::new(c));
         } else if parser.is_some() {
@@ -48,7 +48,7 @@ fn sum_nums(s: &str) -> i32 {
 }
 
 fn main() {
-    println!("{}", sum_nums(&Input::from_env().read()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -65,7 +65,8 @@ mod test {
     #[case(r#"[-1,{"a":1}]"#, 0)]
     #[case("[]", 0)]
     #[case("{}", 0)]
-    fn test_sum_nums(#[case] s: &str, #[case] total: i32) {
-        assert_eq!(sum_nums(s), total);
+    fn test_sum_nums(#[case] s: &'static str, #[case] total: i32) {
+        let input = Input::from(s);
+        assert_eq!(solve(input), total);
     }
 }

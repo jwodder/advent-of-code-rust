@@ -7,25 +7,26 @@ fn valid(key: &str, nonce: u32) -> bool {
     &digest[0..5] == "00000"
 }
 
-fn find_nonce(key: &str) -> u32 {
+fn solve(input: Input) -> u32 {
+    let input = input.read();
+    let key = input.trim();
     (1..).find(move |&n| valid(key, n)).unwrap()
 }
 
 fn main() {
-    println!("{}", find_nonce(Input::from_env().read().trim()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
+    use rstest::rstest;
 
-    #[test]
-    fn test_example1() {
-        assert_eq!(find_nonce("abcdef"), 609043);
-    }
-
-    #[test]
-    fn test_example2() {
-        assert_eq!(find_nonce("pqrstuv"), 1048970);
+    #[rstest]
+    #[case("abcdef", 609043)]
+    #[case("pqrstuv", 1048970)]
+    fn test_solve(#[case] s: &'static str, #[case] nonce: u32) {
+        let input = Input::from(s);
+        assert_eq!(solve(input), nonce);
     }
 }

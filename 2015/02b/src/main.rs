@@ -35,14 +35,15 @@ impl FromStr for Present {
     }
 }
 
+fn solve(input: Input) -> u32 {
+    input
+        .parse_lines::<Present>()
+        .map(|p| p.ribbon_needed())
+        .sum()
+}
+
 fn main() {
-    println!(
-        "{}",
-        Input::from_env()
-            .parse_lines::<Present>()
-            .map(|p| p.ribbon_needed())
-            .sum::<u32>()
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]

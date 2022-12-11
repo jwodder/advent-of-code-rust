@@ -21,14 +21,12 @@ fn repr_delta(s: &str) -> usize {
     delta
 }
 
+fn solve(input: Input) -> usize {
+    input.lines().map(|s| repr_delta(&s)).sum()
+}
+
 fn main() {
-    println!(
-        "{}",
-        Input::from_env()
-            .lines()
-            .map(|s| repr_delta(&s))
-            .sum::<usize>()
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]

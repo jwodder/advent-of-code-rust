@@ -22,11 +22,12 @@ fn is_nice(s: &str) -> bool {
     pair_of_pairs && aba
 }
 
+fn solve(input: Input) -> usize {
+    input.lines().filter(|s| is_nice(s)).count()
+}
+
 fn main() {
-    println!(
-        "{}",
-        Input::from_env().lines().filter(|s| is_nice(s)).count()
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]

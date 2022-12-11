@@ -35,8 +35,8 @@ impl State {
     }
 }
 
-fn follow_instructions_twice<I: IntoIterator<Item = Instruction>>(iter: I) -> u16 {
-    let instructions = iter.into_iter().collect::<Vec<_>>();
+fn solve(input: Input) -> u16 {
+    let instructions = input.parse_lines::<Instruction>().collect::<Vec<_>>();
     let value1 = follow_instructions(instructions.clone());
     let reassigned = Wire("b".into());
     follow_instructions(instructions.into_iter().map(|i| {
@@ -230,10 +230,7 @@ impl FromStr for WireOrNum {
 }
 
 fn main() {
-    println!(
-        "{}",
-        follow_instructions_twice(Input::from_env().parse_lines::<Instruction>())
-    )
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]

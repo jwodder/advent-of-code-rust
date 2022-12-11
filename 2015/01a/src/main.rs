@@ -1,8 +1,8 @@
 use adventutil::Input;
 
-fn walk(s: &str) -> i32 {
+fn solve(input: Input) -> i32 {
     let mut floor = 0;
-    for c in s.chars() {
+    for c in input.read().chars() {
         match c {
             '(' => floor += 1,
             ')' => floor -= 1,
@@ -13,7 +13,7 @@ fn walk(s: &str) -> i32 {
 }
 
 fn main() {
-    println!("{}", walk(&Input::from_env().read()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -31,7 +31,8 @@ mod test {
     #[case("))(", -1)]
     #[case(")))", -3)]
     #[case(")())())", -3)]
-    fn test_walk(#[case] s: &str, #[case] floor: i32) {
-        assert_eq!(walk(s), floor);
+    fn test_walk(#[case] s: &'static str, #[case] floor: i32) {
+        let input = Input::from(s);
+        assert_eq!(solve(input), floor);
     }
 }

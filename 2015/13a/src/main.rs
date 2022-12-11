@@ -35,10 +35,10 @@ impl FromStr for Preference {
     }
 }
 
-fn arrange_seats<I: IntoIterator<Item = Preference>>(iter: I) -> i32 {
+fn solve(input: Input) -> i32 {
     let mut happinesses = HashMap::new();
     let mut person2id = Index::new();
-    for p in iter {
+    for p in input.parse_lines::<Preference>() {
         let p1 = person2id.get(p.person);
         let p2 = person2id.get(p.neighbor);
         happinesses.insert((p1, p2), p.happiness);
@@ -57,10 +57,7 @@ fn arrange_seats<I: IntoIterator<Item = Preference>>(iter: I) -> i32 {
 }
 
 fn main() {
-    println!(
-        "{}",
-        arrange_seats(Input::from_env().parse_lines::<Preference>())
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -69,22 +66,20 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let prefs = [
-            "Alice would gain 54 happiness units by sitting next to Bob.",
-            "Alice would lose 79 happiness units by sitting next to Carol.",
-            "Alice would lose 2 happiness units by sitting next to David.",
-            "Bob would gain 83 happiness units by sitting next to Alice.",
-            "Bob would lose 7 happiness units by sitting next to Carol.",
-            "Bob would lose 63 happiness units by sitting next to David.",
-            "Carol would lose 62 happiness units by sitting next to Alice.",
-            "Carol would gain 60 happiness units by sitting next to Bob.",
-            "Carol would gain 55 happiness units by sitting next to David.",
-            "David would gain 46 happiness units by sitting next to Alice.",
-            "David would lose 7 happiness units by sitting next to Bob.",
-            "David would gain 41 happiness units by sitting next to Carol.",
-        ]
-        .into_iter()
-        .map(|s| s.parse::<Preference>().unwrap());
-        assert_eq!(arrange_seats(prefs), 330);
+        let input = Input::from(concat!(
+            "Alice would gain 54 happiness units by sitting next to Bob.\n",
+            "Alice would lose 79 happiness units by sitting next to Carol.\n",
+            "Alice would lose 2 happiness units by sitting next to David.\n",
+            "Bob would gain 83 happiness units by sitting next to Alice.\n",
+            "Bob would lose 7 happiness units by sitting next to Carol.\n",
+            "Bob would lose 63 happiness units by sitting next to David.\n",
+            "Carol would lose 62 happiness units by sitting next to Alice.\n",
+            "Carol would gain 60 happiness units by sitting next to Bob.\n",
+            "Carol would gain 55 happiness units by sitting next to David.\n",
+            "David would gain 46 happiness units by sitting next to Alice.\n",
+            "David would lose 7 happiness units by sitting next to Bob.\n",
+            "David would gain 41 happiness units by sitting next to Carol.\n",
+        ));
+        assert_eq!(solve(input), 330);
     }
 }

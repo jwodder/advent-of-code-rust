@@ -45,8 +45,8 @@ impl FromStr for Reindeer {
     }
 }
 
-fn winner<I: IntoIterator<Item = Reindeer>>(iter: I, time: usize) -> usize {
-    let deer = iter.into_iter().collect::<Vec<_>>();
+fn solve(input: Input, time: usize) -> usize {
+    let deer = input.parse_lines::<Reindeer>().collect::<Vec<_>>();
     let mut scores = vec![0; deer.len()];
     let mut racing = deer
         .into_iter()
@@ -68,10 +68,7 @@ fn winner<I: IntoIterator<Item = Reindeer>>(iter: I, time: usize) -> usize {
 }
 
 fn main() {
-    println!(
-        "{}",
-        winner(Input::from_env().parse_lines::<Reindeer>(), 2503)
-    );
+    println!("{}", solve(Input::from_env(), 2503));
 }
 
 #[cfg(test)]
@@ -107,11 +104,19 @@ mod test {
 
     #[test]
     fn test_example1a() {
-        assert_eq!(winner([COMET, DANCER], 140), 139);
+        let input = Input::from(concat!(
+            "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.\n",
+            "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.\n",
+        ));
+        assert_eq!(solve(input, 140), 139);
     }
 
     #[test]
     fn test_example1b() {
-        assert_eq!(winner([COMET, DANCER], 1000), 689);
+        let input = Input::from(concat!(
+            "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.\n",
+            "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.\n",
+        ));
+        assert_eq!(solve(input, 1000), 689);
     }
 }

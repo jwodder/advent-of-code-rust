@@ -7,10 +7,12 @@ fn valid(key: &str, nonce: u32) -> bool {
     &digest[0..6] == "000000"
 }
 
-fn find_nonce(key: &str) -> u32 {
+fn solve(input: Input) -> u32 {
+    let input = input.read();
+    let key = input.trim();
     (1..).find(move |&n| valid(key, n)).unwrap()
 }
 
 fn main() {
-    println!("{}", find_nonce(Input::from_env().read().trim()));
+    println!("{}", solve(Input::from_env()));
 }

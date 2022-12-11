@@ -83,8 +83,8 @@ impl Sum for Score {
     }
 }
 
-fn best_mixture<I: IntoIterator<Item = Ingredient>>(iter: I) -> i32 {
-    let ingredients = iter.into_iter().collect::<Vec<_>>();
+fn solve(input: Input) -> i32 {
+    let ingredients = input.parse_lines::<Ingredient>().collect::<Vec<_>>();
     partitions(100, ingredients.len())
         .map(|p| {
             ingredients
@@ -115,10 +115,7 @@ fn partitions(qty: i32, bins: usize) -> Box<dyn Iterator<Item = Vec<i32>>> {
 }
 
 fn main() {
-    println!(
-        "{}",
-        best_mixture(Input::from_env().parse_lines::<Ingredient>())
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -127,12 +124,10 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let ingredients = [
-            "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8",
-            "Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3",
-        ]
-        .into_iter()
-        .map(|s| s.parse::<Ingredient>().unwrap());
-        assert_eq!(best_mixture(ingredients), 62842880);
+        let input = Input::from(concat!(
+            "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8\n",
+            "Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3\n",
+        ));
+        assert_eq!(solve(input), 62842880);
     }
 }

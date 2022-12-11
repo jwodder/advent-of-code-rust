@@ -13,3 +13,6 @@ publish.workspace = true
 adventutil = { path = "../../adventutil" }
 hex = "0.4.3"
 md-5 = "0.10.5"
+
+[dev-dependencies]
+rstest = { version = "0.16.0", default-features = false }
