@@ -56,8 +56,8 @@ impl FromStr for Claim {
     }
 }
 
-fn non_overlapping<I: IntoIterator<Item = Claim>>(claims: I) -> String {
-    let claims = claims.into_iter().collect::<Vec<_>>();
+fn solve(input: Input) -> String {
+    let claims = input.parse_lines::<Claim>().collect::<Vec<_>>();
     let mut disqualified = HashSet::new();
     for i in 0..claims.len() {
         let mut does_overlap = disqualified.contains(&i);
@@ -75,10 +75,7 @@ fn non_overlapping<I: IntoIterator<Item = Claim>>(claims: I) -> String {
 }
 
 fn main() {
-    println!(
-        "{}",
-        non_overlapping(Input::from_env().parse_lines::<Claim>())
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -87,8 +84,7 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let claims = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2"]
-            .map(|s| s.parse::<Claim>().unwrap());
-        assert_eq!(non_overlapping(claims), "3");
+        let input = Input::from("#1 @ 1,3: 4x4\n#2 @ 3,1: 4x4\n#3 @ 5,5: 2x2\n");
+        assert_eq!(solve(input), "3");
     }
 }

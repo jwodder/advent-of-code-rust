@@ -33,8 +33,8 @@ impl Node {
         }
     }
 
-    fn parse_tree(s: &str) -> Result<Node, ParseError> {
-        let mut stream = NumberStream::new(s);
+    fn parse_tree(s: String) -> Result<Node, ParseError> {
+        let mut stream = NumberStream::new(&s);
         let node = Node::parse_node(&mut stream)?;
         stream.at_end()?;
         Ok(node)
@@ -93,12 +93,12 @@ enum ParseError {
     InvalidInt(#[from] ParseIntError),
 }
 
-fn root_value(s: &str) -> usize {
-    Node::parse_tree(s).unwrap().value
+fn solve(input: Input) -> usize {
+    Node::parse_tree(input.read()).unwrap().value
 }
 
 fn main() {
-    println!("{}", root_value(&Input::from_env().read()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -107,6 +107,7 @@ mod test {
 
     #[test]
     fn test_example1() {
-        assert_eq!(root_value("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2"), 66);
+        let input = Input::from("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2");
+        assert_eq!(solve(input), 66);
     }
 }

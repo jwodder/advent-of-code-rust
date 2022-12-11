@@ -1,14 +1,8 @@
 use adventutil::{unordered_pairs, Input};
 
-fn solve<I, S>(iter: I) -> String
-where
-    I: IntoIterator<Item = S>,
-    S: AsRef<str>,
-{
-    let strs = iter.into_iter().collect::<Vec<_>>();
+fn solve(input: Input) -> String {
+    let strs = input.lines().collect::<Vec<_>>();
     for (s1, s2) in unordered_pairs(&strs) {
-        let s1 = s1.as_ref();
-        let s2 = s2.as_ref();
         if let Some(k) = diff_index(s1, s2) {
             return s1
                 .chars()
@@ -34,7 +28,7 @@ fn diff_index(s1: &str, s2: &str) -> Option<usize> {
 }
 
 fn main() {
-    println!("{}", solve(Input::from_env().lines()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -43,9 +37,7 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let boxids = [
-            "abcde", "fghij", "klmno", "pqrst", "fguij", "axcye", "wvxyz",
-        ];
-        assert_eq!(solve(boxids), "fgij");
+        let input = Input::from("abcde\nfghij\nklmno\npqrst\nfguij\naxcye\nwvxyz\n");
+        assert_eq!(solve(input), "fgij");
     }
 }

@@ -1,7 +1,7 @@
 use adventutil::Input;
 
-fn solve(s: &str) -> usize {
-    let mut chars = s.chars().collect::<Vec<_>>();
+fn solve(input: Input) -> usize {
+    let mut chars = input.read().trim().chars().collect::<Vec<_>>();
     let mut i = 0;
     while i + 1 < chars.len() {
         let c1 = chars[i];
@@ -20,7 +20,7 @@ fn solve(s: &str) -> usize {
 }
 
 fn main() {
-    println!("{}", solve(Input::from_env().read().trim()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -34,7 +34,8 @@ mod test {
     #[case("abAB", 4)]
     #[case("aabAAB", 6)]
     #[case("dabAcCaCBAcCcaDA", 10)]
-    fn test_solve(#[case] s: &str, #[case] units: usize) {
-        assert_eq!(solve(s), units);
+    fn test_solve(#[case] s: &'static str, #[case] units: usize) {
+        let input = Input::from(s);
+        assert_eq!(solve(input), units);
     }
 }

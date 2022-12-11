@@ -69,11 +69,12 @@ fn compress_bits<I: IntoIterator<Item = bool>>(bits: I) -> u8 {
     bits.into_iter().fold(0, |n, b| (n << 1) + u8::from(b))
 }
 
+fn solve(input: Input) -> isize {
+    input.parse::<PlantAutomaton>().gen20_sum()
+}
+
 fn main() {
-    println!(
-        "{}",
-        Input::from_env().parse::<PlantAutomaton>().gen20_sum()
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -82,7 +83,7 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let automaton = concat!(
+        let input = Input::from(concat!(
             "initial state: #..#.#..##......###...###\n",
             "\n",
             "...## => #\n",
@@ -99,9 +100,7 @@ mod test {
             "###.. => #\n",
             "###.# => #\n",
             "####. => #\n",
-        )
-        .parse::<PlantAutomaton>()
-        .unwrap();
-        assert_eq!(automaton.gen20_sum(), 325);
+        ));
+        assert_eq!(solve(input), 325);
     }
 }

@@ -1,17 +1,13 @@
 use adventutil::counter::Counter;
 use adventutil::Input;
 
-fn checksum<I, S>(iter: I) -> usize
-where
-    I: IntoIterator<Item = S>,
-    S: AsRef<str>,
-{
-    let (twos, threes): (Vec<_>, Vec<_>) = iter.into_iter().map(box_properties).unzip();
+fn solve(input: Input) -> usize {
+    let (twos, threes): (Vec<_>, Vec<_>) = input.lines().map(box_properties).unzip();
     twos.into_iter().filter(|&b| b).count() * threes.into_iter().filter(|&b| b).count()
 }
 
-fn box_properties<S: AsRef<str>>(boxid: S) -> (bool, bool) {
-    let counts = boxid.as_ref().chars().collect::<Counter<char>>();
+fn box_properties(boxid: String) -> (bool, bool) {
+    let counts = boxid.chars().collect::<Counter<char>>();
     let mut has_two = false;
     let mut has_three = false;
     for qty in counts.into_values() {
@@ -26,7 +22,7 @@ fn box_properties<S: AsRef<str>>(boxid: S) -> (bool, bool) {
 }
 
 fn main() {
-    println!("{}", checksum(Input::from_env().lines()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -43,14 +39,12 @@ mod test {
     #[case("abcdee", true, false)]
     #[case("ababab", false, true)]
     fn test_box_properties(#[case] boxid: &str, #[case] two: bool, #[case] three: bool) {
-        assert_eq!(box_properties(boxid), (two, three));
+        assert_eq!(box_properties(boxid.into()), (two, three));
     }
 
     #[test]
     fn test_checksum() {
-        let boxids = [
-            "abcdef", "bababc", "abbcde", "abcccd", "aabcdd", "abcdee", "ababab",
-        ];
-        assert_eq!(checksum(boxids), 12);
+        let input = Input::from("abcdef\nbababc\nabbcde\nabcccd\naabcdd\nabcdee\nababab\n");
+        assert_eq!(solve(input), 12);
     }
 }

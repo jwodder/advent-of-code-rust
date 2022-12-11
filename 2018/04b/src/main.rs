@@ -102,8 +102,8 @@ enum State {
     },
 }
 
-fn solve<I: IntoIterator<Item = Event>>(iter: I) -> usize {
-    let mut events = iter.into_iter().collect::<Vec<_>>();
+fn solve(input: Input) -> usize {
+    let mut events = input.parse_lines::<Event>().collect::<Vec<_>>();
     events.sort_by_key(Event::timestamp);
     let mut iter = events.into_iter();
     let mut state = match iter.next() {
@@ -144,7 +144,7 @@ fn solve<I: IntoIterator<Item = Event>>(iter: I) -> usize {
 }
 
 fn main() {
-    println!("{}", solve(Input::from_env().parse_lines::<Event>()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -153,27 +153,25 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let events = [
-            "[1518-11-01 00:00] Guard #10 begins shift",
-            "[1518-11-01 00:05] falls asleep",
-            "[1518-11-01 00:25] wakes up",
-            "[1518-11-01 00:30] falls asleep",
-            "[1518-11-01 00:55] wakes up",
-            "[1518-11-01 23:58] Guard #99 begins shift",
-            "[1518-11-02 00:40] falls asleep",
-            "[1518-11-02 00:50] wakes up",
-            "[1518-11-03 00:05] Guard #10 begins shift",
-            "[1518-11-03 00:24] falls asleep",
-            "[1518-11-03 00:29] wakes up",
-            "[1518-11-04 00:02] Guard #99 begins shift",
-            "[1518-11-04 00:36] falls asleep",
-            "[1518-11-04 00:46] wakes up",
-            "[1518-11-05 00:03] Guard #99 begins shift",
-            "[1518-11-05 00:45] falls asleep",
-            "[1518-11-05 00:55] wakes up",
-        ]
-        .into_iter()
-        .map(|s| s.parse::<Event>().unwrap());
-        assert_eq!(solve(events), 4455);
+        let input = Input::from(concat!(
+            "[1518-11-01 00:00] Guard #10 begins shift\n",
+            "[1518-11-01 00:05] falls asleep\n",
+            "[1518-11-01 00:25] wakes up\n",
+            "[1518-11-01 00:30] falls asleep\n",
+            "[1518-11-01 00:55] wakes up\n",
+            "[1518-11-01 23:58] Guard #99 begins shift\n",
+            "[1518-11-02 00:40] falls asleep\n",
+            "[1518-11-02 00:50] wakes up\n",
+            "[1518-11-03 00:05] Guard #10 begins shift\n",
+            "[1518-11-03 00:24] falls asleep\n",
+            "[1518-11-03 00:29] wakes up\n",
+            "[1518-11-04 00:02] Guard #99 begins shift\n",
+            "[1518-11-04 00:36] falls asleep\n",
+            "[1518-11-04 00:46] wakes up\n",
+            "[1518-11-05 00:03] Guard #99 begins shift\n",
+            "[1518-11-05 00:45] falls asleep\n",
+            "[1518-11-05 00:55] wakes up\n",
+        ));
+        assert_eq!(solve(input), 4455);
     }
 }

@@ -48,9 +48,9 @@ impl IntoIterator for Claim {
     }
 }
 
-fn overlaps<I: IntoIterator<Item = Claim>>(claims: I) -> usize {
-    claims
-        .into_iter()
+fn solve(input: Input) -> usize {
+    input
+        .parse_lines::<Claim>()
         .flat_map(|c| c.into_iter())
         .collect::<Counter<(usize, usize)>>()
         .into_values()
@@ -59,7 +59,7 @@ fn overlaps<I: IntoIterator<Item = Claim>>(claims: I) -> usize {
 }
 
 fn main() {
-    println!("{}", overlaps(Input::from_env().parse_lines::<Claim>()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -68,8 +68,7 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let claims = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2"]
-            .map(|s| s.parse::<Claim>().unwrap());
-        assert_eq!(overlaps(claims), 4);
+        let input = Input::from("#1 @ 1,3: 4x4\n#2 @ 3,1: 4x4\n#3 @ 5,5: 2x2\n");
+        assert_eq!(solve(input), 4);
     }
 }

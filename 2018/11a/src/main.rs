@@ -41,8 +41,12 @@ fn power_level(coords: Coords, serial_no: isize) -> isize {
     (rack_id * y + serial_no) * rack_id / 100 % 10 - 5
 }
 
+fn solve(input: Input) -> String {
+    input.parse::<FuelGrid>().max_square()
+}
+
 fn main() {
-    println!("{}", Input::from_env().parse::<FuelGrid>().max_square());
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]

@@ -25,9 +25,9 @@ impl FromStr for Precondition {
     }
 }
 
-fn toposort<I: IntoIterator<Item = Precondition>>(iter: I) -> String {
+fn solve(input: Input) -> String {
     let mut preconds: HashMap<Step, HashSet<Step>> = HashMap::new();
-    for p in iter {
+    for p in input.parse_lines::<Precondition>() {
         preconds.entry(p.after).or_default().insert(p.before);
         preconds.entry(p.before).or_default();
     }
@@ -47,10 +47,7 @@ fn toposort<I: IntoIterator<Item = Precondition>>(iter: I) -> String {
 }
 
 fn main() {
-    println!(
-        "{}",
-        toposort(Input::from_env().parse_lines::<Precondition>())
-    );
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -59,17 +56,15 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let preconds = [
-            "Step C must be finished before step A can begin.",
-            "Step C must be finished before step F can begin.",
-            "Step A must be finished before step B can begin.",
-            "Step A must be finished before step D can begin.",
-            "Step B must be finished before step E can begin.",
-            "Step D must be finished before step E can begin.",
-            "Step F must be finished before step E can begin.",
-        ]
-        .into_iter()
-        .map(|s| s.parse::<Precondition>().unwrap());
-        assert_eq!(toposort(preconds), "CABDFE");
+        let input = Input::from(concat!(
+            "Step C must be finished before step A can begin.\n",
+            "Step C must be finished before step F can begin.\n",
+            "Step A must be finished before step B can begin.\n",
+            "Step A must be finished before step D can begin.\n",
+            "Step B must be finished before step E can begin.\n",
+            "Step D must be finished before step E can begin.\n",
+            "Step F must be finished before step E can begin.\n",
+        ));
+        assert_eq!(solve(input), "CABDFE");
     }
 }

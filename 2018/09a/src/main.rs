@@ -43,8 +43,12 @@ impl FromStr for Game {
     }
 }
 
+fn solve(input: Input) -> usize {
+    input.parse::<Game>().high_score()
+}
+
 fn main() {
-    println!("{}", Input::from_env().parse::<Game>().high_score());
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
