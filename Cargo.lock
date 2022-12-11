@@ -7,7 +7,7 @@ name = "advent-of-code-2015-01a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -15,7 +15,7 @@ name = "advent-of-code-2015-01b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -37,7 +37,7 @@ name = "advent-of-code-2015-03a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -45,7 +45,7 @@ name = "advent-of-code-2015-03b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -71,7 +71,7 @@ name = "advent-of-code-2015-05a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -79,7 +79,7 @@ name = "advent-of-code-2015-05b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -103,7 +103,7 @@ name = "advent-of-code-2015-07a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -111,7 +111,7 @@ name = "advent-of-code-2015-07b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -119,7 +119,7 @@ name = "advent-of-code-2015-08a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -127,7 +127,7 @@ name = "advent-of-code-2015-08b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -152,7 +152,7 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "itertools",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -161,7 +161,7 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "itertools",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -170,7 +170,7 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "itertools",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -179,7 +179,7 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "itertools",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -187,7 +187,7 @@ name = "advent-of-code-2015-12a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -196,7 +196,7 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "json",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -220,7 +220,7 @@ name = "advent-of-code-2015-14a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -228,7 +228,7 @@ name = "advent-of-code-2015-14b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -310,7 +310,7 @@ name = "advent-of-code-2015-20a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -384,7 +384,7 @@ name = "advent-of-code-2015-25a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -392,7 +392,7 @@ name = "advent-of-code-2016-01a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -407,7 +407,7 @@ name = "advent-of-code-2017-01a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -415,7 +415,7 @@ name = "advent-of-code-2017-01b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -452,7 +452,7 @@ name = "advent-of-code-2018-02a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -460,7 +460,7 @@ name = "advent-of-code-2018-02b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -497,7 +497,7 @@ name = "advent-of-code-2018-05a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -528,7 +528,7 @@ name = "advent-of-code-2018-09a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -551,7 +551,7 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "itertools",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -566,7 +566,7 @@ name = "advent-of-code-2019-01a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -574,7 +574,7 @@ name = "advent-of-code-2019-01b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -612,7 +612,7 @@ name = "advent-of-code-2019-04a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -621,7 +621,7 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "itertools",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -636,7 +636,7 @@ name = "advent-of-code-2019-05b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -659,7 +659,7 @@ version = "0.1.0"
 dependencies = [
  "adventutil",
  "itertools",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -760,7 +760,7 @@ name = "advent-of-code-2020-02a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -768,7 +768,7 @@ name = "advent-of-code-2020-02b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -797,7 +797,7 @@ name = "advent-of-code-2020-04b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -805,7 +805,7 @@ name = "advent-of-code-2020-05a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -927,7 +927,7 @@ name = "advent-of-code-2020-13b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -935,7 +935,7 @@ name = "advent-of-code-2020-14a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -950,7 +950,7 @@ name = "advent-of-code-2020-15a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -958,7 +958,7 @@ name = "advent-of-code-2020-15b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -980,7 +980,7 @@ name = "advent-of-code-2020-18a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -1119,7 +1119,7 @@ name = "advent-of-code-2021-10a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -1127,7 +1127,7 @@ name = "advent-of-code-2021-10b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -1194,7 +1194,7 @@ name = "advent-of-code-2021-16a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -1202,15 +1202,7 @@ name = "advent-of-code-2021-16b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
-]
-
-[[package]]
-name = "advent-of-code-2021-24a"
-version = "0.1.0"
-dependencies = [
- "adventutil",
- "rstest 0.15.0",
+ "rstest",
 ]
 
 [[package]]
@@ -1299,7 +1291,7 @@ name = "advent-of-code-2022-06a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -1307,7 +1299,7 @@ name = "advent-of-code-2022-06b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "rstest 0.16.0",
+ "rstest",
 ]
 
 [[package]]
@@ -1371,7 +1363,7 @@ name = "adventutil"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "rstest 0.16.0",
+ "rstest",
  "thiserror",
 ]
 
@@ -1482,35 +1474,12 @@ dependencies = [
 
 [[package]]
 name = "rstest"
-version = "0.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9c9dc66cc29792b663ffb5269be669f1613664e69ad56441fdb895c2347b930"
-dependencies = [
- "rstest_macros 0.14.0",
- "rustc_version",
-]
-
-[[package]]
-name = "rstest"
 version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b07f2d176c472198ec1e6551dc7da28f1c089652f66a7b722676c2238ebc0edf"
 dependencies = [
- "rstest_macros 0.16.0",
+ "rstest_macros",
  "rustc_version",
-]
-
-[[package]]
-name = "rstest_macros"
-version = "0.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5015e68a0685a95ade3eee617ff7101ab6a3fc689203101ca16ebc16f2b89c66"
-dependencies = [
- "cfg-if",
- "proc-macro2",
- "quote",
- "rustc_version",
- "syn",
 ]
 
 [[package]]

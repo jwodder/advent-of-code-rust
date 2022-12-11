@@ -1,3 +1,4 @@
-*/answers.csv filter=git-crypt diff=git-crypt
 */inputs/* filter=git-crypt diff=git-crypt
+2021/24.md filter=git-crypt diff=git-crypt
 answer.txt filter=git-crypt diff=git-crypt
+answers.csv filter=git-crypt diff=git-crypt
