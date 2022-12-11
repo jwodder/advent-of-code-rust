@@ -93,9 +93,12 @@ impl FromStr for State {
     }
 }
 
+fn solve(input: Input) -> usize {
+    input.parse::<State>().stopping_point()
+}
+
 fn main() {
-    let state = Input::from_env().parse::<State>();
-    println!("{}", state.stopping_point());
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -293,7 +296,7 @@ mod test {
 
     #[test]
     fn test_example4_stopping_point() {
-        let state = concat!(
+        let input = Input::from(concat!(
             "v...>>.vv>\n",
             ".vv>>.vv..\n",
             ">>.>v>...v\n",
@@ -303,9 +306,7 @@ mod test {
             ".vv..>.>v.\n",
             "v.v..>>v.v\n",
             "....v..v.>\n",
-        )
-        .parse::<State>()
-        .unwrap();
-        assert_eq!(state.stopping_point(), 58);
+        ));
+        assert_eq!(solve(input), 58);
     }
 }

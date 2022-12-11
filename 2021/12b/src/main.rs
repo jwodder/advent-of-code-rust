@@ -127,9 +127,12 @@ impl fmt::Display for Path {
     }
 }
 
+fn solve(input: Input) -> usize {
+    input.parse::<CaveSystem>().paths()
+}
+
 fn main() {
-    let system = Input::from_env().parse::<CaveSystem>();
-    println!("{}", system.paths());
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -138,7 +141,7 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let system = concat!(
+        let input = Input::from(concat!(
             "start-A\n",
             "start-b\n",
             "A-c\n",
@@ -146,15 +149,13 @@ mod test {
             "b-d\n",
             "A-end\n",
             "b-end\n",
-        )
-        .parse::<CaveSystem>()
-        .unwrap();
-        assert_eq!(system.paths(), 36);
+        ));
+        assert_eq!(solve(input), 36);
     }
 
     #[test]
     fn test_example2() {
-        let system = concat!(
+        let input = Input::from(concat!(
             "dc-end\n",
             "HN-start\n",
             "start-kj\n",
@@ -165,15 +166,13 @@ mod test {
             "kj-sa\n",
             "kj-HN\n",
             "kj-dc\n",
-        )
-        .parse::<CaveSystem>()
-        .unwrap();
-        assert_eq!(system.paths(), 103);
+        ));
+        assert_eq!(solve(input), 103);
     }
 
     #[test]
     fn test_example3() {
-        let system = concat!(
+        let input = Input::from(concat!(
             "fs-end\n",
             "he-DX\n",
             "fs-he\n",
@@ -192,9 +191,7 @@ mod test {
             "zg-he\n",
             "pj-fs\n",
             "start-RW\n",
-        )
-        .parse::<CaveSystem>()
-        .unwrap();
-        assert_eq!(system.paths(), 3509);
+        ));
+        assert_eq!(solve(input), 3509);
     }
 }

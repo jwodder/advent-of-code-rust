@@ -56,9 +56,12 @@ impl FromStr for Octopuses {
     }
 }
 
+fn solve(input: Input) -> usize {
+    input.parse::<Octopuses>().first_synced_flash()
+}
+
 fn main() {
-    let mut octos = Input::from_env().parse::<Octopuses>();
-    println!("{}", octos.first_synced_flash());
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -67,7 +70,7 @@ mod test {
 
     #[test]
     fn test_example() {
-        let mut octos = concat!(
+        let input = Input::from(concat!(
             "5483143223\n",
             "2745854711\n",
             "5264556173\n",
@@ -78,9 +81,7 @@ mod test {
             "6882881134\n",
             "4846848554\n",
             "5283751526\n",
-        )
-        .parse::<Octopuses>()
-        .unwrap();
-        assert_eq!(octos.first_synced_flash(), 195);
+        ));
+        assert_eq!(solve(input), 195);
     }
 }

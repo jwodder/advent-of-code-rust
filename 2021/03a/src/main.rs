@@ -1,13 +1,8 @@
 use adventutil::grid::Grid;
 use adventutil::Input;
 
-fn parse_bits(s: &str) -> Grid<bool> {
-    s.parse::<Grid<u8>>()
-        .expect("Error parsing input")
-        .map(|i| i == 1)
-}
-
-fn solve(gr: Grid<bool>) -> u32 {
+fn solve(input: Input) -> u32 {
+    let gr = input.parse::<Grid<u8>>().map(|i| i == 1);
     let gamma = gr
         .columns()
         .map(|col| {
@@ -24,8 +19,7 @@ fn bits2num<I: IntoIterator<Item = bool>>(bits: I) -> u32 {
 }
 
 fn main() {
-    let report = parse_bits(&Input::from_env().read());
-    println!("{}", solve(report));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -34,10 +28,10 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let report = parse_bits(concat!(
+        let input = Input::from(concat!(
             "00100\n", "11110\n", "10110\n", "10111\n", "10101\n", "01111\n", "00111\n", "11100\n",
             "10000\n", "11001\n", "00010\n", "01010\n",
         ));
-        assert_eq!(solve(report), 198);
+        assert_eq!(solve(input), 198);
     }
 }

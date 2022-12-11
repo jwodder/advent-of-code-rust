@@ -38,13 +38,10 @@ fn classify(s: &str) -> Classification {
     }
 }
 
-fn score<I, S>(iter: I) -> usize
-where
-    I: IntoIterator<Item = S>,
-    S: AsRef<str>,
-{
-    iter.into_iter()
-        .filter_map(|s| match classify(s.as_ref()) {
+fn solve(input: Input) -> usize {
+    input
+        .lines()
+        .filter_map(|s| match classify(&s) {
             Classification::Corrupt(sc) => Some(sc),
             _ => None,
         })
@@ -52,7 +49,7 @@ where
 }
 
 fn main() {
-    println!("{}", score(Input::from_env().lines()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -84,18 +81,18 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let lines = [
-            "[({(<(())[]>[[{[]{<()<>>",
-            "[(()[<>])]({[<{<<[]>>(",
-            "{([(<{}[<>[]}>{[]{[(<()>",
-            "(((({<>}<{<{<>}{[]{[]{}",
-            "[[<[([]))<([[{}[[()]]]",
-            "[{[{({}]{}}([{[{{{}}([]",
-            "{<[[]]>}<{[{[{[]{()[[[]",
-            "[<(<(<(<{}))><([]([]()",
-            "<{([([[(<>()){}]>(<<{{",
-            "<{([{{}}[<[[[<>{}]]]>[]]",
-        ];
-        assert_eq!(score(lines), 26397);
+        let input = Input::from(concat!(
+            "[({(<(())[]>[[{[]{<()<>>\n",
+            "[(()[<>])]({[<{<<[]>>(\n",
+            "{([(<{}[<>[]}>{[]{[(<()>\n",
+            "(((({<>}<{<{<>}{[]{[]{}\n",
+            "[[<[([]))<([[{}[[()]]]\n",
+            "[{[{({}]{}}([{[{{{}}([]\n",
+            "{<[[]]>}<{[{[{[]{()[[[]\n",
+            "[<(<(<(<{}))><([]([]()\n",
+            "<{([([[(<>()){}]>(<<{{\n",
+            "<{([{{}}[<[[[<>{}]]]>[]]\n",
+        ));
+        assert_eq!(solve(input), 26397);
     }
 }

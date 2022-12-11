@@ -56,19 +56,18 @@ impl FromStr for Line {
     }
 }
 
-fn main() {
-    let lines = Input::from_env().parse_lines::<Line>();
-    println!("{}", count_overlaps(lines));
-}
-
-fn count_overlaps<I: IntoIterator<Item = Line>>(lines: I) -> usize {
+fn solve(input: Input) -> usize {
     let mut counter = Counter::new();
-    for ln in lines {
+    for ln in input.parse_lines::<Line>() {
         for p in ln.points() {
             counter.add(p);
         }
     }
-    counter.into_values().filter(|qty| qty > &1).count()
+    counter.into_values().filter(|&qty| qty > 1).count()
+}
+
+fn main() {
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -77,21 +76,18 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let lines = [
-            "0,9 -> 5,9",
-            "8,0 -> 0,8",
-            "9,4 -> 3,4",
-            "2,2 -> 2,1",
-            "7,0 -> 7,4",
-            "6,4 -> 2,0",
-            "0,9 -> 2,9",
-            "3,4 -> 1,4",
-            "0,0 -> 8,8",
-            "5,5 -> 8,2",
-        ]
-        .into_iter()
-        .map(|s| s.parse::<Line>().unwrap())
-        .collect::<Vec<_>>();
-        assert_eq!(count_overlaps(lines), 12);
+        let input = Input::from(concat!(
+            "0,9 -> 5,9\n",
+            "8,0 -> 0,8\n",
+            "9,4 -> 3,4\n",
+            "2,2 -> 2,1\n",
+            "7,0 -> 7,4\n",
+            "6,4 -> 2,0\n",
+            "0,9 -> 2,9\n",
+            "3,4 -> 1,4\n",
+            "0,0 -> 8,8\n",
+            "5,5 -> 8,2\n",
+        ));
+        assert_eq!(solve(input), 12);
     }
 }

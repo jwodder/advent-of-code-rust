@@ -52,9 +52,12 @@ impl FromStr for Octopuses {
     }
 }
 
+fn solve(input: Input, steps: usize) -> usize {
+    input.parse::<Octopuses>().flashes_over_steps(steps)
+}
+
 fn main() {
-    let mut octos = Input::from_env().parse::<Octopuses>();
-    println!("{}", octos.flashes_over_steps(100));
+    println!("{}", solve(Input::from_env(), 100));
 }
 
 #[cfg(test)]
@@ -283,7 +286,7 @@ mod test {
 
     #[test]
     fn test_example2_flashes_over_10_steps() {
-        let mut octos = concat!(
+        let input = Input::from(concat!(
             "5483143223\n",
             "2745854711\n",
             "5264556173\n",
@@ -294,15 +297,13 @@ mod test {
             "6882881134\n",
             "4846848554\n",
             "5283751526\n",
-        )
-        .parse::<Octopuses>()
-        .unwrap();
-        assert_eq!(octos.flashes_over_steps(10), 204);
+        ));
+        assert_eq!(solve(input, 10), 204);
     }
 
     #[test]
     fn test_example2_flashes_over_100_steps() {
-        let mut octos = concat!(
+        let input = Input::from(concat!(
             "5483143223\n",
             "2745854711\n",
             "5264556173\n",
@@ -313,9 +314,7 @@ mod test {
             "6882881134\n",
             "4846848554\n",
             "5283751526\n",
-        )
-        .parse::<Octopuses>()
-        .unwrap();
-        assert_eq!(octos.flashes_over_steps(100), 1656);
+        ));
+        assert_eq!(solve(input, 100), 1656);
     }
 }

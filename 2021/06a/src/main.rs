@@ -31,16 +31,16 @@ impl Population {
     }
 }
 
-fn main() {
-    let pop = Population::new(Input::from_env().parse_csv_line::<u32>());
-    println!("{}", size_after_days(pop, 80));
-}
-
-fn size_after_days(mut pop: Population, days: usize) -> u64 {
+fn solve(input: Input, days: usize) -> u64 {
+    let mut pop = Population::new(input.parse_csv_line::<u32>());
     for _ in 0..days {
         pop = pop.step();
     }
     pop.size()
+}
+
+fn main() {
+    println!("{}", solve(Input::from_env(), 80));
 }
 
 #[cfg(test)]
@@ -49,13 +49,13 @@ mod test {
 
     #[test]
     fn test_example1a() {
-        let pop = Population::new([3, 4, 3, 1, 2]);
-        assert_eq!(size_after_days(pop, 18), 26);
+        let input = Input::from("3,4,3,1,2");
+        assert_eq!(solve(input, 18), 26);
     }
 
     #[test]
     fn test_example1b() {
-        let pop = Population::new([3, 4, 3, 1, 2]);
-        assert_eq!(size_after_days(pop, 80), 5934);
+        let input = Input::from("3,4,3,1,2");
+        assert_eq!(solve(input, 80), 5934);
     }
 }

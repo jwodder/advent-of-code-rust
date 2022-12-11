@@ -60,15 +60,15 @@ impl Location {
     }
 }
 
-fn travel<I: IntoIterator<Item = Command>>(iter: I) -> u32 {
-    iter.into_iter()
+fn solve(input: Input) -> u32 {
+    input
+        .parse_lines::<Command>()
         .fold(Location::new(), |loc, cmd| loc.domove(cmd))
         .product()
 }
 
 fn main() {
-    let cmds = Input::from_env().parse_lines::<Command>();
-    println!("{}", travel(cmds));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -77,16 +77,14 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let cmds = [
-            "forward 5",
-            "down 5",
-            "forward 8",
-            "up 3",
-            "down 8",
-            "forward 2",
-        ]
-        .into_iter()
-        .map(|s| s.parse::<Command>().unwrap());
-        assert_eq!(travel(cmds), 150);
+        let input = Input::from(concat!(
+            "forward 5\n",
+            "down 5\n",
+            "forward 8\n",
+            "up 3\n",
+            "down 8\n",
+            "forward 2\n",
+        ));
+        assert_eq!(solve(input), 150);
     }
 }

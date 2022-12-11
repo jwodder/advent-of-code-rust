@@ -120,9 +120,12 @@ impl fmt::Display for Path {
     }
 }
 
+fn solve(input: Input) -> usize {
+    input.parse::<CaveSystem>().paths().len()
+}
+
 fn main() {
-    let system = Input::from_env().parse::<CaveSystem>();
-    println!("{}", system.paths().len());
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -215,7 +218,7 @@ mod test {
 
     #[test]
     fn test_example3() {
-        let system = concat!(
+        let input = Input::from(concat!(
             "fs-end\n",
             "he-DX\n",
             "fs-he\n",
@@ -234,9 +237,7 @@ mod test {
             "zg-he\n",
             "pj-fs\n",
             "start-RW\n",
-        )
-        .parse::<CaveSystem>()
-        .unwrap();
-        assert_eq!(system.paths().len(), 226);
+        ));
+        assert_eq!(solve(input), 226);
     }
 }

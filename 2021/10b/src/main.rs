@@ -39,19 +39,15 @@ fn score_line<S: AsRef<str>>(s: S) -> Option<u64> {
     }
 }
 
-fn score<I, S>(iter: I) -> u64
-where
-    I: IntoIterator<Item = S>,
-    S: AsRef<str>,
-{
-    let mut scores: Vec<_> = iter.into_iter().filter_map(score_line).collect();
+fn solve(input: Input) -> u64 {
+    let mut scores: Vec<_> = input.lines().filter_map(score_line).collect();
     let midpoint = scores.len() / 2;
     let (_, median, _) = scores.select_nth_unstable(midpoint);
     *median
 }
 
 fn main() {
-    println!("{}", score(Input::from_env().lines()));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
@@ -71,18 +67,18 @@ mod test {
 
     #[test]
     fn test_example1() {
-        let lines = [
-            "[({(<(())[]>[[{[]{<()<>>",
-            "[(()[<>])]({[<{<<[]>>(",
-            "{([(<{}[<>[]}>{[]{[(<()>",
-            "(((({<>}<{<{<>}{[]{[]{}",
-            "[[<[([]))<([[{}[[()]]]",
-            "[{[{({}]{}}([{[{{{}}([]",
-            "{<[[]]>}<{[{[{[]{()[[[]",
-            "[<(<(<(<{}))><([]([]()",
-            "<{([([[(<>()){}]>(<<{{",
-            "<{([{{}}[<[[[<>{}]]]>[]]",
-        ];
-        assert_eq!(score(lines), 288957);
+        let input = Input::from(concat!(
+            "[({(<(())[]>[[{[]{<()<>>\n",
+            "[(()[<>])]({[<{<<[]>>(\n",
+            "{([(<{}[<>[]}>{[]{[(<()>\n",
+            "(((({<>}<{<{<>}{[]{[]{}\n",
+            "[[<[([]))<([[{}[[()]]]\n",
+            "[{[{({}]{}}([{[{{{}}([]\n",
+            "{<[[]]>}<{[{[{[]{()[[[]\n",
+            "[<(<(<(<{}))><([]([]()\n",
+            "<{([([[(<>()){}]>(<<{{\n",
+            "<{([{{}}[<[[[<>{}]]]>[]]\n",
+        ));
+        assert_eq!(solve(input), 288957);
     }
 }
