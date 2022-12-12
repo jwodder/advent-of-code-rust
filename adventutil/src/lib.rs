@@ -264,7 +264,7 @@ where
         for (p, d) in func(&current) {
             if !visited.contains(&p) {
                 let newdist = distances[&current] + d;
-                match distances.entry(p.clone()) {
+                match distances.entry(p) {
                     Entry::Vacant(e) => {
                         e.insert(newdist);
                     }
