@@ -262,17 +262,17 @@ where
     let mut visited = HashSet::new();
     let mut distances = HashMap::from([(start, 0)]);
     loop {
-        let current = distances
+        let (current, dist) = distances
             .iter()
             .filter(|&(k, _)| !visited.contains(k))
             .min_by_key(|&(_, &dist)| dist)
-            .map(|(k, _)| k.clone())?;
+            .map(|(k, &dist)| (k.clone(), dist))?;
         if current == end {
-            return Some(distances[&end]);
+            return Some(dist);
         }
         for (p, d) in func(&current) {
             if !visited.contains(&p) {
-                let newdist = distances[&current] + d;
+                let newdist = dist + d;
                 match distances.entry(p) {
                     Entry::Vacant(e) => {
                         e.insert(newdist);
