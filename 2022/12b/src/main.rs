@@ -38,7 +38,7 @@ fn solve(input: Input) -> u32 {
                 }
                 nextpoints
             }
-            Point::LowestPoint => Vec::new(),
+            Point::LowestPoint => unreachable!(),
         },
     )
     .expect("No route to lowest point")

@@ -251,6 +251,8 @@ impl<'a, T> ExactSizeIterator for UnorderedPairs<'a, T> {}
 /// be a function that takes a vertex `v` and returns an iterable of all of its
 /// neighbors and their distances from `v`.  Returns `None` if there is no
 /// route to `end`.
+///
+/// `func` will not be called with `&end` as an argument.
 pub fn dijkstra_length<T, F, I>(start: T, end: T, mut func: F) -> Option<u32>
 where
     T: Eq + Hash + Clone,
@@ -258,9 +260,16 @@ where
     I: IntoIterator<Item = (T, u32)>,
 {
     let mut visited = HashSet::new();
-    let mut distances = HashMap::from([(start.clone(), 0)]);
-    let mut current = start;
+    let mut distances = HashMap::from([(start, 0)]);
     loop {
+        let current = distances
+            .iter()
+            .filter(|&(k, _)| !visited.contains(k))
+            .min_by_key(|&(_, &dist)| dist)
+            .map(|(k, _)| k.clone())?;
+        if current == end {
+            return Some(distances[&end]);
+        }
         for (p, d) in func(&current) {
             if !visited.contains(&p) {
                 let newdist = distances[&current] + d;
@@ -276,14 +285,6 @@ where
             }
         }
         visited.insert(current);
-        if visited.contains(&end) {
-            return Some(distances[&end]);
-        }
-        current = distances
-            .iter()
-            .filter(|&(k, _)| !visited.contains(k))
-            .min_by_key(|&(_, &dist)| dist)
-            .map(|(k, _)| k.clone())?;
     }
 }
 
