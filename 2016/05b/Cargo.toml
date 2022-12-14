@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2016-05b"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2016, problem 05b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+hex = "0.4.3"
+md-5 = "0.10.5"
