@@ -3,7 +3,7 @@ use md5::{Digest, Md5};
 
 fn get_pass_char(key: &str, nonce: u32) -> Option<char> {
     let s = format!("{key}{nonce}");
-    let digest = hex::encode(Md5::digest(&s));
+    let digest = hex::encode(Md5::digest(s));
     (&digest[0..5] == "00000").then(|| digest[5..6].chars().next().unwrap())
 }
 

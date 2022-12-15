@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 fn get_pass_char(key: &str, nonce: u32) -> Option<(u32, char)> {
     let s = format!("{key}{nonce}");
-    let digest = hex::encode(Md5::digest(&s));
+    let digest = hex::encode(Md5::digest(s));
     if &digest[0..5] == "00000" {
         let mut iter = digest[5..].chars();
         let c1 = iter.next().unwrap();

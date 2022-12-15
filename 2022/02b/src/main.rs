@@ -1,26 +1,26 @@
 use adventutil::Input;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum RPS {
+enum Rps {
     Rock,
     Paper,
     Scissors,
 }
 
-impl RPS {
+impl Rps {
     fn value(&self) -> u32 {
         match self {
-            RPS::Rock => 1,
-            RPS::Paper => 2,
-            RPS::Scissors => 3,
+            Rps::Rock => 1,
+            Rps::Paper => 2,
+            Rps::Scissors => 3,
         }
     }
 
-    fn from_col1(s: &str) -> RPS {
+    fn from_col1(s: &str) -> Rps {
         match s {
-            "A" => RPS::Rock,
-            "B" => RPS::Paper,
-            "C" => RPS::Scissors,
+            "A" => Rps::Rock,
+            "B" => Rps::Paper,
+            "C" => Rps::Scissors,
             s => panic!("Invalid column 1 value: {s:?}"),
         }
     }
@@ -51,9 +51,9 @@ impl Outcome {
         }
     }
 
-    fn needed_move(&self, other: RPS) -> RPS {
+    fn needed_move(&self, other: Rps) -> Rps {
         use Outcome::*;
-        use RPS::*;
+        use Rps::*;
         match (self, other) {
             (Win, Rock) => Paper,
             (Win, Paper) => Scissors,
@@ -76,9 +76,9 @@ fn solve(input: Input) -> u32 {
         .sum()
 }
 
-fn parse_round(s: &str) -> (RPS, Outcome) {
+fn parse_round(s: &str) -> (Rps, Outcome) {
     let (col1, col2) = s.split_once(' ').unwrap();
-    (RPS::from_col1(col1), Outcome::from_col2(col2))
+    (Rps::from_col1(col1), Outcome::from_col2(col2))
 }
 
 fn main() {

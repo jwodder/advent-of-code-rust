@@ -3,7 +3,7 @@ use md5::{Digest, Md5};
 
 fn valid(key: &str, nonce: u32) -> bool {
     let s = format!("{key}{nonce}");
-    let digest = hex::encode(Md5::digest(&s));
+    let digest = hex::encode(Md5::digest(s));
     &digest[0..6] == "000000"
 }
 
