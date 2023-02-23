@@ -21,7 +21,7 @@ impl FuelGrid {
                     .sum::<isize>()
             })
             .unwrap();
-        format!("{},{}", x, y)
+        format!("{x},{y}")
     }
 }
 

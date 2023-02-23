@@ -114,7 +114,7 @@ impl fmt::Display for Path {
                 write!(f, ",")?;
             }
             first = false;
-            write!(f, "{}", cave)?;
+            write!(f, "{cave}")?;
         }
         Ok(())
     }
