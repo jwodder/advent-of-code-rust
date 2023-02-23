@@ -193,10 +193,9 @@ impl<T: fmt::Display> fmt::Display for Grid<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut first = true;
         for row in &self.data {
-            if !first {
+            if !std::mem::replace(&mut first, false) {
                 writeln!(f)?;
             }
-            first = false;
             for cell in row {
                 write!(f, "{cell}")?;
             }

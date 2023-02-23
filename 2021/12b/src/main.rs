@@ -1,5 +1,6 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use itertools::Itertools;
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::str::FromStr;
@@ -115,15 +116,7 @@ impl Path {
 
 impl fmt::Display for Path {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut first = true;
-        for cave in &self.path {
-            if !first {
-                write!(f, ",")?;
-            }
-            first = false;
-            write!(f, "{cave}")?;
-        }
-        Ok(())
+        write!(f, "{}", self.path.iter().join(","))
     }
 }
 

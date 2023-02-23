@@ -1259,6 +1259,7 @@ name = "advent-of-code-2021-12a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
+ "itertools",
 ]
 
 [[package]]
@@ -1266,6 +1267,7 @@ name = "advent-of-code-2021-12b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
+ "itertools",
 ]
 
 [[package]]
