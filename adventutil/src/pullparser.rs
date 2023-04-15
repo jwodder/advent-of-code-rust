@@ -104,15 +104,15 @@ impl From<&'static str> for Token {
 
 #[derive(Debug, Error)]
 pub enum ParseError {
-    #[error("Expected token not present in input: {0:?}")]
+    #[error("expected token not present in input: {0:?}")]
     MissingToken(Token),
-    #[error("Trailing characters: {0:?}")]
+    #[error("trailing characters: {0:?}")]
     Trailing(String),
-    #[error("Input as a whole is invalid: {0:?}")]
+    #[error("input as a whole is invalid: {0:?}")]
     Invalid(String),
-    #[error("Invalid token in input: {0:?}")]
+    #[error("invalid token in input: {0:?}")]
     InvalidToken(String),
-    #[error("Invalid sub-parse: {0:#}")]
+    #[error("invalid sub-parse: {0:#}")]
     InvalidParse(#[from] anyhow::Error),
 }
 

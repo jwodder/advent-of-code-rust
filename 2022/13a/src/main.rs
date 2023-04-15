@@ -63,11 +63,11 @@ impl FromStr for Packet {
 
 #[derive(Debug, Error)]
 enum ParseError {
-    #[error("Packet does not start with '['")]
+    #[error("packet does not start with '['")]
     BadStart,
-    #[error("Invalid integer: {0}")]
+    #[error("invalid integer: {0}")]
     InvalidInt(#[from] ParseIntError),
-    #[error("Packet has trailing characters: {0:?}")]
+    #[error("packet has trailing characters: {0:?}")]
     TrailingCharacters(String),
 }
 

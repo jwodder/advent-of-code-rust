@@ -85,11 +85,11 @@ impl<'a> NumberStream<'a> {
 
 #[derive(Debug, Error)]
 enum ParseError {
-    #[error("Input had too few components")]
+    #[error("input had too few components")]
     Short,
-    #[error("Input had trailing components")]
+    #[error("input had trailing components")]
     Trailing,
-    #[error("Invalid integer: {0}")]
+    #[error("invalid integer: {0}")]
     InvalidInt(#[from] ParseIntError),
 }
 

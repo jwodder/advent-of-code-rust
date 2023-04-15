@@ -200,7 +200,7 @@ pub fn points_added(p: Point, v: Vector) -> Result<Vec<Point>, NotCardinalError>
 }
 
 #[derive(Debug, Error)]
-#[error("Vector is not a cardinal direction: {0:?}")]
+#[error("vector is not a cardinal direction: {0:?}")]
 pub struct NotCardinalError(Vector);
 
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]

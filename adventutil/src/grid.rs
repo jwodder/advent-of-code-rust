@@ -240,17 +240,17 @@ impl<T: FromStr> FromStr for Grid<T> {
 
 #[derive(Clone, Copy, Debug, Eq, Error, PartialEq)]
 pub enum GridFromError {
-    #[error("Input grid is empty")]
+    #[error("input grid is empty")]
     Empty,
-    #[error("Input grid is ragged/uneven")]
+    #[error("input grid is ragged/uneven")]
     Ragged,
 }
 
 #[derive(Clone, Copy, Debug, Eq, Error, PartialEq)]
 pub enum ParseGridError<E> {
-    #[error("Input is not a grid: {0}")]
+    #[error("input is not a grid: {0}")]
     From(#[from] GridFromError),
-    #[error("Error parsing cells: {0}")]
+    #[error("error parsing cells: {0}")]
     Parse(#[source] E),
 }
 

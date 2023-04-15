@@ -35,7 +35,7 @@ impl FromStr for Cucumber {
 }
 
 #[derive(Debug, Error)]
-#[error("Invalid cell: {0:?}")]
+#[error("invalid cell: {0:?}")]
 struct ParseCucumberError(String);
 
 #[derive(Clone, Debug, Eq, PartialEq)]

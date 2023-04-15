@@ -172,13 +172,13 @@ enum Parameter {
 
 #[derive(Debug, Error)]
 pub enum IntcodeError {
-    #[error("Invalid opcode {opcode} at program index {index}")]
+    #[error("invalid opcode {opcode} at program index {index}")]
     InvalidOpcode { opcode: i64, index: usize },
-    #[error("Invalid parameter mode {mode} in opcode at program index {index}")]
+    #[error("invalid parameter mode {mode} in opcode at program index {index}")]
     InvalidParamMode { mode: i64, index: usize },
-    #[error("Address value {value} out of usize range: {source}")]
+    #[error("address value {value} out of usize range: {source}")]
     Value2AddrError { value: i64, source: TryFromIntError },
-    #[error("Cannot write to immediate-mode parameter")]
+    #[error("cannot write to immediate-mode parameter")]
     WriteToImmediate,
 }
 
