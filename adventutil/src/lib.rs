@@ -7,7 +7,7 @@ pub mod intcode;
 pub mod maxn;
 pub mod pullparser;
 use std::collections::{hash_map::Entry, HashMap, HashSet};
-use std::fs::File;
+use std::fs::{self, File};
 use std::hash::Hash;
 use std::io::{self, read_to_string, stdin, BufRead, BufReader};
 use std::iter::FusedIterator;
@@ -32,10 +32,7 @@ impl Input {
     pub fn read(self) -> String {
         match self {
             Input::Stdin => read_to_string(stdin().lock()).expect("Error reading stdin"),
-            Input::File(path) => read_to_string(BufReader::new(
-                File::open(path).expect("Error opening file"),
-            ))
-            .expect("Error reading file"),
+            Input::File(path) => fs::read_to_string(path).expect("Error reading file"),
             Input::Str(s) => s.to_string(),
         }
     }
