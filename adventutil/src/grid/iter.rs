@@ -286,7 +286,7 @@ impl<'a, T> FusedIterator for AdjacentWrapCells<'a, T> {}
 impl<'a, T> ExactSizeIterator for AdjacentWrapCells<'a, T> {}
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
 
     #[test]

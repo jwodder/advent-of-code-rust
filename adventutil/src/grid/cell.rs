@@ -138,7 +138,7 @@ impl<'a, T: PartialEq> PartialEq<T> for Cell<'a, T> {
 //}
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
 
     #[test]

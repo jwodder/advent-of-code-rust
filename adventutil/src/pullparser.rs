@@ -123,7 +123,7 @@ impl From<ParseIntError> for ParseError {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
     use rstest::rstest;
 
