@@ -2,3 +2,4 @@
 2021/24.md filter=git-crypt diff=git-crypt
 answer.txt filter=git-crypt diff=git-crypt
 answers.csv filter=git-crypt diff=git-crypt
+output.txt filter=git-crypt diff=git-crypt
