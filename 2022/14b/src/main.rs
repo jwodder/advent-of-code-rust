@@ -20,15 +20,12 @@ impl FromStr for RockPath {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<RockPath, ParseError> {
-        let joints = s
-            .split(" -> ")
-            .map(|t| -> Result<Point, ParseError> {
-                let mut parser = PullParser::new(t);
-                let x = parser.parse_to::<i32, _>(',')?;
-                let y = parser.parse_to::<i32, _>(Token::Eof)?;
-                Ok(Point { x, y })
-            })
-            .collect::<Result<Vec<_>, _>>()?;
+        let joints = PullParser::new(s).delimited(" -> ", |t| {
+            let mut parser = PullParser::new(t);
+            let x = parser.parse_to::<i32, _>(',')?;
+            let y = parser.parse_to::<i32, _>(Token::Eof)?;
+            Ok(Point { x, y })
+        })?;
         Ok(RockPath(joints))
     }
 }

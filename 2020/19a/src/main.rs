@@ -67,11 +67,9 @@ impl FromStr for IndexedRule {
         fn parse_sequence(s: &str) -> Result<Rule, ParseError> {
             let refs = s
                 .split_ascii_whitespace()
-                .map(|word| word.parse::<usize>())
+                .map(|word| word.parse::<usize>().map(Rule::Reference))
                 .collect::<Result<Vec<_>, _>>()?;
-            Ok(Rule::Sequence(
-                refs.into_iter().map(Rule::Reference).collect(),
-            ))
+            Ok(Rule::Sequence(refs))
         }
 
         let mut parser = PullParser::new(s);
@@ -82,21 +80,8 @@ impl FromStr for IndexedRule {
             parser.eof()?;
             Rule::Terminal(c)
         } else {
-            match parser.scan_to(" | ") {
-                Ok(s) => {
-                    let mut alts = vec![parse_sequence(s)?];
-                    loop {
-                        if let Ok(s) = parser.scan_to(" | ") {
-                            alts.push(parse_sequence(s)?);
-                        } else {
-                            alts.push(parse_sequence(parser.into_str())?);
-                            break;
-                        }
-                    }
-                    Rule::Alternation(alts)
-                }
-                Err(_) => parse_sequence(parser.into_str())?,
-            }
+            let alts = parser.delimited(" | ", parse_sequence)?;
+            Rule::Alternation(alts)
         };
         Ok(IndexedRule { index, rule })
     }

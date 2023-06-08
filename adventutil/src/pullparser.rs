@@ -42,6 +42,27 @@ impl<'a> PullParser<'a> {
             .map_err(anyhow::Error::new)?)
     }
 
+    pub fn delimited<F, T, U>(mut self, delim: T, mut parser: F) -> Result<Vec<U>, ParseError>
+    where
+        F: FnMut(&str) -> Result<U, ParseError>,
+        T: Into<Token>,
+    {
+        if self.data.is_empty() {
+            return Ok(Vec::new());
+        }
+        let delim = delim.into();
+        let mut elems = Vec::new();
+        loop {
+            if let Ok(s) = self.scan_to(delim) {
+                elems.push(parser(s)?);
+            } else {
+                elems.push(parser(self.scan_to(Token::Eof)?)?);
+                break;
+            }
+        }
+        Ok(elems)
+    }
+
     pub fn eof(&self) -> Result<(), ParseError> {
         if self.data.is_empty() {
             Ok(())
@@ -150,5 +171,21 @@ mod tests {
     #[case("2, 3)", None)]
     fn test_parse_coord(#[case] s: &str, #[case] parsed: Option<(usize, usize)>) {
         assert_eq!(parse_coord(s).ok(), parsed);
+    }
+
+    fn parse_ints(s: &str) -> Result<Vec<usize>, ParseError> {
+        PullParser::new(s).delimited(',', |s| Ok(s.parse::<usize>()?))
+    }
+
+    #[rstest]
+    #[case("1,2,3", Some(vec![1, 2, 3]))]
+    #[case("1,2", Some(vec![1, 2]))]
+    #[case("12", Some(vec![12]))]
+    #[case("", Some(Vec::new()))]
+    #[case("1,2a,3", None)]
+    #[case("1,2,", None)]
+    #[case(",1,2", None)]
+    fn test_parse_ints(#[case] s: &str, #[case] parsed: Option<Vec<usize>>) {
+        assert_eq!(parse_ints(s).ok(), parsed);
     }
 }
