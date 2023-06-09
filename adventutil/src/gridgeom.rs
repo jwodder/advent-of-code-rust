@@ -1,5 +1,6 @@
+use std::iter::FusedIterator;
 use std::iter::Sum;
-use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Range, Sub, SubAssign};
 use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Default, Hash, Eq, PartialEq)]
@@ -183,23 +184,52 @@ impl Sum for Vector {
     }
 }
 
-// The returned points include `p+v` but not `p` (If `v` is the zero vector,
-// the collection is empty)
-// Points are returned in the order they are "encountered" when going from `p`
+// The yielded points include `p+v` but not `p` (If `v` is the zero vector, the
+// iterator is empty)
+// Points are yielded in the order they are "encountered" when going from `p`
 // to `p+v`.
-// TODO: Make this return an iterator instead of a Vec
-pub fn points_added(p: Point, v: Vector) -> Result<Vec<Point>, NotCardinalError> {
-    match v {
-        Vector { x: 0, y: 0 } => Ok(Vec::new()),
-        Vector { x, y: 0 } if x > 0 => Ok((1..=x).map(|i| p + Vector { x: i, y: 0 }).collect()),
-        Vector { x, y: 0 } if x < 0 => Ok((1..=-x).map(|i| p - Vector { x: i, y: 0 }).collect()),
-        Vector { x: 0, y } if y > 0 => Ok((1..=y).map(|j| p + Vector { x: 0, y: j }).collect()),
-        Vector { x: 0, y } if y < 0 => Ok((1..=-y).map(|j| p - Vector { x: 0, y: j }).collect()),
-        v => Err(NotCardinalError(v)),
+pub fn points_added(p: Point, v: Vector) -> Result<PointsAdded, NotCardinalError> {
+    let (unit, offset) = match v {
+        Vector { x: 0, y: 0 } => (Vector::NORTH, 0),
+        Vector { x, y: 0 } if x > 0 => (Vector::EAST, x),
+        Vector { x, y: 0 } if x < 0 => (Vector::WEST, x),
+        Vector { x: 0, y } if y > 0 => (Vector::NORTH, y),
+        Vector { x: 0, y } if y < 0 => (Vector::SOUTH, y),
+        v => return Err(NotCardinalError(v)),
+    };
+    Ok(PointsAdded {
+        p,
+        unit,
+        inner: 0..offset.abs_diff(0),
+    })
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PointsAdded {
+    p: Point,
+    unit: Vector,
+    inner: Range<u32>,
+}
+
+impl Iterator for PointsAdded {
+    type Item = Point;
+
+    fn next(&mut self) -> Option<Point> {
+        let _ = self.inner.next()?;
+        self.p += self.unit;
+        Some(self.p)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
     }
 }
 
-#[derive(Debug, Error)]
+impl FusedIterator for PointsAdded {}
+
+impl ExactSizeIterator for PointsAdded {}
+
+#[derive(Debug, Eq, Error, PartialEq)]
 #[error("vector is not a cardinal direction: {0:?}")]
 pub struct NotCardinalError(Vector);
 
@@ -248,5 +278,70 @@ impl PointBounds {
             max_y: y,
         };
         Some(iter.fold(bounds, |bounds, p| bounds.with_point(p)))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_points_added_zero_vector() {
+        let mut iter = points_added(Point { x: 23, y: 42 }, Vector { x: 0, y: 0 }).unwrap();
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_points_added_northwards() {
+        let mut iter = points_added(Point { x: 23, y: 42 }, Vector { x: 0, y: 7 }).unwrap();
+        assert_eq!(iter.size_hint(), (7, Some(7)));
+        assert_eq!(iter.next(), Some(Point { x: 23, y: 43 }));
+        assert_eq!(iter.size_hint(), (6, Some(6)));
+        assert_eq!(iter.next(), Some(Point { x: 23, y: 44 }));
+        assert_eq!(iter.size_hint(), (5, Some(5)));
+        assert_eq!(iter.next(), Some(Point { x: 23, y: 45 }));
+        assert_eq!(iter.size_hint(), (4, Some(4)));
+        assert_eq!(iter.next(), Some(Point { x: 23, y: 46 }));
+        assert_eq!(iter.size_hint(), (3, Some(3)));
+        assert_eq!(iter.next(), Some(Point { x: 23, y: 47 }));
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        assert_eq!(iter.next(), Some(Point { x: 23, y: 48 }));
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        assert_eq!(iter.next(), Some(Point { x: 23, y: 49 }));
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_points_added_westwards() {
+        let mut iter = points_added(Point { x: 23, y: 42 }, Vector { x: -7, y: 0 }).unwrap();
+        assert_eq!(iter.size_hint(), (7, Some(7)));
+        assert_eq!(iter.next(), Some(Point { x: 22, y: 42 }));
+        assert_eq!(iter.size_hint(), (6, Some(6)));
+        assert_eq!(iter.next(), Some(Point { x: 21, y: 42 }));
+        assert_eq!(iter.size_hint(), (5, Some(5)));
+        assert_eq!(iter.next(), Some(Point { x: 20, y: 42 }));
+        assert_eq!(iter.size_hint(), (4, Some(4)));
+        assert_eq!(iter.next(), Some(Point { x: 19, y: 42 }));
+        assert_eq!(iter.size_hint(), (3, Some(3)));
+        assert_eq!(iter.next(), Some(Point { x: 18, y: 42 }));
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        assert_eq!(iter.next(), Some(Point { x: 17, y: 42 }));
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        assert_eq!(iter.next(), Some(Point { x: 16, y: 42 }));
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_points_added_diagonal() {
+        assert_eq!(
+            points_added(Point { x: 23, y: 42 }, Vector { x: -7, y: 5 }),
+            Err(NotCardinalError(Vector { x: -7, y: 5 }))
+        );
     }
 }

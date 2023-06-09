@@ -1,4 +1,4 @@
-use adventutil::gridgeom::{points_added, Point, Vector};
+use adventutil::gridgeom::{points_added, Point, PointsAdded, Vector};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use std::collections::HashSet;
@@ -40,7 +40,7 @@ impl Position {
         }
     }
 
-    fn domove(&mut self, i: Instruction) -> Vec<Point> {
+    fn domove(&mut self, i: Instruction) -> PointsAdded {
         let (facing, dist) = match i {
             Instruction::Left(d) => (self.facing.turn_left(), d),
             Instruction::Right(d) => (self.facing.turn_right(), d),
