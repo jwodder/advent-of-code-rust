@@ -12,7 +12,7 @@ use std::ops::{Index, IndexMut, RangeBounds};
 use std::str::FromStr;
 use thiserror::Error;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct Grid<T> {
     // Invariants:
     // - `data` is nonempty.
@@ -200,6 +200,11 @@ impl Grid<bool> {
                 .map(|l| l.chars().map(|c| c == '#').collect::<Vec<_>>())
                 .collect::<Vec<_>>(),
         )
+    }
+
+    #[cfg(feature = "ocr")]
+    pub fn ocr(self) -> anyhow::Result<String> {
+        super::ocr::ocr(self)
     }
 }
 

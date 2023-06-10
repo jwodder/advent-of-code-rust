@@ -1,6 +1,6 @@
+use adventutil::grid::Grid;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
-use itertools::Itertools;
 use std::str::FromStr;
 
 enum Operation {
@@ -34,7 +34,7 @@ impl FromStr for Operation {
 }
 
 fn solve(input: Input) -> String {
-    // TODO: Operate on adventutil's Grid type instead?
+    // TODO: Operate on an adventutil::Grid throughout?
     let mut grid = vec![vec![false; 50]; 6];
     for op in input.parse_lines::<Operation>() {
         match op {
@@ -55,13 +55,7 @@ fn solve(input: Input) -> String {
             }
         }
     }
-    grid.into_iter()
-        .map(|row| {
-            row.into_iter()
-                .map(|b| if b { '#' } else { '.' })
-                .collect::<String>()
-        })
-        .join("\n")
+    Grid::try_from(grid).unwrap().ocr().unwrap()
 }
 
 fn main() {

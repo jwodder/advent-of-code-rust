@@ -1,0 +1,287 @@
+# Large font used by 2018-10a
+height = 10
+
+[[glyph]]
+# Sources:
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "A"
+bitmap = """
+..##..
+.#..#.
+#....#
+#....#
+#....#
+######
+#....#
+#....#
+#....#
+#....#
+"""
+
+[[glyph]]
+# Sources:
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "B"
+bitmap = """
+#####.
+#....#
+#....#
+#....#
+#####.
+#....#
+#....#
+#....#
+#....#
+#####.
+"""
+
+[[glyph]]
+# Sources:
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "C"
+bitmap = """
+.####.
+#....#
+#.....
+#.....
+#.....
+#.....
+#.....
+#.....
+#....#
+.####.
+"""
+
+#[[glyph]]
+#character = "D"
+#bitmap = ???
+
+[[glyph]]
+# Sources:
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "E"
+bitmap = """
+######
+#.....
+#.....
+#.....
+#####.
+#.....
+#.....
+#.....
+#.....
+######
+"""
+
+[[glyph]]
+character = "F"
+bitmap = """
+######
+#.....
+#.....
+#.....
+#####.
+#.....
+#.....
+#.....
+#.....
+#.....
+"""
+
+[[glyph]]
+character = "G"
+bitmap = """
+.####.
+#....#
+#.....
+#.....
+#.....
+#..###
+#....#
+#....#
+#...##
+.###.#
+"""
+
+[[glyph]]
+# Sources:
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "H"
+bitmap = """
+#....#
+#....#
+#....#
+#....#
+######
+#....#
+#....#
+#....#
+#....#
+#....#
+"""
+
+#[[glyph]]
+#character = "I"
+#bitmap = ???
+
+[[glyph]]
+character = "J"
+bitmap = """
+...###
+....#.
+....#.
+....#.
+....#.
+....#.
+....#.
+#...#.
+#...#.
+.###..
+"""
+
+[[glyph]]
+character = "K"
+bitmap = """
+#....#
+#...#.
+#..#..
+#.#...
+##....
+##....
+#.#...
+#..#..
+#...#.
+#....#
+"""
+
+[[glyph]]
+character = "L"
+bitmap = """
+#.....
+#.....
+#.....
+#.....
+#.....
+#.....
+#.....
+#.....
+#.....
+######
+"""
+
+#[[glyph]]
+#character = "M"
+#bitmap = ???
+
+[[glyph]]
+# Sources:
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "N"
+bitmap = """
+#....#
+##...#
+##...#
+#.#..#
+#.#..#
+#..#.#
+#..#.#
+#...##
+#...##
+#....#
+"""
+
+#[[glyph]]
+#character = "O"
+#bitmap = ???
+
+[[glyph]]
+character = "P"
+bitmap = """
+#####.
+#....#
+#....#
+#....#
+#####.
+#.....
+#.....
+#.....
+#.....
+#.....
+"""
+
+#[[glyph]]
+#character = "Q"
+#bitmap = ???
+
+[[glyph]]
+# Sources:
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "R"
+bitmap = """
+#####.
+#....#
+#....#
+#....#
+#####.
+#..#..
+#...#.
+#...#.
+#....#
+#....#
+"""
+
+#[[glyph]]
+#character = "S"
+#bitmap = ???
+
+#[[glyph]]
+#character = "T"
+#bitmap = ???
+
+#[[glyph]]
+#character = "U"
+#bitmap = ???
+
+#[[glyph]]
+#character = "V"
+#bitmap = ???
+
+#[[glyph]]
+#character = "W"
+#bitmap = ???
+
+[[glyph]]
+# Sources:
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "X"
+bitmap = """
+#....#
+#....#
+.#..#.
+.#..#.
+..##..
+..##..
+.#..#.
+.#..#.
+#....#
+#....#
+"""
+
+#[[glyph]]
+#character = "Y"
+#bitmap = ???
+
+[[glyph]]
+character = "Z"
+bitmap = """
+######
+.....#
+.....#
+....#.
+...#..
+..#...
+.#....
+#.....
+#.....
+######
+"""

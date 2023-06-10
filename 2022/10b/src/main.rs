@@ -22,7 +22,7 @@ impl FromStr for Instruction {
     }
 }
 
-fn solve(input: Input) -> String {
+fn render(input: Input) -> Grid<bool> {
     let mut i = 0;
     let mut x: i32 = 1;
     let mut screen = Grid::from_fn(GridBounds::new(6, 40), |_: Coords| false);
@@ -49,7 +49,11 @@ fn solve(input: Input) -> String {
             x += arg;
         }
     }
-    screen.draw().to_string()
+    screen
+}
+
+fn solve(input: Input) -> String {
+    render(input).ocr().unwrap()
 }
 
 fn main() {
@@ -211,7 +215,7 @@ mod tests {
             "noop\n",
         ));
         assert_eq!(
-            solve(input),
+            render(input).draw().to_string(),
             concat!(
                 "##..##..##..##..##..##..##..##..##..##..\n",
                 "###...###...###...###...###...###...###.\n",

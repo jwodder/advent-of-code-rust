@@ -42,10 +42,10 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Build crate
-        run: cargo build --workspace --all-targets --verbose
+        run: cargo build --workspace --all-targets --all-features --verbose
 
       - name: Test crate
-        run: cargo test --workspace --verbose
+        run: cargo test --workspace --all-features --verbose
 
   coverage:
     # This is separate from the main tests because cargo-llvm-cov doesn't run

@@ -1,7 +1,7 @@
 use adventutil::grid::{Coords, Grid, GridBounds};
 use adventutil::Input;
 
-fn solve(input: Input, width: usize, height: usize) -> String {
+fn render(input: Input, width: usize, height: usize) -> Grid<bool> {
     let digits = input
         .read()
         .trim()
@@ -21,8 +21,10 @@ fn solve(input: Input, width: usize, height: usize) -> String {
         }
         false
     })
-    .draw()
-    .to_string()
+}
+
+fn solve(input: Input, width: usize, height: usize) -> String {
+    render(input, width, height).ocr().unwrap()
 }
 
 fn main() {
@@ -36,6 +38,6 @@ mod tests {
     #[test]
     fn test_example1() {
         let input = Input::from("0222112222120000");
-        assert_eq!(solve(input, 2, 2), ".#\n#.");
+        assert_eq!(render(input, 2, 2).draw().to_string(), ".#\n#.");
     }
 }

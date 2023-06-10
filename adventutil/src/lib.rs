@@ -5,6 +5,8 @@ pub mod gridgeom;
 pub mod index;
 pub mod intcode;
 pub mod maxn;
+#[cfg(feature = "ocr")]
+pub mod ocr;
 pub mod pullparser;
 use std::collections::{hash_map::Entry, HashMap, HashSet};
 use std::fs::{self, File};

@@ -1,0 +1,237 @@
+height = 6
+
+[[glyph]]
+character = "A"
+bitmap = """
+.##.
+#..#
+#..#
+####
+#..#
+#..#
+"""
+
+[[glyph]]
+character = "B"
+bitmap = """
+###.
+#..#
+###.
+#..#
+#..#
+###.
+"""
+
+[[glyph]]
+character = "C"
+bitmap = """
+.##.
+#..#
+#...
+#...
+#..#
+.##.
+"""
+
+#[[glyph]]
+#character = "D"
+#bitmap = ???
+
+[[glyph]]
+character = "E"
+bitmap = """
+####
+#...
+###.
+#...
+#...
+####
+"""
+
+[[glyph]]
+character = "F"
+bitmap = """
+####
+#...
+###.
+#...
+#...
+#...
+"""
+
+[[glyph]]
+character = "G"
+bitmap = """
+.##.
+#..#
+#...
+#.##
+#..#
+.###
+"""
+
+[[glyph]]
+character = "H"
+bitmap = """
+#..#
+#..#
+####
+#..#
+#..#
+#..#
+"""
+
+[[glyph]]
+# Sources:
+# - <https://github.com/bsoyka/advent-of-code-ocr>
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "I"
+bitmap = """
+###
+.#.
+.#.
+.#.
+.#.
+###
+"""
+
+[[glyph]]
+character = "J"
+bitmap = """
+..##
+...#
+...#
+...#
+#..#
+.##.
+"""
+
+[[glyph]]
+character = "K"
+bitmap = """
+#..#
+#.#.
+##..
+#.#.
+#.#.
+#..#
+"""
+
+[[glyph]]
+character = "L"
+bitmap = """
+#...
+#...
+#...
+#...
+#...
+####
+"""
+
+#[[glyph]]
+#character = "M"
+#bitmap = ???
+
+#[[glyph]]
+#character = "N"
+#bitmap = ???
+
+[[glyph]]
+character = "O"
+bitmap = """
+.##.
+#..#
+#..#
+#..#
+#..#
+.##.
+"""
+
+[[glyph]]
+character = "P"
+bitmap = """
+###.
+#..#
+#..#
+###.
+#...
+#...
+"""
+
+#[[glyph]]
+#character = "Q"
+#bitmap = ???
+
+[[glyph]]
+character = "R"
+bitmap = """
+###.
+#..#
+#..#
+###.
+#.#.
+#..#
+"""
+
+[[glyph]]
+# Sources:
+# - <https://github.com/bsoyka/advent-of-code-ocr>
+# - <https://github.com/mstksg/advent-of-code-ocr>
+character = "S"
+bitmap = """
+.###
+#...
+#...
+.##.
+...#
+###.
+"""
+
+#[[glyph]]
+#character = "T"
+#bitmap = ???
+
+[[glyph]]
+character = "U"
+bitmap = """
+#..#
+#..#
+#..#
+#..#
+#..#
+.##.
+"""
+
+#[[glyph]]
+#character = "V"
+#bitmap = ???
+
+#[[glyph]]
+#character = "W"
+#bitmap = ???
+
+#[[glyph]]
+#character = "X"
+#bitmap = ???
+
+[[glyph]]
+character = "Y"
+bitmap = """
+#...#
+#...#
+.#.#.
+..#..
+..#..
+..#..
+"""
+
+[[glyph]]
+character = "Z"
+bitmap = """
+####
+...#
+..#.
+.#..
+#...
+####
+"""

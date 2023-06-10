@@ -67,8 +67,8 @@ fn solve(input: Input) -> String {
                     y: uly + y,
                 })
             })
-            .draw()
-            .to_string();
+            .ocr()
+            .unwrap();
         }
         points = newpoints;
         bounds = newbounds;

@@ -48,7 +48,7 @@ impl FromStr for Fold {
     }
 }
 
-fn solve(input: Input) -> String {
+fn render(input: Input) -> Grid<bool> {
     let (dots, instructions) = input
         .paragraphs()
         .collect_tuple()
@@ -101,7 +101,11 @@ fn solve(input: Input) -> String {
             }
         }
     }
-    grid.draw().to_string()
+    grid
+}
+
+fn solve(input: Input) -> String {
+    render(input).ocr().unwrap()
 }
 
 fn main() {
@@ -138,7 +142,7 @@ mod tests {
             "fold along x=5\n",
         ));
         assert_eq!(
-            solve(input),
+            render(input).draw().to_string(),
             "#####\n#...#\n#...#\n#...#\n#####\n.....\n....."
         );
     }

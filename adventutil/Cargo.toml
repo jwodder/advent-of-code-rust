@@ -11,7 +11,12 @@ publish.workspace = true
 
 [dependencies]
 anyhow = "1.0.70"
+serde = { version = "1.0.164", features = ["derive"], optional = true }
 thiserror = "1.0.40"
+toml = { version = "0.7.4", features = ["parse"], optional = true }
 
 [dev-dependencies]
 rstest = { version = "0.17.0", default-features = false }
+
+[features]
+ocr = ["dep:serde", "dep:toml"]

@@ -38,8 +38,8 @@ impl Hull {
                 y: uly - y,
             })
         })
-        .draw()
-        .to_string()
+        .ocr()
+        .unwrap()
     }
 }
 
