@@ -33,7 +33,7 @@ fn solve(input: Input) -> usize {
 fn offsets() -> impl Iterator<Item = (i32, i32, i32)> {
     [-1, 0, 1]
         .into_iter()
-        .flat_map(move |i| {
+        .flat_map(|i| {
             [-1, 0, 1]
                 .into_iter()
                 .flat_map(move |j| [-1, 0, 1].into_iter().map(move |k| (i, j, k)))
