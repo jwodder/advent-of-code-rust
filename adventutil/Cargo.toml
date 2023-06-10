@@ -11,6 +11,7 @@ publish.workspace = true
 
 [dependencies]
 anyhow = "1.0.70"
+num-traits = "0.2.15"
 serde = { version = "1.0.164", features = ["derive"], optional = true }
 thiserror = "1.0.40"
 toml = { version = "0.7.4", features = ["parse"], optional = true }

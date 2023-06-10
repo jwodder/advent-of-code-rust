@@ -8,6 +8,7 @@ pub mod maxn;
 #[cfg(feature = "ocr")]
 pub mod ocr;
 pub mod pullparser;
+use num_traits::PrimInt;
 use std::collections::{hash_map::Entry, HashMap, HashSet};
 use std::fs::{self, File};
 use std::hash::Hash;
@@ -284,6 +285,19 @@ where
             }
         }
         visited.insert(current);
+    }
+}
+
+pub trait FromBits: PrimInt {
+    // TODO: Return None or Err on overflow?
+    fn from_bits<I: IntoIterator<Item = bool>>(bits: I) -> Self;
+}
+
+impl<T: PrimInt> FromBits for T {
+    fn from_bits<I: IntoIterator<Item = bool>>(bits: I) -> Self {
+        bits.into_iter().fold(T::zero(), |n, b| {
+            (n << 1) + if b { T::one() } else { T::zero() }
+        })
     }
 }
 

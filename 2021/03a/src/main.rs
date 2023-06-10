@@ -1,5 +1,5 @@
 use adventutil::grid::Grid;
-use adventutil::Input;
+use adventutil::{FromBits, Input};
 
 fn solve(input: Input) -> u32 {
     let gr = input.parse::<Grid<u8>>().map(|i| i == 1);
@@ -11,11 +11,7 @@ fn solve(input: Input) -> u32 {
         })
         .collect::<Vec<_>>();
     let epsilon = gamma.iter().map(|&b| !b).collect::<Vec<_>>();
-    bits2num(gamma) * bits2num(epsilon)
-}
-
-fn bits2num<I: IntoIterator<Item = bool>>(bits: I) -> u32 {
-    bits.into_iter().fold(0, |n, b| (n << 1) + u32::from(b))
+    u32::from_bits(gamma) * u32::from_bits(epsilon)
 }
 
 fn main() {

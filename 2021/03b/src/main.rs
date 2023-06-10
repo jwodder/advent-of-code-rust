@@ -1,5 +1,5 @@
 use adventutil::grid::Grid;
-use adventutil::Input;
+use adventutil::{FromBits, Input};
 
 fn solve(input: Input) -> u32 {
     let gr = input.parse::<Grid<u8>>().map(|i| i == 1);
@@ -20,14 +20,10 @@ where
         let target = selector(ones.len(), zeroes.len());
         gr = gr.filter_rows(|row| row[x] == target).unwrap();
         if gr.height() == 1 {
-            return bits2num(gr.into_rows().next().unwrap());
+            return u32::from_bits(gr.into_rows().next().unwrap());
         }
     }
     panic!("Grid filtering did not converge on a single row");
-}
-
-fn bits2num<I: IntoIterator<Item = bool>>(bits: I) -> u32 {
-    bits.into_iter().fold(0, |n, b| (n << 1) + u32::from(b))
 }
 
 fn main() {

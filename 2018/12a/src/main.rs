@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
+use adventutil::{FromBits, Input};
 use std::collections::HashSet;
 use std::str::FromStr;
 
@@ -14,7 +14,7 @@ impl PlantAutomaton {
         let right = self.state.iter().copied().max().unwrap_or(0) + 2;
         let mut newstate = HashSet::new();
         for i in left..=right {
-            let stateslice = compress_bits(((i - 2)..=(i + 2)).map(|j| self.state.contains(&j)));
+            let stateslice = u8::from_bits(((i - 2)..=(i + 2)).map(|j| self.state.contains(&j)));
             if self.rules.contains(&stateslice) {
                 newstate.insert(i);
             }
@@ -59,14 +59,10 @@ impl FromStr for PlantAutomaton {
 fn parse_rule(s: &str) -> Result<(u8, bool), ParseError> {
     let mut parser = PullParser::new(s);
     let preimg = parser.scan_to(Token::Whitespace)?;
-    let pre = compress_bits(preimg.chars().map(|c| c == '#'));
+    let pre = u8::from_bits(preimg.chars().map(|c| c == '#'));
     parser.skip("=> ")?;
     let post = parser.parse_to::<char, _>(Token::Eof)? == '#';
     Ok((pre, post))
-}
-
-fn compress_bits<I: IntoIterator<Item = bool>>(bits: I) -> u8 {
-    bits.into_iter().fold(0, |n, b| (n << 1) + u8::from(b))
 }
 
 fn solve(input: Input) -> isize {

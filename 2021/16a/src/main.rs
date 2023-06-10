@@ -1,4 +1,4 @@
-use adventutil::Input;
+use adventutil::{FromBits, Input};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 enum Packet {
@@ -18,14 +18,14 @@ fn decode(s: &str) -> Packet {
 }
 
 fn decode_bits(bits: &[bool]) -> (Packet, &[bool]) {
-    let version = bits2num(&bits[0..3]);
-    let type_id = bits2num(&bits[3..6]);
+    let version = u64::from_bits(bits[0..3].iter().copied());
+    let type_id = u64::from_bits(bits[3..6].iter().copied());
     if type_id == 4 {
         let mut i = 6;
         let mut value = 0;
         loop {
             let continued = bits[i];
-            let nibble = bits2num(&bits[(i + 1)..(i + 5)]);
+            let nibble = u64::from_bits(bits[(i + 1)..(i + 5)].iter().copied());
             value = (value << 4) + nibble;
             if !continued {
                 break;
@@ -36,7 +36,7 @@ fn decode_bits(bits: &[bool]) -> (Packet, &[bool]) {
     } else {
         let mut packets = Vec::new();
         let remainder = if !bits[6] {
-            let bit_len = usize::try_from(bits2num(&bits[7..22])).unwrap();
+            let bit_len = usize::from_bits(bits[7..22].iter().copied());
             let mut raw_subpackets = &bits[22..(22 + bit_len)];
             while !raw_subpackets.is_empty() {
                 let (p, rsp) = decode_bits(raw_subpackets);
@@ -45,7 +45,7 @@ fn decode_bits(bits: &[bool]) -> (Packet, &[bool]) {
             }
             &bits[(22 + bit_len)..]
         } else {
-            let packet_qty = bits2num(&bits[7..18]);
+            let packet_qty = u64::from_bits(bits[7..18].iter().copied());
             let mut raw = &bits[18..];
             for _ in 0..packet_qty {
                 let (p, raw2) = decode_bits(raw);
@@ -85,10 +85,6 @@ fn hex2bits(s: &str) -> Vec<bool> {
             (0..4).map(move |i| (value & (1 << (3 - i))) != 0)
         })
         .collect()
-}
-
-fn bits2num(bits: &[bool]) -> u64 {
-    bits.iter().fold(0, |n, &b| (n << 1) + u64::from(b))
 }
 
 fn main() {
