@@ -39,6 +39,15 @@ impl<T> Grid<T> {
         }
     }
 
+    pub fn filled(bounds: GridBounds, value: T) -> Grid<T>
+    where
+        T: Clone,
+    {
+        Grid {
+            data: vec![vec![value; bounds.width]; bounds.height],
+        }
+    }
+
     pub fn height(&self) -> usize {
         self.data.len()
     }

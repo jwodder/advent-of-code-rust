@@ -1,4 +1,4 @@
-use adventutil::grid::{Coords, Grid, GridBounds};
+use adventutil::grid::{Grid, GridBounds};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use std::str::FromStr;
@@ -25,7 +25,7 @@ impl FromStr for Instruction {
 fn render(input: Input) -> Grid<bool> {
     let mut i = 0;
     let mut x: i32 = 1;
-    let mut screen = Grid::from_fn(GridBounds::new(6, 40), |_: Coords| false);
+    let mut screen = Grid::filled(GridBounds::new(6, 40), false);
     for inst in input.parse_lines::<Instruction>() {
         let cursor_y = i / 40;
         let cursor_x = i % 40;

@@ -49,7 +49,7 @@ impl FromStr for Instruction {
 }
 
 fn solve(input: Input) -> usize {
-    let mut lit = Grid::<usize>::from_fn::<_, Coords>(GridBounds::new(1000, 1000), |_| 0);
+    let mut lit = Grid::filled(GridBounds::new(1000, 1000), 0usize);
     for i in input.parse_lines::<Instruction>() {
         match i {
             i @ Instruction::Toggle(_, _) => {
