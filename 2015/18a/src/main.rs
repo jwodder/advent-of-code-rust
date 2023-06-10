@@ -1,6 +1,5 @@
-use adventutil::grid::{Grid, ParseGridError};
+use adventutil::grid::{Grid, GridFromError};
 use adventutil::Input;
-use std::char::ParseCharError;
 use std::str::FromStr;
 
 struct ConwayLights(Grid<bool>);
@@ -19,10 +18,10 @@ impl ConwayLights {
 }
 
 impl FromStr for ConwayLights {
-    type Err = ParseGridError<ParseCharError>;
+    type Err = GridFromError;
 
     fn from_str(s: &str) -> Result<ConwayLights, Self::Err> {
-        Ok(ConwayLights(s.parse::<Grid<char>>()?.map(|c| c == '#')))
+        <Grid<bool>>::from_drawing(s).map(ConwayLights)
     }
 }
 

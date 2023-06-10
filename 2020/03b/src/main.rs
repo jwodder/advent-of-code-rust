@@ -2,7 +2,7 @@ use adventutil::grid::Grid;
 use adventutil::Input;
 
 fn solve(input: Input) -> u64 {
-    let grid = input.parse::<Grid<char>>().map(|c| c == '#');
+    let grid = <Grid<bool>>::from_drawing(&input.read()).unwrap();
     [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
         .into_iter()
         .map(|(right, down)| intercepts(&grid, right, down))

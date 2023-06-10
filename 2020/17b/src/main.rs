@@ -4,11 +4,11 @@ use adventutil::Input;
 use std::collections::HashSet;
 
 fn solve(input: Input) -> usize {
-    let starting = input.parse::<Grid<char>>();
+    let starting = <Grid<bool>>::from_drawing(&input.read()).unwrap();
     let mut active = starting
         .enumerate()
-        .filter_map(|(coords, &ch)| {
-            (ch == '#').then_some((
+        .filter_map(|(coords, &b)| {
+            b.then_some((
                 i32::try_from(coords.x).unwrap(),
                 i32::try_from(coords.y).unwrap(),
                 0,

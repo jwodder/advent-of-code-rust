@@ -5,7 +5,7 @@ use std::collections::{BTreeMap, HashSet, VecDeque};
 use std::f64::consts::{FRAC_PI_2, TAU};
 
 fn solve(input: Input) -> usize {
-    let grid = input.parse::<Grid<char>>().map(|c| c == '#');
+    let grid = <Grid<bool>>::from_drawing(&input.read()).unwrap();
     let asteroids = grid
         .enumerate()
         .filter_map(|(coords, &b)| b.then_some(coords))

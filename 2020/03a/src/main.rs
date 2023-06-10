@@ -2,7 +2,7 @@ use adventutil::grid::Grid;
 use adventutil::Input;
 
 fn solve(input: Input) -> usize {
-    let grid = input.parse::<Grid<char>>().map(|c| c == '#');
+    let grid = <Grid<bool>>::from_drawing(&input.read()).unwrap();
     let mut trees = 0;
     let mut cell = grid.get_cell((0, 0));
     while let Some(pos) = cell {

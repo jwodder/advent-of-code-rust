@@ -163,6 +163,16 @@ impl<T> Grid<T> {
     }
 }
 
+impl Grid<bool> {
+    pub fn from_drawing(s: &str) -> Result<Grid<bool>, GridFromError> {
+        Grid::try_from(
+            s.lines()
+                .map(|l| l.chars().map(|c| c == '#').collect::<Vec<_>>())
+                .collect::<Vec<_>>(),
+        )
+    }
+}
+
 impl<C: Into<(usize, usize)>, T> Index<C> for Grid<T> {
     type Output = T;
 
