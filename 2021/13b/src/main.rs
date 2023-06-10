@@ -101,7 +101,7 @@ fn solve(input: Input) -> String {
             }
         }
     }
-    grid.map(|b| if b { '#' } else { '.' }).to_string()
+    grid.draw().to_string()
 }
 
 fn main() {

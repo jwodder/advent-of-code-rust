@@ -34,6 +34,7 @@ impl FromStr for Operation {
 }
 
 fn solve(input: Input) -> String {
+    // TODO: Operate on adventutil's Grid type instead?
     let mut grid = vec![vec![false; 50]; 6];
     for op in input.parse_lines::<Operation>() {
         match op {

@@ -25,7 +25,7 @@ impl FromStr for Instruction {
 fn solve(input: Input) -> String {
     let mut i = 0;
     let mut x: i32 = 1;
-    let mut screen = Grid::<char>::from_fn(GridBounds::new(6, 40), |_: Coords| '.');
+    let mut screen = Grid::from_fn(GridBounds::new(6, 40), |_: Coords| false);
     for inst in input.parse_lines::<Instruction>() {
         let cursor_y = i / 40;
         let cursor_x = i % 40;
@@ -34,7 +34,7 @@ fn solve(input: Input) -> String {
             screen[(
                 usize::try_from(cursor_y).unwrap(),
                 usize::try_from(cursor_x).unwrap(),
-            )] = '#';
+            )] = true;
         }
         if let Instruction::Addx(arg) = inst {
             let cursor_y = i / 40;
@@ -44,12 +44,12 @@ fn solve(input: Input) -> String {
                 screen[(
                     usize::try_from(cursor_y).unwrap(),
                     usize::try_from(cursor_x).unwrap(),
-                )] = '#';
+                )] = true;
             }
             x += arg;
         }
     }
-    screen.to_string()
+    screen.draw().to_string()
 }
 
 fn main() {

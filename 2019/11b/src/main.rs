@@ -30,18 +30,15 @@ impl Hull {
             usize::try_from(pbounds.height()).unwrap(),
             usize::try_from(pbounds.width()).unwrap(),
         );
-        Grid::<char>::from_fn(grbounds, |(y, x)| {
+        Grid::from_fn(grbounds, |(y, x)| {
             let y = i32::try_from(y).unwrap();
             let x = i32::try_from(x).unwrap();
-            if self.white.contains(&Point {
+            self.white.contains(&Point {
                 x: ulx + x,
                 y: uly - y,
-            }) {
-                '#'
-            } else {
-                '.'
-            }
+            })
         })
+        .draw()
         .to_string()
     }
 }

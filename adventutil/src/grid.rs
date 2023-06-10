@@ -164,6 +164,10 @@ impl<T> Grid<T> {
 }
 
 impl Grid<bool> {
+    pub fn draw(&self) -> Draw<'_> {
+        Draw(self)
+    }
+
     pub fn from_drawing(s: &str) -> Result<Grid<bool>, GridFromError> {
         Grid::try_from(
             s.lines()
@@ -262,6 +266,24 @@ pub enum ParseGridError<E> {
     From(#[from] GridFromError),
     #[error("error parsing cells: {0}")]
     Parse(#[source] E),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Draw<'a>(&'a Grid<bool>);
+
+impl<'a> fmt::Display for Draw<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut first = true;
+        for row in &self.0.data {
+            if !std::mem::replace(&mut first, false) {
+                writeln!(f)?;
+            }
+            for &cell in row {
+                write!(f, "{}", if cell { '#' } else { '.' })?;
+            }
+        }
+        Ok(())
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]

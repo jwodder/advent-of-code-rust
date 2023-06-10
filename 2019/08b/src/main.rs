@@ -13,14 +13,15 @@ fn solve(input: Input, width: usize, height: usize) -> String {
         .chunks(width * height)
         .map(|layer| Grid::<u32>::from_fn(bounds, |(y, x)| layer[y * width + x]))
         .collect::<Vec<_>>();
-    Grid::<u32>::from_fn(bounds, |c: Coords| {
+    Grid::from_fn(bounds, |c: Coords| {
         for ly in &layers {
             if ly[c] != 2 {
-                return ly[c];
+                return ly[c] != 0;
             }
         }
-        2
+        false
     })
+    .draw()
     .to_string()
 }
 
@@ -35,6 +36,6 @@ mod tests {
     #[test]
     fn test_example1() {
         let input = Input::from("0222112222120000");
-        assert_eq!(solve(input, 2, 2), "01\n10");
+        assert_eq!(solve(input, 2, 2), ".#\n#.");
     }
 }
