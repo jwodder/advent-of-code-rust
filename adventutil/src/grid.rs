@@ -8,7 +8,7 @@ pub use self::iter::*;
 use self::util::*;
 use std::cmp::Ordering;
 use std::fmt;
-use std::ops::{Index, IndexMut};
+use std::ops::{Index, IndexMut, RangeBounds};
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -68,15 +68,41 @@ impl<T> Grid<T> {
             .then(|| Cell::new(self, y, x))
     }
 
+    pub fn get_mut<C: Into<(usize, usize)>>(&mut self, coords: C) -> Option<&mut T> {
+        let (y, x) = coords.into();
+        self.data.get_mut(y).and_then(|row| row.get_mut(x))
+    }
+
     // Panics on out-of-bounds
     pub fn set<C: Into<(usize, usize)>>(&mut self, coords: C, value: T) {
         let (y, x) = coords.into();
         self.data[y][x] = value;
     }
 
-    pub fn get_mut<C: Into<(usize, usize)>>(&mut self, coords: C) -> Option<&mut T> {
-        let (y, x) = coords.into();
-        self.data.get_mut(y).and_then(|row| row.get_mut(x))
+    // Panics on out-of-bounds
+    pub fn row_slice<R: RangeBounds<usize>>(&self, range: R) -> Grid<T>
+    where
+        T: Clone,
+    {
+        let bounds = (range.start_bound().cloned(), range.end_bound().cloned());
+        Grid {
+            data: self.data.get(bounds).unwrap().to_vec(),
+        }
+    }
+
+    // Panics on out-of-bounds
+    pub fn column_slice<R: RangeBounds<usize>>(&self, range: R) -> Grid<T>
+    where
+        T: Clone,
+    {
+        let bounds = (range.start_bound().cloned(), range.end_bound().cloned());
+        Grid {
+            data: self
+                .data
+                .iter()
+                .map(|row| row.get(bounds).unwrap().to_vec())
+                .collect(),
+        }
     }
 
     pub fn map<U, F>(self, mut f: F) -> Grid<U>
@@ -444,6 +470,52 @@ mod tests {
                     vec![21, 9, 14, 16, 7],
                     vec![6, 10, 3, 18, 5],
                     vec![1, 12, 20, 15, 19],
+                ]
+            }
+        );
+    }
+
+    #[test]
+    fn test_row_slice() {
+        let gr = Grid::<i32>::parse_words(concat!(
+            "22 13 17 11  0\n",
+            " 8  2 23  4 24\n",
+            "21  9 14 16  7\n",
+            " 6 10  3 18  5\n",
+            " 1 12 20 15 19\n",
+        ))
+        .unwrap();
+        assert_eq!(
+            gr.row_slice(2..),
+            Grid {
+                data: vec![
+                    vec![21, 9, 14, 16, 7],
+                    vec![6, 10, 3, 18, 5],
+                    vec![1, 12, 20, 15, 19],
+                ]
+            }
+        );
+    }
+
+    #[test]
+    fn test_column_slice() {
+        let gr = Grid::<i32>::parse_words(concat!(
+            "22 13 17 11  0\n",
+            " 8  2 23  4 24\n",
+            "21  9 14 16  7\n",
+            " 6 10  3 18  5\n",
+            " 1 12 20 15 19\n",
+        ))
+        .unwrap();
+        assert_eq!(
+            gr.column_slice(..3),
+            Grid {
+                data: vec![
+                    vec![22, 13, 17],
+                    vec![8, 2, 23],
+                    vec![21, 9, 14],
+                    vec![6, 10, 3],
+                    vec![1, 12, 20],
                 ]
             }
         );
