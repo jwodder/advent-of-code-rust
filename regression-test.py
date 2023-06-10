@@ -82,28 +82,15 @@ def main() -> None:
             log.debug("Reading answers from %s", p / "answers.csv")
             with open(p / "answers.csv", newline="") as fp:
                 reader = csv.DictReader(fp)
-                for row in reader:
-                    problem = row["problem"]
-                    answer = row["answer"]
-                    if not answer:
-                        log.debug(
-                            "Reading answer for problem %s-%s from output.txt file",
-                            year,
-                            problem,
-                        )
-                        answer = (
-                            (p / problem / "output.txt")
-                            .read_text(encoding="utf-8")
-                            .strip()
-                        )
-                    cases.append(
-                        TestCase(
-                            year=year,
-                            problem=problem,
-                            input=row["input"],
-                            answer=answer,
-                        )
+                cases.extend(
+                    TestCase(
+                        year=year,
+                        problem=row["problem"],
+                        input=row["input"],
+                        answer=row["answer"],
                     )
+                    for row in reader
+                )
     ok = anyio.run(aruntests, cases)
     sys.exit(0 if ok else 1)
 
