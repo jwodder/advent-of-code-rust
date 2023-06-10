@@ -97,12 +97,13 @@ impl Path {
 
     fn advance(&self, system: &CaveSystem) -> Vec<Path> {
         let pos = self.path.last().unwrap();
-        // TODO: Try to do this without cloning:
-        let next_caves = system.map.get(pos).cloned().unwrap_or_default();
+        let Some(next_caves) = system.map.get(pos) else {
+            return Vec::new();
+        };
         next_caves
-            .into_iter()
+            .iter()
             .filter(|c| self.can_move_to(c))
-            .map(|c| self.move_to(&c))
+            .map(|c| self.move_to(c))
             .collect()
     }
 }
