@@ -1,0 +1,19 @@
+[package]
+name = "regresstest"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "Regression testing"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+anyhow = "1.0.71"
+csv = "1.2.2"
+fern = "0.6.2"
+futures = { version = "0.3.28", default-features = false, features = ["std"] }
+log = "0.4.18"
+serde = { version = "1.0.164", features = ["derive"] }
+tokio = { version = "1.28.2", features = ["rt", "macros", "rt-multi-thread", "time", "process"] }

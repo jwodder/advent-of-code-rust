@@ -28,11 +28,8 @@ jobs:
         with:
           toolchain: stable
 
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
-
       - name: Build binaries
         run: cargo build --workspace --bins --release --verbose
 
       - name: Run regression tests
-        run: python3 regression-test.py
+        run: cargo run -r -p regresstest
