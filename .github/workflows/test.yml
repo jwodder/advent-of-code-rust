@@ -118,4 +118,34 @@ jobs:
 #        env:
 #          RUSTDOCFLAGS: -Dwarnings
 
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install git-crypt
+        run: sudo apt-get update && sudo apt-get install -y git-crypt
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Decrypt
+        run: |
+          printf '%s\n' "$GIT_CRYPT_KEY" | base64 -d > key.dat
+          git crypt unlock key.dat
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+
+      - name: Activate cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build binaries
+        run: cargo build --workspace --bins --release --verbose
+
+      - name: Run regression tests
+        run: cargo run -r -p regresstest
+
 # vim:set et sts=2:
