@@ -1,5 +1,5 @@
-use adventutil::grid::{Grid, GridBounds};
-use adventutil::gridgeom::{Point, PointBounds, Vector};
+use adventutil::grid::Grid;
+use adventutil::gridgeom::{Point, Vector};
 use adventutil::intcode::{Intcode, IntcodeIO};
 use adventutil::Input;
 use std::collections::HashSet;
@@ -23,23 +23,8 @@ impl Hull {
         }
     }
 
-    fn painting(&self) -> String {
-        let pbounds = PointBounds::for_points(self.painted.iter().copied()).unwrap();
-        let Point { x: ulx, y: uly } = pbounds.ulcorner();
-        let grbounds = GridBounds::new(
-            usize::try_from(pbounds.height()).unwrap(),
-            usize::try_from(pbounds.width()).unwrap(),
-        );
-        Grid::from_fn(grbounds, |(y, x)| {
-            let y = i32::try_from(y).unwrap();
-            let x = i32::try_from(x).unwrap();
-            self.white.contains(&Point {
-                x: ulx + x,
-                y: uly - y,
-            })
-        })
-        .ocr()
-        .unwrap()
+    fn painting(self) -> String {
+        Grid::from_points(self.white, true).ocr().unwrap()
     }
 }
 

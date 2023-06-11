@@ -49,10 +49,8 @@ fn solve(input: Input) -> usize {
         usize::try_from(pbounds.height()).unwrap(),
         usize::try_from(pbounds.width()).unwrap(),
     );
-    let mut grid = Grid::from_fn(grbounds, |(y, x)| {
-        let y = i32::try_from(y).unwrap();
-        let x = i32::try_from(x).unwrap();
-        if points.contains(&Point { x, y }) {
+    let mut grid = Grid::from_fn(grbounds, |c| {
+        if points.contains(&pbounds.at_coords(c, false)) {
             Tile::Rock
         } else {
             Tile::Air

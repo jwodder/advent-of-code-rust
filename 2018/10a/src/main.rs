@@ -2,11 +2,10 @@
 // enclosing the points of light both decrease up until the message is formed,
 // after which they start increasing again.  Thus, we just need to look for a
 // local minimum of either dimension.
-use adventutil::grid::{Grid, GridBounds};
+use adventutil::grid::Grid;
 use adventutil::gridgeom::{Point, PointBounds, Vector};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
-use std::collections::HashSet;
 use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -52,23 +51,9 @@ fn solve(input: Input) -> String {
         let newpoints = points.iter().copied().map(Star::step).collect::<Vec<_>>();
         let newbounds = PointBounds::for_points(newpoints.iter().map(|&s| s.pos)).unwrap();
         if newbounds.height() > bounds.height() {
-            let ulx = bounds.min_x;
-            let uly = bounds.min_y;
-            let points = points.into_iter().map(|s| s.pos).collect::<HashSet<_>>();
-            let grbounds = GridBounds::new(
-                usize::try_from(bounds.height()).unwrap(),
-                usize::try_from(bounds.width()).unwrap(),
-            );
-            return Grid::from_fn(grbounds, |(y, x)| {
-                let y = i32::try_from(y).unwrap();
-                let x = i32::try_from(x).unwrap();
-                points.contains(&Point {
-                    x: ulx + x,
-                    y: uly + y,
-                })
-            })
-            .ocr()
-            .unwrap();
+            return Grid::from_points(points.into_iter().map(|s| s.pos), false)
+                .ocr()
+                .unwrap();
         }
         points = newpoints;
         bounds = newbounds;

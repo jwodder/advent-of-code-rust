@@ -6,7 +6,9 @@ mod util;
 pub use self::cell::*;
 pub use self::iter::*;
 use self::util::*;
+use super::gridgeom::{Point, PointBounds};
 use std::cmp::Ordering;
+use std::collections::HashSet;
 use std::fmt;
 use std::ops::{Index, IndexMut, RangeBounds};
 use std::str::FromStr;
@@ -214,6 +216,24 @@ impl Grid<bool> {
     #[cfg(feature = "ocr")]
     pub fn ocr(self) -> anyhow::Result<String> {
         super::ocr::ocr(self)
+    }
+
+    pub fn from_points<I: IntoIterator<Item = Point>>(iter: I, downwards: bool) -> Grid<bool> {
+        let mut iter = iter.into_iter();
+        let p1 = iter.next().expect("Empty collection of points");
+        let mut bounds = PointBounds::for_point(p1);
+        let mut points = HashSet::from([p1]);
+        for p in iter {
+            bounds = bounds.with_point(p);
+            points.insert(p);
+        }
+        let grbounds = GridBounds::new(
+            usize::try_from(bounds.height()).unwrap(),
+            usize::try_from(bounds.width()).unwrap(),
+        );
+        Grid::from_fn(grbounds, move |c| {
+            points.contains(&bounds.at_coords(c, downwards))
+        })
     }
 }
 

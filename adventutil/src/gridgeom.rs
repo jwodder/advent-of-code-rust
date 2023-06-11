@@ -1,3 +1,4 @@
+use super::grid::Coords;
 use std::iter::FusedIterator;
 use std::iter::Sum;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Range, Sub, SubAssign};
@@ -259,6 +260,29 @@ impl PointBounds {
         }
     }
 
+    // If `downwards` is true, the Y-axis of the Coords will be treated as
+    // starting at the top of the PointBounds and increasing downwards;
+    // otherwise, it starts at the bottom of the PointBounds and increases
+    // upwards.
+    pub fn at_coords(&self, c: Coords, downwards: bool) -> Point {
+        let x = self.min_x + i32::try_from(c.x).unwrap();
+        let y = if downwards {
+            self.max_y - i32::try_from(c.y).unwrap()
+        } else {
+            self.min_y + i32::try_from(c.y).unwrap()
+        };
+        Point { x, y }
+    }
+
+    pub fn for_point(Point { y, x }: Point) -> PointBounds {
+        PointBounds {
+            min_x: x,
+            min_y: y,
+            max_x: x,
+            max_y: y,
+        }
+    }
+
     pub fn with_point(self, point: Point) -> PointBounds {
         PointBounds {
             min_x: self.min_x.min(point.x),
@@ -270,13 +294,7 @@ impl PointBounds {
 
     pub fn for_points<I: IntoIterator<Item = Point>>(iter: I) -> Option<PointBounds> {
         let mut iter = iter.into_iter();
-        let Point { y, x } = iter.next()?;
-        let bounds = PointBounds {
-            min_x: x,
-            min_y: y,
-            max_x: x,
-            max_y: y,
-        };
+        let bounds = PointBounds::for_point(iter.next()?);
         Some(iter.fold(bounds, |bounds, p| bounds.with_point(p)))
     }
 }
