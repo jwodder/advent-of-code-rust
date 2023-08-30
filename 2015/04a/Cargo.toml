@@ -15,4 +15,4 @@ hex = "0.4.3"
 md-5 = "0.10.5"
 
 [dev-dependencies]
-rstest = { version = "0.17.0", default-features = false }
+rstest = { version = "0.18.2", default-features = false }

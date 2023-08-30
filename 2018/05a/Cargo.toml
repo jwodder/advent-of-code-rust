@@ -13,4 +13,4 @@ publish.workspace = true
 adventutil = { path = "../../adventutil" }
 
 [dev-dependencies]
-rstest = { version = "0.17.0", default-features = false }
+rstest = { version = "0.18.2", default-features = false }
