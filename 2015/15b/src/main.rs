@@ -91,7 +91,7 @@ fn solve(input: Input) -> i32 {
         .filter_map(|p| {
             let mix = ingredients
                 .iter()
-                .zip(p.into_iter())
+                .zip(p)
                 .map(|(i, qty)| i.score(qty))
                 .sum::<Score>();
             (mix.calories == 500).then(|| mix.product())

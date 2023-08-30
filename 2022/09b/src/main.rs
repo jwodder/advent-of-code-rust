@@ -42,7 +42,7 @@ impl FromStr for Motion {
 }
 
 fn solve(input: Input) -> usize {
-    let mut positions = vec![Point::ORIGIN; 10];
+    let mut positions = [Point::ORIGIN; 10];
     let mut visited = HashSet::from([Point::ORIGIN]);
     for motion in input.parse_lines::<Motion>() {
         for p in points_added(positions[0], motion.into_vector()).unwrap() {

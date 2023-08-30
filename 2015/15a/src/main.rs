@@ -89,7 +89,7 @@ fn solve(input: Input) -> i32 {
         .map(|p| {
             ingredients
                 .iter()
-                .zip(p.into_iter())
+                .zip(p)
                 .map(|(i, qty)| i.score(qty))
                 .sum::<Score>()
                 .product()
