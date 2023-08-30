@@ -1,5 +1,6 @@
 [workspace]
 members = ["adventutil", "regresstest", "20*/??[ab]"]
+resolver = "2"
 
 [workspace.package]
 edition = "2021"
