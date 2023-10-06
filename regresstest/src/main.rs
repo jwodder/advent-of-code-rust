@@ -1,8 +1,9 @@
 use anyhow::{bail, Context};
 use futures::stream::{iter, StreamExt};
 use serde::Deserialize;
+use std::fmt;
 use std::fs::read_dir;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::ExitCode;
 use std::time::Duration;
 use tokio::process::Command;
@@ -18,63 +19,67 @@ struct Answer {
     answer: String,
 }
 
-struct TestCase {
+struct TestCase<'a> {
+    workspace_dir: &'a Path,
     year: i32,
-    problem: String,
-    input: String,
-    answer: String,
+    answer: Answer,
 }
 
-impl TestCase {
-    fn id(&self) -> String {
-        format!("{}-{}", self.year, self.problem)
-    }
-
+impl<'a> TestCase<'a> {
     async fn run(self) -> bool {
-        log::info!("RUNNING: {}", self.id());
+        log::info!("RUNNING: {self}");
         let mut cmd = Command::new("cargo");
         cmd.arg("run")
             .arg("-q")
             .arg("-r")
             .arg("-p")
-            .arg(format!("advent-of-code-{}-{}", self.year, self.problem))
+            .arg(format!(
+                "advent-of-code-{}-{}",
+                self.year, self.answer.problem
+            ))
             .arg("--")
-            .arg(format!("{}/inputs/{}", self.year, self.input))
-            .current_dir(workspace_dir())
+            .arg(format!("{}/inputs/{}", self.year, self.answer.input))
+            .current_dir(self.workspace_dir)
             .kill_on_drop(true);
         match timeout(TIMEOUT, cmd.output()).await {
             Ok(Ok(out)) => {
                 if out.status.success() {
                     match String::from_utf8(out.stdout) {
                         Ok(s) => {
-                            if s.trim() == self.answer {
-                                log::info!("PASS: {}", self.id());
+                            if s.trim() == self.answer.answer {
+                                log::info!("PASS: {self}");
                                 true
                             } else {
-                                log::error!("FAIL: {}", self.id());
+                                log::error!("FAIL: {self}");
                                 false
                             }
                         }
                         Err(_) => {
-                            log::info!("Problem {} binary emitted non-UTF-8", self.id());
+                            log::info!("Problem {self} binary emitted non-UTF-8");
                             false
                         }
                     }
                 } else {
-                    log::error!("Problem {} binary failed: {}", self.id(), out.status);
+                    log::error!("Problem {} binary failed: {}", self, out.status);
                     // TODO: Display stderr?
                     false
                 }
             }
             Ok(Err(e)) => {
-                log::error!("Problem {} binary failed to execute: {}", self.id(), e);
+                log::error!("Problem {} binary failed to execute: {}", self, e);
                 false
             }
             Err(_) => {
-                log::error!("TIMEOUT: {}", self.id());
+                log::error!("TIMEOUT: {self}");
                 false
             }
         }
+    }
+}
+
+impl<'a> fmt::Display for TestCase<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}-{}", self.year, self.answer.problem)
     }
 }
 
@@ -89,7 +94,11 @@ async fn main() -> anyhow::Result<ExitCode> {
         .apply()
         .unwrap();
     let mut cases = Vec::new();
-    let diriter = read_dir(workspace_dir()).context("failed to read workspace directory")?;
+    let workspace_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .expect("CARGO_MANIFEST_DIR lacks parent path")
+        .to_owned();
+    let diriter = read_dir(&workspace_dir).context("failed to read workspace directory")?;
     for entry in diriter {
         let entry = entry.context("failed reading workspace directory")?;
         let answerpath = entry.path().join("answers.csv");
@@ -117,10 +126,9 @@ async fn main() -> anyhow::Result<ExitCode> {
                     format!("failed to read entry from {}", answerpath.display())
                 })?;
                 cases.push(TestCase {
+                    workspace_dir: &workspace_dir,
                     year,
-                    problem: row.problem,
-                    input: row.input,
-                    answer: row.answer,
+                    answer: row,
                 });
             }
         }
@@ -135,11 +143,4 @@ async fn main() -> anyhow::Result<ExitCode> {
     } else {
         Ok(ExitCode::FAILURE)
     }
-}
-
-fn workspace_dir() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .expect("CARGO_MANIFEST_DIR lacks parent path")
-        .into()
 }
