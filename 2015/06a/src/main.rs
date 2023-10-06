@@ -54,8 +54,7 @@ fn solve(input: Input) -> usize {
         match i {
             i @ Instruction::Toggle(_, _) => {
                 for c in i.covered() {
-                    let b = lit[c];
-                    lit[c] = !b;
+                    lit[c] ^= true;
                 }
             }
             i @ Instruction::TurnOn(_, _) => {
