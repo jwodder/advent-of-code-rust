@@ -18,11 +18,10 @@ impl Node {
         } else {
             metadata
                 .iter()
-                .filter_map(|&i| {
-                    (i != 0).then(|| match children.get(i - 1) {
-                        Some(n) => n.value,
-                        None => 0,
-                    })
+                .filter(|&&i| i != 0)
+                .map(|&i| match children.get(i - 1) {
+                    Some(n) => n.value,
+                    None => 0,
                 })
                 .sum()
         };

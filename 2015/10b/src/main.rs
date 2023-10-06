@@ -1,12 +1,15 @@
 use adventutil::Input;
 use itertools::Itertools;
+use std::fmt::Write;
 
 fn look_and_say(s: &str) -> String {
     s.chars()
         .group_by(|&c| c)
         .into_iter()
-        .map(|(c, run)| format!("{}{}", run.count(), c))
-        .collect()
+        .fold(String::new(), |mut buf, (c, run)| {
+            write!(&mut buf, "{}{}", run.count(), c).unwrap();
+            buf
+        })
 }
 
 fn solve(input: Input) -> usize {
