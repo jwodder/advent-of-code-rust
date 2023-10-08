@@ -126,8 +126,7 @@ impl Iterator for Paragraphs {
     type Item = String;
 
     fn next(&mut self) -> Option<String> {
-        #[allow(clippy::while_let_on_iterator)]
-        while let Some(ln) = self.inner.next() {
+        for ln in self.inner.by_ref() {
             if ln.is_empty() {
                 if !self.buffer.is_empty() {
                     let s = self.buffer.join("\n");

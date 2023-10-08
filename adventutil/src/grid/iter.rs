@@ -236,8 +236,7 @@ impl<'a, T> Iterator for AdjacentCells<'a, T> {
     type Item = Cell<'a, T>;
 
     fn next(&mut self) -> Option<Cell<'a, T>> {
-        #[allow(clippy::while_let_on_iterator)]
-        while let Some(d) = self.inner.next() {
+        for d in self.inner.by_ref() {
             if let Some(c) = self.bounds.move_in(self.center, d) {
                 return self.grid.get_cell(c);
             }
