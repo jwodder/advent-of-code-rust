@@ -1,8 +1,8 @@
 use anyhow::{bail, Context};
+use fs_err::read_dir;
 use futures::stream::{iter, StreamExt};
 use serde::Deserialize;
 use std::fmt;
-use std::fs::read_dir;
 use std::path::Path;
 use std::process::ExitCode;
 use std::time::Duration;
@@ -98,16 +98,11 @@ async fn main() -> anyhow::Result<ExitCode> {
         .parent()
         .expect("CARGO_MANIFEST_DIR lacks parent path")
         .to_owned();
-    let diriter = read_dir(&workspace_dir).context("failed to read workspace directory")?;
+    let diriter = read_dir(&workspace_dir)?;
     for entry in diriter {
-        let entry = entry.context("failed reading workspace directory")?;
+        let entry = entry?;
         let answerpath = entry.path().join("answers.csv");
-        if entry
-            .file_type()
-            .context("could not get entry filetype")?
-            .is_dir()
-            && answerpath.exists()
-        {
+        if entry.file_type()?.is_dir() && answerpath.exists() {
             let year = match entry.file_name().into_string() {
                 Ok(s) => match s.parse::<i32>() {
                     Ok(year) => year,
