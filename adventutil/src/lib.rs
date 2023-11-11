@@ -156,10 +156,14 @@ where
         .collect()
 }
 
+/// Returns an iterator of all pairs `(i, j)` where `0 <= i < j < size`, i.e.,
+/// an iterator of all increasing pairs of indices into a slice of length
+/// `size`.
 pub fn unordered_index_pairs(size: usize) -> UnorderedIndexPairs {
     UnorderedIndexPairs::new(size)
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct UnorderedIndexPairs {
     size: usize,
     i: usize,
@@ -211,10 +215,13 @@ impl FusedIterator for UnorderedIndexPairs {}
 
 impl ExactSizeIterator for UnorderedIndexPairs {}
 
+/// Returns an iterator of all pairs `(&a, &b)` of elements of `array` where
+/// the index of `a` is less than the index of `b`.
 pub fn unordered_pairs<T>(array: &[T]) -> UnorderedPairs<'_, T> {
     UnorderedPairs::new(array)
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct UnorderedPairs<'a, T> {
     array: &'a [T],
     inner: UnorderedIndexPairs,
@@ -288,17 +295,26 @@ where
 }
 
 pub trait FromBits: PrimInt {
+    /// Converts an iterable of bits (most significant first) into an integer.
+    /// Does not guard against overflow/underflow.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use adventutil::FromBits;
+    ///
+    /// let n = u32::from_bits([true, false, true, false, true, false]);
+    /// assert_eq!(n, 42);
+    /// ```
     // TODO: Return None or Err on overflow?
-    fn from_bits<I: IntoIterator<Item = bool>>(bits: I) -> Self;
-}
-
-impl<T: PrimInt> FromBits for T {
     fn from_bits<I: IntoIterator<Item = bool>>(bits: I) -> Self {
-        bits.into_iter().fold(T::zero(), |n, b| {
-            (n << 1) + if b { T::one() } else { T::zero() }
+        bits.into_iter().fold(Self::zero(), |n, b| {
+            (n << 1) + if b { Self::one() } else { Self::zero() }
         })
     }
 }
+
+impl<T: PrimInt> FromBits for T {}
 
 #[cfg(test)]
 mod tests {
