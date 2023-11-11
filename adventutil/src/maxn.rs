@@ -1,5 +1,6 @@
 use std::cmp::Reverse;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MaxN<T> {
     n: usize,
     values: Vec<T>,
@@ -26,7 +27,11 @@ impl<T> MaxN<T> {
         }
     }
 
-    pub fn into_vec(self) -> Vec<T> {
+    pub fn values(&self) -> &[T] {
+        &self.values
+    }
+
+    pub fn into_values(self) -> Vec<T> {
         self.values
     }
 }
@@ -37,6 +42,15 @@ impl<T> IntoIterator for MaxN<T> {
 
     fn into_iter(self) -> Self::IntoIter {
         self.values.into_iter()
+    }
+}
+
+impl<'a, T> IntoIterator for &'a MaxN<T> {
+    type Item = &'a T;
+    type IntoIter = std::slice::Iter<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.values.iter()
     }
 }
 
@@ -55,5 +69,5 @@ where
 {
     let mut maxer = MaxN::new(n);
     maxer.extend(iter);
-    maxer.into_vec()
+    maxer.into_values()
 }
