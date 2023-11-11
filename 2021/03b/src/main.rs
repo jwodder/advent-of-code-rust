@@ -16,8 +16,14 @@ where
 {
     for x in 0..gr.width() {
         let col = gr.get_column(x).unwrap();
-        let (ones, zeroes): (Vec<bool>, Vec<bool>) = col.into_iter().partition(|b| **b);
-        let target = selector(ones.len(), zeroes.len());
+        let (ones, zeroes) = col.into_iter().fold((0, 0), |(ones, zeroes), &b| {
+            if b {
+                (ones + 1, zeroes)
+            } else {
+                (ones, zeroes + 1)
+            }
+        });
+        let target = selector(ones, zeroes);
         gr = gr.filter_rows(|row| row[x] == target).unwrap();
         if gr.height() == 1 {
             return u32::from_bits(gr.into_rows().next().unwrap());

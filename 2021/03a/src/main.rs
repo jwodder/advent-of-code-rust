@@ -6,8 +6,14 @@ fn solve(input: Input) -> u32 {
     let gamma = gr
         .columns()
         .map(|col| {
-            let (ones, zeroes): (Vec<bool>, Vec<bool>) = col.into_iter().partition(|b| **b);
-            ones.len() > zeroes.len()
+            let (ones, zeroes) = col.into_iter().fold((0, 0), |(ones, zeroes), &b| {
+                if b {
+                    (ones + 1, zeroes)
+                } else {
+                    (ones, zeroes + 1)
+                }
+            });
+            ones > zeroes
         })
         .collect::<Vec<_>>();
     let epsilon = gamma.iter().map(|&b| !b).collect::<Vec<_>>();
