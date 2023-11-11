@@ -6,14 +6,14 @@ use std::collections::HashSet;
 fn solve(input: Input) -> usize {
     let starting = <Grid<bool>>::from_drawing(&input.read()).unwrap();
     let mut active = starting
-        .enumerate()
-        .filter_map(|(coords, b)| {
-            b.then_some((
+        .into_true_coords()
+        .map(|coords| {
+            (
                 i32::try_from(coords.x).unwrap(),
                 i32::try_from(coords.y).unwrap(),
                 0,
                 0,
-            ))
+            )
         })
         .collect::<HashSet<_>>();
     for _ in 0..6 {

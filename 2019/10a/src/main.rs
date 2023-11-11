@@ -4,10 +4,7 @@ use std::collections::HashSet;
 
 fn solve(input: Input) -> usize {
     let grid = <Grid<bool>>::from_drawing(&input.read()).unwrap();
-    let asteroids = grid
-        .enumerate()
-        .filter_map(|(coords, &b)| b.then_some(coords))
-        .collect::<HashSet<_>>();
+    let asteroids = grid.into_true_coords().collect::<HashSet<_>>();
     asteroids
         .iter()
         .map(|&coords| {

@@ -122,6 +122,35 @@ impl<T> FusedIterator for IntoIter<T> {}
 
 impl<T> ExactSizeIterator for IntoIter<T> {}
 
+pub struct IntoTrueCoords(IntoIter<bool>);
+
+impl IntoTrueCoords {
+    pub(super) fn new(grid: Grid<bool>) -> Self {
+        IntoTrueCoords(grid.into_iter())
+    }
+}
+
+impl Iterator for IntoTrueCoords {
+    type Item = Coords;
+
+    fn next(&mut self) -> Option<Coords> {
+        loop {
+            let (coords, b) = self.0.next()?;
+            if b {
+                return Some(coords);
+            }
+        }
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.0.size_hint()
+    }
+}
+
+impl FusedIterator for IntoTrueCoords {}
+
+impl ExactSizeIterator for IntoTrueCoords {}
+
 pub struct IterCells<'a, T> {
     inner: IterCoords,
     grid: &'a Grid<T>,

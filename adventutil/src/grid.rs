@@ -235,6 +235,10 @@ impl Grid<bool> {
             points.contains(&bounds.at_coords(c, downwards))
         })
     }
+
+    pub fn into_true_coords(self) -> IntoTrueCoords {
+        IntoTrueCoords::new(self)
+    }
 }
 
 impl<T> IntoIterator for Grid<T> {

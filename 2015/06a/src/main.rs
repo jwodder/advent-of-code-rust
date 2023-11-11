@@ -68,7 +68,7 @@ fn solve(input: Input) -> usize {
             }
         }
     }
-    lit.into_values().filter(|&b| b).count()
+    lit.into_true_coords().count()
 }
 
 fn main() {
