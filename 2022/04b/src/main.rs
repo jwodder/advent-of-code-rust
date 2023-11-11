@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
+use adventutil::{ranges_overlap, Input};
 use std::ops::RangeInclusive;
 use std::str::FromStr;
 
@@ -10,7 +10,7 @@ struct RangePair {
 
 impl RangePair {
     fn is_self_overlapping(&self) -> bool {
-        self.first.start().max(self.second.start()) <= self.first.end().min(self.second.end())
+        ranges_overlap(self.first.clone(), self.second.clone())
     }
 }
 

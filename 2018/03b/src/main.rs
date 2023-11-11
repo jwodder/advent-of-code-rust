@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
+use adventutil::{ranges_overlap, Input};
 use std::collections::HashSet;
 use std::ops::Range;
 use std::str::FromStr;
@@ -22,11 +22,6 @@ impl Claim {
     }
 
     fn overlaps(&self, other: &Claim) -> bool {
-        fn ranges_overlap(r1: Range<usize>, r2: Range<usize>) -> bool {
-            r1.start.max(r2.start) < r1.end.min(r2.end)
-            //r2.start < r1.end && r1.start < r2.end
-        }
-
         ranges_overlap(self.xrange(), other.xrange())
             && ranges_overlap(self.yrange(), other.yrange())
     }
