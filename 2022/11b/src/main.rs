@@ -1,5 +1,5 @@
 use adventutil::counter::Counter;
-use adventutil::maxn::MaxN;
+use adventutil::maxn::maxn;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use std::str::FromStr;
@@ -113,9 +113,7 @@ fn solve(input: Input) -> u64 {
             }
         }
     }
-    let mut max2 = MaxN::new(2);
-    max2.extend(inspected.into_values());
-    max2.into_iter().product()
+    maxn(2, inspected.into_values()).into_iter().product()
 }
 
 fn gcd(mut a: u64, mut b: u64) -> u64 {

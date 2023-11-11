@@ -1,56 +1,33 @@
 use std::cmp::Reverse;
+use std::collections::BinaryHeap;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug)]
 pub struct MaxN<T> {
     n: usize,
-    values: Vec<T>,
+    heap: BinaryHeap<Reverse<T>>,
 }
 
-impl<T> MaxN<T> {
+impl<T: Ord> MaxN<T> {
     pub fn new(n: usize) -> Self {
         MaxN {
             n,
-            values: Vec::with_capacity(n + 1),
+            heap: BinaryHeap::with_capacity(n + 1),
         }
     }
 
-    pub fn add(&mut self, value: T)
-    where
-        T: Ord,
-    {
-        match self.values.binary_search_by_key(&Reverse(&value), Reverse) {
-            Err(i) if i == self.values.len() && self.values.len() == self.n => (),
-            Ok(i) | Err(i) => {
-                self.values.insert(i, value);
-                self.values.truncate(self.n);
-            }
+    pub fn add(&mut self, value: T) {
+        self.heap.push(Reverse(value));
+        if self.heap.len() > self.n {
+            let _ = self.heap.pop();
         }
     }
 
-    pub fn values(&self) -> &[T] {
-        &self.values
-    }
-
-    pub fn into_values(self) -> Vec<T> {
-        self.values
-    }
-}
-
-impl<T> IntoIterator for MaxN<T> {
-    type Item = T;
-    type IntoIter = std::vec::IntoIter<T>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        self.values.into_iter()
-    }
-}
-
-impl<'a, T> IntoIterator for &'a MaxN<T> {
-    type Item = &'a T;
-    type IntoIter = std::slice::Iter<'a, T>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        self.values.iter()
+    pub fn into_vec(self) -> Vec<T> {
+        self.heap
+            .into_sorted_vec()
+            .into_iter()
+            .map(|Reverse(v)| v)
+            .collect()
     }
 }
 
@@ -69,7 +46,7 @@ where
 {
     let mut maxer = MaxN::new(n);
     maxer.extend(iter);
-    maxer.into_values()
+    maxer.into_vec()
 }
 
 #[cfg(test)]
