@@ -237,6 +237,15 @@ impl Grid<bool> {
     }
 }
 
+impl<T> IntoIterator for Grid<T> {
+    type Item = (Coords, T);
+    type IntoIter = IntoIter<T>;
+
+    fn into_iter(self) -> IntoIter<T> {
+        IntoIter::new(self)
+    }
+}
+
 impl<C: Into<(usize, usize)>, T> Index<C> for Grid<T> {
     type Output = T;
 

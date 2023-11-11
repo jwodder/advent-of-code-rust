@@ -80,6 +80,48 @@ impl<'a, T> FusedIterator for Enumerate<'a, T> {}
 
 impl<'a, T> ExactSizeIterator for Enumerate<'a, T> {}
 
+pub struct IntoIter<T> {
+    coords_iter: IterCoords,
+    rows_iter: std::vec::IntoIter<Vec<T>>,
+    row: Option<std::vec::IntoIter<T>>,
+}
+
+impl<T> IntoIter<T> {
+    pub(super) fn new(grid: Grid<T>) -> Self {
+        let coords_iter = grid.iter_coords();
+        IntoIter {
+            coords_iter,
+            rows_iter: grid.data.into_iter(),
+            row: None,
+        }
+    }
+}
+
+impl<T> Iterator for IntoIter<T> {
+    type Item = (Coords, T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let coords = self.coords_iter.next()?;
+        loop {
+            if self.row.is_none() {
+                self.row = Some(self.rows_iter.next()?.into_iter());
+            }
+            match self.row.as_mut().unwrap().next() {
+                Some(value) => return Some((coords, value)),
+                None => self.row = None,
+            }
+        }
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.coords_iter.size_hint()
+    }
+}
+
+impl<T> FusedIterator for IntoIter<T> {}
+
+impl<T> ExactSizeIterator for IntoIter<T> {}
+
 pub struct IterCells<'a, T> {
     inner: IterCoords,
     grid: &'a Grid<T>,
@@ -312,6 +354,35 @@ mod tests {
         assert_eq!(iter.next(), Some((Coords::new(2, 1), &8)));
         assert_eq!(iter.size_hint(), (1, Some(1)));
         assert_eq!(iter.next(), Some((Coords::new(2, 2), &9)));
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_into_iter() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.into_iter();
+        assert_eq!(iter.size_hint(), (9, Some(9)));
+        assert_eq!(iter.next(), Some((Coords::new(0, 0), 1)));
+        assert_eq!(iter.size_hint(), (8, Some(8)));
+        assert_eq!(iter.next(), Some((Coords::new(0, 1), 2)));
+        assert_eq!(iter.size_hint(), (7, Some(7)));
+        assert_eq!(iter.next(), Some((Coords::new(0, 2), 3)));
+        assert_eq!(iter.size_hint(), (6, Some(6)));
+        assert_eq!(iter.next(), Some((Coords::new(1, 0), 4)));
+        assert_eq!(iter.size_hint(), (5, Some(5)));
+        assert_eq!(iter.next(), Some((Coords::new(1, 1), 5)));
+        assert_eq!(iter.size_hint(), (4, Some(4)));
+        assert_eq!(iter.next(), Some((Coords::new(1, 2), 6)));
+        assert_eq!(iter.size_hint(), (3, Some(3)));
+        assert_eq!(iter.next(), Some((Coords::new(2, 0), 7)));
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        assert_eq!(iter.next(), Some((Coords::new(2, 1), 8)));
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        assert_eq!(iter.next(), Some((Coords::new(2, 2), 9)));
         assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
         assert_eq!(iter.next(), None);
