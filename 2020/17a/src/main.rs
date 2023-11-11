@@ -1,6 +1,7 @@
 use adventutil::counter::Counter;
 use adventutil::grid::Grid;
 use adventutil::Input;
+use itertools::iproduct;
 use std::collections::HashSet;
 
 fn solve(input: Input) -> usize {
@@ -31,14 +32,7 @@ fn solve(input: Input) -> usize {
 }
 
 fn offsets() -> impl Iterator<Item = (i32, i32, i32)> {
-    [-1, 0, 1]
-        .into_iter()
-        .flat_map(|i| {
-            [-1, 0, 1]
-                .into_iter()
-                .flat_map(move |j| [-1, 0, 1].into_iter().map(move |k| (i, j, k)))
-        })
-        .filter(|&(i, j, k)| (i, j, k) != (0, 0, 0))
+    iproduct!(-1..=1, -1..=1, -1..=1).filter(|&(i, j, k)| (i, j, k) != (0, 0, 0))
 }
 
 fn main() {
