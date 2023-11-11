@@ -9,14 +9,9 @@ enum Point {
 
 fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();
-    let mut end = None;
-    for (coords, &c) in grid.enumerate() {
-        if c == 'E' {
-            end = Some(coords);
-            break;
-        }
-    }
-    let end = end.expect("End not found");
+    let Some((end, _)) = grid.enumerate().find(|(_, &c)| c == 'E') else {
+        panic!("End not found");
+    };
     dijkstra_length(
         Point::Moving(end),
         Point::LowestPoint,
