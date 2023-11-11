@@ -1,7 +1,7 @@
+use adventutil::area::Area;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{ranges_overlap, Input};
+use adventutil::Input;
 use std::collections::HashSet;
-use std::ops::Range;
 use std::str::FromStr;
 
 struct Claim {
@@ -13,17 +13,17 @@ struct Claim {
 }
 
 impl Claim {
-    fn yrange(&self) -> Range<usize> {
-        self.top_margin..(self.top_margin + self.height)
-    }
-
-    fn xrange(&self) -> Range<usize> {
-        self.left_margin..(self.left_margin + self.width)
+    fn area(&self) -> Area<usize> {
+        Area {
+            start_x: self.left_margin,
+            end_x: self.left_margin + self.width,
+            start_y: self.top_margin,
+            end_y: self.top_margin + self.height,
+        }
     }
 
     fn overlaps(&self, other: &Claim) -> bool {
-        ranges_overlap(self.xrange(), other.xrange())
-            && ranges_overlap(self.yrange(), other.yrange())
+        self.area().intersects(other.area())
     }
 }
 

@@ -1,8 +1,7 @@
+use adventutil::area::{self, Area};
 use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
-use itertools::{Itertools, Product};
-use std::ops::Range;
 use std::str::FromStr;
 
 struct Claim {
@@ -40,11 +39,14 @@ impl FromStr for Claim {
 
 impl IntoIterator for Claim {
     type Item = (usize, usize);
-    type IntoIter = Product<Range<usize>, Range<usize>>;
+    type IntoIter = area::IntoIter<usize>;
 
     fn into_iter(self) -> Self::IntoIter {
-        (self.left_margin..(self.left_margin + self.width))
-            .cartesian_product(self.top_margin..(self.top_margin + self.height))
+        Area::from_ranges(
+            self.left_margin..(self.left_margin + self.width),
+            self.top_margin..(self.top_margin + self.height),
+        )
+        .into_iter()
     }
 }
 

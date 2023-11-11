@@ -1,8 +1,7 @@
+use adventutil::area::{self, Area};
 use adventutil::grid::{Coords, Grid, GridBounds};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
-use itertools::{Itertools, Product};
-use std::ops::RangeInclusive;
 use std::str::FromStr;
 
 enum Instruction {
@@ -12,13 +11,13 @@ enum Instruction {
 }
 
 impl Instruction {
-    fn covered(self) -> Product<RangeInclusive<usize>, RangeInclusive<usize>> {
+    fn covered(self) -> area::IntoIter<usize> {
         let (c1, c2) = match self {
             Instruction::TurnOn(c1, c2) => (c1, c2),
             Instruction::TurnOff(c1, c2) => (c1, c2),
             Instruction::Toggle(c1, c2) => (c1, c2),
         };
-        (c1.y..=c2.y).cartesian_product(c1.x..=c2.x)
+        Area::from_ranges(c1.y..(c2.y + 1), c1.x..(c2.x + 1)).into_iter()
     }
 }
 

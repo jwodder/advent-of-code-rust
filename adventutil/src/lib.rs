@@ -1,3 +1,4 @@
+pub mod area;
 pub mod closure;
 pub mod counter;
 pub mod grid;
