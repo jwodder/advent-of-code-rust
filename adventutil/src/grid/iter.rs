@@ -103,10 +103,11 @@ impl<T> Iterator for IntoIter<T> {
     fn next(&mut self) -> Option<Self::Item> {
         let coords = self.coords_iter.next()?;
         loop {
-            if self.row.is_none() {
-                self.row = Some(self.rows_iter.next()?.into_iter());
-            }
-            match self.row.as_mut().unwrap().next() {
+            let cell_iter = match self.row.as_mut() {
+                Some(it) => it,
+                None => self.row.insert(self.rows_iter.next()?.into_iter()),
+            };
+            match cell_iter.next() {
                 Some(value) => return Some((coords, value)),
                 None => self.row = None,
             }
