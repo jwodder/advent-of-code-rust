@@ -17,6 +17,7 @@ impl FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
+        use Instruction::*;
         let inst = s
             .get(0..1)
             .ok_or_else(|| ParseError::InvalidToken(s.into()))?;
@@ -24,7 +25,6 @@ impl FromStr for Instruction {
             .get(1..)
             .ok_or_else(|| ParseError::InvalidToken(s.into()))?
             .parse::<i32>()?;
-        use Instruction::*;
         match inst {
             "N" => Ok(North(arg)),
             "S" => Ok(South(arg)),

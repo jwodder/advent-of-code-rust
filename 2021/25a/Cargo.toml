@@ -13,3 +13,6 @@ keywords = ["grid-movement"]
 [dependencies]
 adventutil = { path = "../../adventutil" }
 thiserror = "1.0.40"
+
+[lints]
+workspace = true

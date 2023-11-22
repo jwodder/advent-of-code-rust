@@ -53,6 +53,7 @@ fn solve(input: Input) -> i32 {
 }
 
 fn run(program: Vec<Operation>) -> Option<i32> {
+    use Operation::*;
     let mut acc = 0;
     let mut i = 0;
     let mut seen = HashSet::new();
@@ -63,7 +64,6 @@ fn run(program: Vec<Operation>) -> Option<i32> {
         } else if i_usize == program.len() {
             return Some(acc);
         }
-        use Operation::*;
         match program.get(i_usize)? {
             Acc(arg) => {
                 acc += arg;

@@ -1,6 +1,7 @@
 use super::{Cell, Coords, Direction, Grid, GridBounds};
 use std::iter::FusedIterator;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct IterCoords {
     height: usize,
     width: usize,
@@ -48,6 +49,7 @@ impl FusedIterator for IterCoords {}
 
 impl ExactSizeIterator for IterCoords {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Enumerate<'a, T> {
     inner: IterCoords,
     grid: &'a Grid<T>,
@@ -76,10 +78,11 @@ impl<'a, T> Iterator for Enumerate<'a, T> {
     }
 }
 
-impl<'a, T> FusedIterator for Enumerate<'a, T> {}
+impl<T> FusedIterator for Enumerate<'_, T> {}
 
-impl<'a, T> ExactSizeIterator for Enumerate<'a, T> {}
+impl<T> ExactSizeIterator for Enumerate<'_, T> {}
 
+#[derive(Clone, Debug)]
 pub struct IntoIter<T> {
     coords_iter: IterCoords,
     rows_iter: std::vec::IntoIter<Vec<T>>,
@@ -123,6 +126,7 @@ impl<T> FusedIterator for IntoIter<T> {}
 
 impl<T> ExactSizeIterator for IntoIter<T> {}
 
+#[derive(Clone, Debug)]
 pub struct IntoTrueCoords(IntoIter<bool>);
 
 impl IntoTrueCoords {
@@ -152,6 +156,7 @@ impl FusedIterator for IntoTrueCoords {}
 
 impl ExactSizeIterator for IntoTrueCoords {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct IterCells<'a, T> {
     inner: IterCoords,
     grid: &'a Grid<T>,
@@ -179,10 +184,11 @@ impl<'a, T> Iterator for IterCells<'a, T> {
     }
 }
 
-impl<'a, T> FusedIterator for IterCells<'a, T> {}
+impl<T> FusedIterator for IterCells<'_, T> {}
 
-impl<'a, T> ExactSizeIterator for IterCells<'a, T> {}
+impl<T> ExactSizeIterator for IterCells<'_, T> {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Columns<'a, T> {
     grid: &'a Grid<T>,
     x: usize,
@@ -211,10 +217,11 @@ impl<'a, T> Iterator for Columns<'a, T> {
     }
 }
 
-impl<'a, T> FusedIterator for Columns<'a, T> {}
+impl<T> FusedIterator for Columns<'_, T> {}
 
-impl<'a, T> ExactSizeIterator for Columns<'a, T> {}
+impl<T> ExactSizeIterator for Columns<'_, T> {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Cardinals(usize);
 
 impl Cardinals {
@@ -248,6 +255,7 @@ impl FusedIterator for Cardinals {}
 
 impl ExactSizeIterator for Cardinals {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AdjacentDirs(usize);
 
 impl AdjacentDirs {
@@ -285,6 +293,7 @@ impl FusedIterator for AdjacentDirs {}
 
 impl ExactSizeIterator for AdjacentDirs {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AdjacentCells<'a, T> {
     grid: &'a Grid<T>,
     center: Coords,
@@ -317,8 +326,9 @@ impl<'a, T> Iterator for AdjacentCells<'a, T> {
     }
 }
 
-impl<'a, T> FusedIterator for AdjacentCells<'a, T> {}
+impl<T> FusedIterator for AdjacentCells<'_, T> {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AdjacentWrapCells<'a, T> {
     grid: &'a Grid<T>,
     center: Coords,
@@ -352,9 +362,9 @@ impl<'a, T> Iterator for AdjacentWrapCells<'a, T> {
     }
 }
 
-impl<'a, T> FusedIterator for AdjacentWrapCells<'a, T> {}
+impl<T> FusedIterator for AdjacentWrapCells<'_, T> {}
 
-impl<'a, T> ExactSizeIterator for AdjacentWrapCells<'a, T> {}
+impl<T> ExactSizeIterator for AdjacentWrapCells<'_, T> {}
 
 #[cfg(test)]
 mod tests {

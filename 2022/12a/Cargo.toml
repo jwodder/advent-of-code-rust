@@ -12,3 +12,6 @@ keywords = ["graph-theory", "shortest-path"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

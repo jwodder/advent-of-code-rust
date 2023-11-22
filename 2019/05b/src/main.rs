@@ -116,7 +116,7 @@ impl FromStr for Intcode {
     fn from_str(s: &str) -> Result<Intcode, ParseIntError> {
         Ok(Intcode(
             s.split(',')
-                .map(|s| s.parse::<i32>())
+                .map(str::parse::<i32>)
                 .collect::<Result<Vec<_>, _>>()?,
         ))
     }

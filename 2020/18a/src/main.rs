@@ -19,7 +19,7 @@ struct Tokenize<'a> {
     inner: std::iter::Peekable<std::str::Chars<'a>>,
 }
 
-impl<'a> Iterator for Tokenize<'a> {
+impl Iterator for Tokenize<'_> {
     type Item = Token;
 
     fn next(&mut self) -> Option<Token> {

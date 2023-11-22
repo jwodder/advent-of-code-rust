@@ -22,7 +22,7 @@ impl Rule {
         self.parses(&mut parser, rules) && parser.eof().is_ok()
     }
 
-    fn parses(&self, parser: &mut PullParser, rules: &RuleMap) -> bool {
+    fn parses(&self, parser: &mut PullParser<'_>, rules: &RuleMap) -> bool {
         match self {
             Rule::Terminal(c) => parser.skip(*c).is_ok(),
             Rule::Reference(idx) => rules[idx].parses(parser, rules),

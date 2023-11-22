@@ -24,16 +24,15 @@ impl DepthLookup {
     }
 
     fn get(&mut self, i: usize) -> u32 {
-        match self.cache.get(&i) {
-            Some(j) => *j,
-            None => {
-                let depth = match self.outer2inner.get(&i) {
-                    Some(j) => 1 + self.get(*j),
-                    None => 0,
-                };
-                self.cache.insert(i, depth);
-                depth
-            }
+        if let Some(&j) = self.cache.get(&i) {
+            j
+        } else {
+            let depth = match self.outer2inner.get(&i) {
+                Some(j) => 1 + self.get(*j),
+                None => 0,
+            };
+            self.cache.insert(i, depth);
+            depth
         }
     }
 }

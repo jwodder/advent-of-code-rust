@@ -18,9 +18,7 @@ pub(super) fn move_in_range(x: usize, range: Range<usize>, delta: Ordering) -> O
 }
 
 pub(super) fn move_in_range_wrap(x: usize, range: Range<usize>, delta: Ordering) -> usize {
-    if range.is_empty() {
-        panic!("Empty range");
-    }
+    assert!(!range.is_empty(), "Empty range");
     let x = match delta {
         Ordering::Less => x.checked_sub(1).unwrap_or(range.end - 1),
         Ordering::Equal => x,

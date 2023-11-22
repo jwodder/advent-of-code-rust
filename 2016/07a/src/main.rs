@@ -6,6 +6,7 @@ fn supports_tls(s: &str) -> bool {
     for (bracketed, ss) in [false, true].into_iter().cycle().zip(s.split(['[', ']'])) {
         let chars = ss.chars().collect::<Vec<_>>();
         for w in chars.windows(4) {
+            assert!(w.len() > 3);
             if w[0] != w[1] && w[1] == w[2] && w[0] == w[3] {
                 if bracketed {
                     has_bracketed_abba = true;

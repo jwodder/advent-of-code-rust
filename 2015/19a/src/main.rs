@@ -38,7 +38,7 @@ fn split_atoms(s: String) -> Vec<String> {
         .peekable()
         .batching(|iter| {
             let mut atom = String::from(iter.next()?);
-            atom.extend(iter.take_while_ref(|c| c.is_ascii_lowercase()));
+            atom.extend(iter.take_while_ref(char::is_ascii_lowercase));
             Some(atom)
         })
         .collect()

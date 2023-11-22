@@ -16,3 +16,6 @@ json = "0.12.4"
 
 [dev-dependencies]
 rstest = { version = "0.18.2", default-features = false }
+
+[lints]
+workspace = true

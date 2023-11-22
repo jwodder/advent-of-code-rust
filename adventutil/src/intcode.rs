@@ -158,7 +158,7 @@ impl FromStr for Intcode {
     fn from_str(s: &str) -> Result<Intcode, ParseIntError> {
         Ok(Intcode::new(
             s.split(',')
-                .map(|s| s.parse::<i64>())
+                .map(str::parse::<i64>)
                 .collect::<Result<Vec<_>, _>>()?,
         ))
     }

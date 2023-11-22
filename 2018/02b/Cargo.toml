@@ -12,3 +12,6 @@ keywords = ["Hamming-distance"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

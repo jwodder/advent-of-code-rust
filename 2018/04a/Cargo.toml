@@ -12,3 +12,6 @@ keywords = ["most-common"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

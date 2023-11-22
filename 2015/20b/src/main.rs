@@ -70,7 +70,7 @@ fn powers(p: u32, k: u32) -> Powers {
     Powers::new(p, k)
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Powers {
     base: u32,
     accum: u32,

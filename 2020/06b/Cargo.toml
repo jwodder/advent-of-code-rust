@@ -12,3 +12,6 @@ keywords = ["set-intersection"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

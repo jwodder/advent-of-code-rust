@@ -51,10 +51,9 @@ fn pass2id(pass: &str) -> u32 {
 
 fn solve(input: Input) -> u32 {
     let mut ids = input.lines().map(|s| pass2id(&s)).collect::<Vec<_>>();
-    ids.sort();
+    ids.sort_unstable();
     ids.windows(2)
-        .filter_map(|w| (w[0] + 2 == w[1]).then_some(w[0] + 1))
-        .next()
+        .find_map(|w| (w[0] + 2 == w[1]).then_some(w[0] + 1))
         .unwrap()
 }
 

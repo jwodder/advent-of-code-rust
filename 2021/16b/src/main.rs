@@ -45,6 +45,7 @@ fn decode(s: &str) -> Packet {
     decode_bits(&hex2bits(s)).0
 }
 
+#[allow(clippy::missing_asserts_for_indexing)]
 fn decode_bits(bits: &[bool]) -> (Packet, &[bool]) {
     let version = bits2num(&bits[0..3]);
     let type_id = bits2num(&bits[3..6]);

@@ -62,7 +62,7 @@ fn feedback_loop(program: &Intcode, phases: Vec<i64>) -> i64 {
         });
     }
     let mut last = None;
-    for value in loop_in.iter() {
+    for value in &loop_in {
         let _ = last.insert(value);
         if loop_out.send(value).is_err() {
             break;

@@ -12,3 +12,6 @@ keywords = ["graphical-output", "interpreter"]
 
 [dependencies]
 adventutil = { path = "../../adventutil", features = ["ocr"] }
+
+[lints]
+workspace = true

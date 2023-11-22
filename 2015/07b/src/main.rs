@@ -63,9 +63,7 @@ fn follow_instructions<I: IntoIterator<Item = Instruction>>(iter: I) -> u16 {
             .iter()
             .filter_map(|(w, i)| i.operate(&state).map(|v| (w.clone(), v)))
             .collect::<Vec<_>>();
-        if ready.is_empty() {
-            panic!("Nothing to connect");
-        }
+        assert!(!ready.is_empty(), "Nothing to connect");
         for (w, value) in ready {
             state.assign(&w, value);
             unfollowed.remove(&w);

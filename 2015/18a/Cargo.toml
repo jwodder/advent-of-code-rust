@@ -12,3 +12,6 @@ keywords = ["game-of-life"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

@@ -3,7 +3,7 @@ use adventutil::Input;
 fn solve(input: Input) -> u64 {
     let mut joltages = input.parse_lines::<u32>().collect::<Vec<_>>();
     joltages.push(0);
-    joltages.sort();
+    joltages.sort_unstable();
     let qty = joltages.len();
     // path_qtys[i] = number of possible paths through `joltages` that start
     // with adapter `i`

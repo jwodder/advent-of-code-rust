@@ -12,3 +12,6 @@ keywords = ["optimization", "partitions", "subset-sum"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

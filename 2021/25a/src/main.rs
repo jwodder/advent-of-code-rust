@@ -12,7 +12,7 @@ enum Cucumber {
 }
 
 impl fmt::Display for Cucumber {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Cucumber::Empty => write!(f, "."),
             Cucumber::East => write!(f, ">"),
@@ -80,7 +80,7 @@ fn moves_south(cell: Cell<'_, Cucumber>) -> bool {
 }
 
 impl fmt::Display for State {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.0)
     }
 }

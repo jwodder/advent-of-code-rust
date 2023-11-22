@@ -12,3 +12,6 @@ keywords = ["topological-sort", "tree"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

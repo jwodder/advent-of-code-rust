@@ -295,7 +295,7 @@ impl PointBounds {
     pub fn for_points<I: IntoIterator<Item = Point>>(iter: I) -> Option<PointBounds> {
         let mut iter = iter.into_iter();
         let bounds = PointBounds::for_point(iter.next()?);
-        Some(iter.fold(bounds, |bounds, p| bounds.with_point(p)))
+        Some(iter.fold(bounds, PointBounds::with_point))
     }
 }
 

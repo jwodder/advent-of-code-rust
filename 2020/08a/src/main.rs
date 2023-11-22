@@ -6,7 +6,7 @@ use std::str::FromStr;
 enum Operation {
     Acc(i32),
     Jmp(i32),
-    Nop(i32),
+    Nop,
 }
 
 impl FromStr for Operation {
@@ -20,7 +20,7 @@ impl FromStr for Operation {
         match op {
             "acc" => Ok(Acc(arg)),
             "jmp" => Ok(Jmp(arg)),
-            "nop" => Ok(Nop(arg)),
+            "nop" => Ok(Nop),
             s => Err(ParseError::InvalidToken(s.into())),
         }
     }
@@ -41,7 +41,7 @@ fn solve(input: Input) -> i32 {
             Jmp(arg) => {
                 i += arg;
             }
-            Nop(_) => {
+            Nop => {
                 i += 1;
             }
         }

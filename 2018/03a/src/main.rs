@@ -53,7 +53,7 @@ impl IntoIterator for Claim {
 fn solve(input: Input) -> usize {
     input
         .parse_lines::<Claim>()
-        .flat_map(|c| c.into_iter())
+        .flat_map(IntoIterator::into_iter)
         .collect::<Counter<(usize, usize)>>()
         .into_values()
         .filter(|&qty| qty >= 2)

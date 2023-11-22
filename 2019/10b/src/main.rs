@@ -18,18 +18,18 @@ fn solve(input: Input) -> usize {
                 let ydiff = i32::try_from(coords.y).unwrap() - i32::try_from(c2.y).unwrap();
                 let xdiff = i32::try_from(c2.x).unwrap() - i32::try_from(coords.x).unwrap();
                 let (ray, dist) = simplify_dist(ydiff, xdiff);
-                rays.entry(ray).or_default().push_back((dist, c2))
+                rays.entry(ray).or_default().push_back((dist, c2));
             }
             rays
         })
-        .max_by_key(|rays| rays.len())
+        .max_by_key(BTreeMap::len)
         .unwrap();
-    for (_, raypoints) in rays.iter_mut() {
+    for raypoints in rays.values_mut() {
         raypoints.make_contiguous().sort_by_key(|&(dist, _)| dist);
     }
     let mut destroyed = 0;
     loop {
-        for (_, raypoints) in rays.iter_mut() {
+        for raypoints in rays.values_mut() {
             if let Some((_, coords)) = raypoints.pop_front() {
                 destroyed += 1;
                 if destroyed == 200 {

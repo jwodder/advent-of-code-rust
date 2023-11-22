@@ -70,7 +70,7 @@ fn apply_mask(mask: &[Option<bool>], address: u64) -> Vec<u64> {
     for (i, &b) in mask.iter().rev().enumerate() {
         match b {
             Some(true) => {
-                for value in outputs.iter_mut() {
+                for value in &mut outputs {
                     *value |= 1 << i;
                 }
             }
@@ -148,7 +148,7 @@ mod tests {
             None,
         ];
         let mut masked = apply_mask(&mask[..], 42);
-        masked.sort();
+        masked.sort_unstable();
         assert_eq!(masked, [26, 27, 58, 59]);
     }
 
@@ -193,7 +193,7 @@ mod tests {
             None,
         ];
         let mut masked = apply_mask(&mask[..], 26);
-        masked.sort();
+        masked.sort_unstable();
         assert_eq!(masked, [16, 17, 18, 19, 24, 25, 26, 27]);
     }
 

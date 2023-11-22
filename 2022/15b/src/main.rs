@@ -1,3 +1,4 @@
+#![allow(clippy::range_plus_one)]
 use adventutil::gridgeom::Point;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
@@ -58,14 +59,11 @@ impl RangeSet {
                 Some(i)
             }
             Ok(_) => None,
-            Err(i) if i > 0 && rng.start <= self.0[i - 1].end => {
-                if rng.end > self.0[i - 1].end {
+            Err(i) if i > 0 && rng.start <= self.0[i - 1].end => (rng.end > self.0[i - 1].end)
+                .then(|| {
                     self.0[i - 1] = self.0[i - 1].start..rng.end;
-                    Some(i - 1)
-                } else {
-                    None
-                }
-            }
+                    i - 1
+                }),
             Err(i) => {
                 self.0.insert(i, rng);
                 Some(i)

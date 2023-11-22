@@ -25,7 +25,7 @@ struct TestCase<'a> {
     answer: Answer,
 }
 
-impl<'a> TestCase<'a> {
+impl TestCase<'_> {
     async fn run(self) -> bool {
         log::info!("RUNNING: {self}");
         let mut cmd = Command::new("cargo");
@@ -44,20 +44,17 @@ impl<'a> TestCase<'a> {
         match timeout(TIMEOUT, cmd.output()).await {
             Ok(Ok(out)) => {
                 if out.status.success() {
-                    match String::from_utf8(out.stdout) {
-                        Ok(s) => {
-                            if s.trim() == self.answer.answer {
-                                log::info!("PASS: {self}");
-                                true
-                            } else {
-                                log::error!("FAIL: {self}");
-                                false
-                            }
-                        }
-                        Err(_) => {
-                            log::info!("Problem {self} binary emitted non-UTF-8");
+                    if let Ok(s) = String::from_utf8(out.stdout) {
+                        if s.trim() == self.answer.answer {
+                            log::info!("PASS: {self}");
+                            true
+                        } else {
+                            log::error!("FAIL: {self}");
                             false
                         }
+                    } else {
+                        log::info!("Problem {self} binary emitted non-UTF-8");
+                        false
                     }
                 } else {
                     log::error!("Problem {} binary failed: {}", self, out.status);
@@ -77,8 +74,8 @@ impl<'a> TestCase<'a> {
     }
 }
 
-impl<'a> fmt::Display for TestCase<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl fmt::Display for TestCase<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}-{}", self.year, self.answer.problem)
     }
 }
@@ -87,12 +84,12 @@ impl<'a> fmt::Display for TestCase<'a> {
 async fn main() -> anyhow::Result<ExitCode> {
     fern::Dispatch::new()
         .format(|out, message, record| {
-            out.finish(format_args!("[{:<5}] {}", record.level(), message))
+            out.finish(format_args!("[{:<5}] {}", record.level(), message));
         })
         .level(log::LevelFilter::Debug)
         .chain(std::io::stderr())
         .apply()
-        .unwrap();
+        .expect("no other logger should have been previously initialized");
     let mut cases = Vec::new();
     let workspace_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
         .parent()
@@ -129,7 +126,7 @@ async fn main() -> anyhow::Result<ExitCode> {
         }
     }
     if iter(cases)
-        .map(|c| c.run())
+        .map(TestCase::run)
         .buffer_unordered(WORKERS)
         .all(|r| async move { r })
         .await

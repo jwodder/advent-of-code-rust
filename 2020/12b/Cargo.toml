@@ -12,3 +12,6 @@ keywords = ["grid-movement", "taxicab-metric"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

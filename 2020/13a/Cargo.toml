@@ -12,3 +12,6 @@ keywords = ["divisibility"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

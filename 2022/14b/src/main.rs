@@ -10,6 +10,7 @@ impl RockPath {
     fn points(self) -> Vec<Point> {
         let mut points = vec![self.0[0]];
         for w in self.0.windows(2) {
+            assert!(w.len() > 1);
             points.extend(points_added(w[0], w[1] - w[0]).unwrap());
         }
         points

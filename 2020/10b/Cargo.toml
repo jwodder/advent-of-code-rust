@@ -12,3 +12,6 @@ keywords = ["dynamic-programming", "graph-theory", "graph-traversal", "permutati
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

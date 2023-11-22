@@ -12,3 +12,6 @@ keywords = ["taxicab-metric"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

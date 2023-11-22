@@ -63,7 +63,7 @@ impl Location {
 fn solve(input: Input) -> u32 {
     input
         .parse_lines::<Command>()
-        .fold(Location::new(), |loc, cmd| loc.domove(cmd))
+        .fold(Location::new(), Location::domove)
         .product()
 }
 

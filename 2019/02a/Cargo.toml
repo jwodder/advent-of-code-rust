@@ -12,3 +12,6 @@ keywords = ["intcode"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

@@ -14,3 +14,6 @@ keywords = ["md5"]
 adventutil = { path = "../../adventutil" }
 hex = "0.4.3"
 md-5 = "0.10.5"
+
+[lints]
+workspace = true

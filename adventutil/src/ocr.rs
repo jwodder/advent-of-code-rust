@@ -108,24 +108,27 @@ mod tests {
         let fonts = load_fonts().unwrap();
         let mut heights = HashSet::new();
         for f in &fonts {
-            if !heights.insert(f.height) {
-                panic!("Multiple fonts with height {}", f.height);
-            }
+            assert!(
+                heights.insert(f.height),
+                "Multiple fonts with height {}",
+                f.height
+            );
         }
         for f in fonts {
             let mut bitmaps = HashSet::new();
             for glyph in f.glyphs {
-                if glyph.bitmap.height() != f.height {
-                    panic!(
-                        "Glyph for {:?} has height {} instead of font's {}",
-                        glyph.character,
-                        glyph.bitmap.height(),
-                        f.height
-                    );
-                }
-                if !bitmaps.insert(glyph.bitmap.clone()) {
-                    panic!("Multiple glyphs with bitmap:\n{}", glyph.bitmap.draw());
-                }
+                assert!(
+                    glyph.bitmap.height() == f.height,
+                    "Glyph for {:?} has height {} instead of font's {}",
+                    glyph.character,
+                    glyph.bitmap.height(),
+                    f.height
+                );
+                assert!(
+                    bitmaps.insert(glyph.bitmap.clone()),
+                    "Multiple glyphs with bitmap:\n{}",
+                    glyph.bitmap.draw()
+                );
             }
         }
     }

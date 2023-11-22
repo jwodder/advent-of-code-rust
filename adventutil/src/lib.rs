@@ -30,8 +30,7 @@ impl Input {
     pub fn from_env() -> Input {
         std::env::args_os()
             .nth(1)
-            .map(|s| Input::File(s.into()))
-            .unwrap_or(Input::Stdin)
+            .map_or(Input::Stdin, |s| Input::File(s.into()))
     }
 
     pub fn read(self) -> String {
@@ -92,6 +91,7 @@ impl From<&'static str> for Input {
     }
 }
 
+#[derive(Debug)]
 pub enum Lines {
     Stdin(io::Lines<io::StdinLock<'static>>),
     File(io::Lines<BufReader<File>>),
@@ -105,11 +105,12 @@ impl Iterator for Lines {
         match self {
             Lines::Stdin(i) => i.next().map(|r| r.expect("Error reading input")),
             Lines::File(i) => i.next().map(|r| r.expect("Error reading input")),
-            Lines::Str(i) => i.next().map(|s| s.to_string()),
+            Lines::Str(i) => i.next().map(ToString::to_string),
         }
     }
 }
 
+#[derive(Debug)]
 pub struct Paragraphs {
     inner: Lines,
     buffer: Vec<String>,
@@ -251,9 +252,9 @@ impl<'a, T> Iterator for UnorderedPairs<'a, T> {
     }
 }
 
-impl<'a, T> FusedIterator for UnorderedPairs<'a, T> {}
+impl<T> FusedIterator for UnorderedPairs<'_, T> {}
 
-impl<'a, T> ExactSizeIterator for UnorderedPairs<'a, T> {}
+impl<T> ExactSizeIterator for UnorderedPairs<'_, T> {}
 
 /// Returns the length of the shortest path from `start` to `end`.  `func` must
 /// be a function that takes a vertex `v` and returns an iterable of all of its

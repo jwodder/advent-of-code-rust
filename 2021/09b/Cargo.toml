@@ -12,3 +12,6 @@ keywords = ["graph-theory", "transitive-closure"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

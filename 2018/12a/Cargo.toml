@@ -12,3 +12,6 @@ keywords = ["cellular-automata"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

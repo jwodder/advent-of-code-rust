@@ -13,3 +13,6 @@ keywords = ["graphical-output"]
 [dependencies]
 adventutil = { path = "../../adventutil", features = ["ocr"] }
 itertools = "0.11.0"
+
+[lints]
+workspace = true

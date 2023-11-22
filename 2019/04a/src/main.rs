@@ -21,6 +21,7 @@ fn valid(n: u32) -> bool {
     }
     let mut has_double = false;
     for w in digits.windows(2) {
+        assert!(w.len() > 1);
         if w[0] == w[1] {
             has_double = true;
         }

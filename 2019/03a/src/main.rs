@@ -16,6 +16,7 @@ impl FromStr for Direction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Direction, ParseError> {
+        use Direction::*;
         let inst = s
             .get(0..1)
             .ok_or_else(|| ParseError::InvalidToken(s.into()))?;
@@ -23,7 +24,6 @@ impl FromStr for Direction {
             .get(1..)
             .ok_or_else(|| ParseError::InvalidToken(s.into()))?
             .parse::<i32>()?;
-        use Direction::*;
         match inst {
             "U" => Ok(Up(arg)),
             "D" => Ok(Down(arg)),

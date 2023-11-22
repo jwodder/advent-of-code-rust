@@ -66,7 +66,7 @@ fn solve(input: Input, y: i32) -> usize {
         .collect::<HashSet<_>>();
     let beacons = sensors
         .iter()
-        .flat_map(|s| (s.beacon.y == y).then_some(s.beacon))
+        .filter_map(|s| (s.beacon.y == y).then_some(s.beacon))
         .collect::<HashSet<_>>();
     (&covered - &beacons).len()
 }

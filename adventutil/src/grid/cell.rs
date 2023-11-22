@@ -117,7 +117,7 @@ impl<'a, T> Cell<'a, T> {
     }
 }
 
-impl<'a, T> Deref for Cell<'a, T> {
+impl<T> Deref for Cell<'_, T> {
     type Target = T;
 
     fn deref(&self) -> &T {
@@ -125,7 +125,7 @@ impl<'a, T> Deref for Cell<'a, T> {
     }
 }
 
-impl<'a, T: PartialEq> PartialEq<T> for Cell<'a, T> {
+impl<T: PartialEq> PartialEq<T> for Cell<'_, T> {
     fn eq(&self, other: &T) -> bool {
         self.get() == other
     }

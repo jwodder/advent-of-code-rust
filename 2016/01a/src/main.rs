@@ -58,7 +58,7 @@ fn solve(input: Input) -> i32 {
     input
         .parse_csv_line::<Instruction>()
         .into_iter()
-        .fold(Position::new(), |p, i| p.domove(i))
+        .fold(Position::new(), Position::domove)
         .distance()
 }
 

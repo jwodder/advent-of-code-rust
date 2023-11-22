@@ -54,7 +54,7 @@ fn solve(input: Input) -> usize {
         }
     }
     grid.into_iter()
-        .flat_map(|row| row.into_iter())
+        .flat_map(IntoIterator::into_iter)
         .filter(|&b| b)
         .count()
 }

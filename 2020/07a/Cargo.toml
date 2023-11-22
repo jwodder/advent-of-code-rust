@@ -13,3 +13,6 @@ keywords = ["transitive-closure", "tree"]
 [dependencies]
 adventutil = { path = "../../adventutil" }
 itertools = "0.11.0"
+
+[lints]
+workspace = true

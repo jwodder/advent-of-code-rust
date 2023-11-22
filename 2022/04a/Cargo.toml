@@ -12,3 +12,6 @@ keywords = ["subset"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

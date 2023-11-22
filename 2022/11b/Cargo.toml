@@ -12,3 +12,6 @@ keywords = ["divisibility", "interpreter", "modular-arithmetic"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

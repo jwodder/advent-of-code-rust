@@ -15,7 +15,7 @@ fn solve(input: Input) -> u32 {
                 components.push(dir.to_string());
             }
         } else if let Ok((size, _)) = parse_file_size(&ln) {
-            for i in 0..(components.len() + 1) {
+            for i in 0..=components.len() {
                 *dirsizes.entry(components[0..i].to_vec()).or_insert(0) += size;
             }
         } else if ln != "$ ls" && !ln.starts_with("dir ") {

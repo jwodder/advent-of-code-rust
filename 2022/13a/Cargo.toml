@@ -17,3 +17,6 @@ thiserror = "1.0.40"
 
 [dev-dependencies]
 rstest = { version = "0.18.2", default-features = false }
+
+[lints]
+workspace = true

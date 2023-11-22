@@ -8,6 +8,7 @@ fn is_nice(s: &str) -> bool {
     let mut aba = false;
     let mut prev = None;
     for (i, pair) in chars.windows(2).enumerate() {
+        assert!(pair.len() > 1);
         if let Some(c) = prev {
             if pair[1] == c {
                 aba = true;

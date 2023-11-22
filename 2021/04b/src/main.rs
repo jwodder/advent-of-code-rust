@@ -22,7 +22,7 @@ impl Board {
             .filter_map(|(coord, &v)| (v == value).then_some(coord))
             .for_each(|coord| {
                 self.marked.insert(coord);
-            })
+            });
     }
 
     fn wins(&self) -> bool {

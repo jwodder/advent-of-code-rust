@@ -79,7 +79,7 @@ fn partitionable(values: &[u64], target_weight: u64) -> bool {
     let t = usize::try_from(target_weight).unwrap();
     let n = values.len();
     let mut tbl = vec![vec![false; t + 1]; n + 1];
-    for row in tbl.iter_mut() {
+    for row in &mut tbl {
         row[0] = true;
     }
     for m in 1..=n {

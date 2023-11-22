@@ -97,7 +97,7 @@ impl<T> Grid<T> {
     {
         let bounds = (range.start_bound().cloned(), range.end_bound().cloned());
         Grid {
-            data: self.data.get(bounds).unwrap().to_vec(),
+            data: self.data[bounds].to_vec(),
         }
     }
 
@@ -108,11 +108,7 @@ impl<T> Grid<T> {
     {
         let bounds = (range.start_bound().cloned(), range.end_bound().cloned());
         Grid {
-            data: self
-                .data
-                .iter()
-                .map(|row| row.get(bounds).unwrap().to_vec())
-                .collect(),
+            data: self.data.iter().map(|row| row[bounds].to_vec()).collect(),
         }
     }
 
@@ -271,13 +267,13 @@ impl<T: FromStr> Grid<T> {
                 .map(|l| l.split_whitespace().collect::<Vec<_>>())
                 .collect::<Vec<_>>(),
         )?
-        .try_map(|s| s.parse::<T>())
+        .try_map(str::parse::<T>)
         .map_err(ParseGridError::Parse)
     }
 }
 
 impl<T: fmt::Display> fmt::Display for Grid<T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut first = true;
         for row in &self.data {
             if !std::mem::replace(&mut first, false) {
@@ -344,8 +340,8 @@ pub enum ParseGridError<E> {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Draw<'a>(&'a Grid<bool>);
 
-impl<'a> fmt::Display for Draw<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl fmt::Display for Draw<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut first = true;
         for row in &self.0.data {
             if !std::mem::replace(&mut first, false) {

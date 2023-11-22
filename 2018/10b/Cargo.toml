@@ -12,3 +12,6 @@ keywords = ["graphical-output", "grid-movement"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

@@ -12,3 +12,6 @@ keywords = ["vectors"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true

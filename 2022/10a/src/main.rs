@@ -200,6 +200,6 @@ mod tests {
             "noop\n",
             "noop\n",
         ));
-        assert_eq!(solve(input), 13140)
+        assert_eq!(solve(input), 13140);
     }
 }

@@ -69,10 +69,10 @@ impl<T: Eq + Hash> FromIterator<T> for Counter<T> {
     }
 }
 
-impl<T, U: ?Sized> Index<&U> for Counter<T>
+impl<T, U> Index<&U> for Counter<T>
 where
     T: Eq + Hash + Borrow<U>,
-    U: Eq + Hash,
+    U: Eq + Hash + ?Sized,
 {
     type Output = u64;
 

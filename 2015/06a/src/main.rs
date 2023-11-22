@@ -11,6 +11,8 @@ enum Instruction {
 }
 
 impl Instruction {
+    // Area::from_ranges() only accepts exclusive ranges
+    #[allow(clippy::range_plus_one)]
     fn covered(self) -> area::IntoIter<usize> {
         let (c1, c2) = match self {
             Instruction::TurnOn(c1, c2) => (c1, c2),

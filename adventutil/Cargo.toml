@@ -21,3 +21,6 @@ rstest = { version = "0.18.2", default-features = false }
 
 [features]
 ocr = ["dep:serde", "dep:toml"]
+
+[lints]
+workspace = true

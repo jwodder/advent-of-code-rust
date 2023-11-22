@@ -3,10 +3,11 @@ use adventutil::Input;
 fn solve(input: Input) -> u32 {
     let mut joltages = input.parse_lines::<u32>().collect::<Vec<_>>();
     joltages.push(0);
-    joltages.sort();
+    joltages.sort_unstable();
     let mut delta1 = 0;
     let mut delta3 = 1;
     for w in joltages.windows(2) {
+        assert!(w.len() > 1);
         match w[1] - w[0] {
             1 => delta1 += 1,
             2 => (),

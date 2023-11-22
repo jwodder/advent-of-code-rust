@@ -17,7 +17,7 @@ impl FromStr for Problem {
             .into_str()
             .split(',')
             .filter(|&s| s != "x")
-            .map(|s| s.parse::<u32>())
+            .map(str::parse::<u32>)
             .collect::<Result<Vec<_>, _>>()?;
         Ok(Problem {
             earliest_time,
