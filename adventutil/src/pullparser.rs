@@ -11,14 +11,12 @@ use thiserror::Error;
 /// remove an initial portion of the remainder of the string and either return
 /// or discard this removed portion.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct PullParser<'a> {
-    data: &'a str,
-}
+pub struct PullParser<'a>(&'a str);
 
 impl<'a> PullParser<'a> {
     /// Construct a `PullParser` for parsing the given string.
     pub fn new(data: &'a str) -> Self {
-        PullParser { data }
+        PullParser(data)
     }
 
     /// If the remainder of the string starts with `token`, consume and discard
@@ -38,8 +36,8 @@ impl<'a> PullParser<'a> {
         match token.into() {
             Token::Eof => self.eof(),
             token => {
-                self.data = token
-                    .consume(self.data)
+                self.0 = token
+                    .consume(self.0)
                     .ok_or(ParseError::MissingToken(token))?;
                 Ok(())
             }
@@ -59,8 +57,8 @@ impl<'a> PullParser<'a> {
     /// `Err(ParseError::MissingToken(token))` is returned.
     pub fn scan_to<T: Into<Token>>(&mut self, end: T) -> Result<&'a str, ParseError> {
         let end = end.into();
-        let (before, after) = end.split(self.data).ok_or(ParseError::MissingToken(end))?;
-        self.data = after;
+        let (before, after) = end.split(self.0).ok_or(ParseError::MissingToken(end))?;
+        self.0 = after;
         Ok(before)
     }
 
@@ -100,7 +98,7 @@ impl<'a> PullParser<'a> {
         F: FnMut(&str) -> Result<U, ParseError>,
         T: Into<Token>,
     {
-        if self.data.is_empty() {
+        if self.0.is_empty() {
             return Ok(Vec::new());
         }
         let delim = delim.into();
@@ -123,16 +121,16 @@ impl<'a> PullParser<'a> {
     /// If the remainder of the string is not empty,
     /// `Err(ParseError::Trailing(remainder))` is returned.
     pub fn eof(&self) -> Result<(), ParseError> {
-        if self.data.is_empty() {
+        if self.0.is_empty() {
             Ok(())
         } else {
-            Err(ParseError::Trailing(self.data.into()))
+            Err(ParseError::Trailing(self.0.into()))
         }
     }
 
     /// Consume the `PullParser` and return the remainder of the string.
     pub fn into_str(self) -> &'a str {
-        self.data
+        self.0
     }
 }
 
