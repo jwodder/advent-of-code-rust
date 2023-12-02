@@ -17,7 +17,7 @@ impl FromStr for Color {
             "red" => Ok(Color::Red),
             "green" => Ok(Color::Green),
             "blue" => Ok(Color::Blue),
-            other => Err(ParseError::Invalid(String::from(other))),
+            other => Err(ParseError::InvalidToken(String::from(other))),
         }
     }
 }
