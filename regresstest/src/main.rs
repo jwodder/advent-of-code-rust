@@ -80,7 +80,7 @@ impl fmt::Display for TestCase<'_> {
     }
 }
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> anyhow::Result<ExitCode> {
     fern::Dispatch::new()
         .format(|out, message, record| {
@@ -95,8 +95,7 @@ async fn main() -> anyhow::Result<ExitCode> {
         .parent()
         .expect("CARGO_MANIFEST_DIR lacks parent path")
         .to_owned();
-    let diriter = read_dir(&workspace_dir)?;
-    for entry in diriter {
+    for entry in read_dir(&workspace_dir)? {
         let entry = entry?;
         let answerpath = entry.path().join("answers.csv");
         if entry.file_type()?.is_dir() && answerpath.exists() {
