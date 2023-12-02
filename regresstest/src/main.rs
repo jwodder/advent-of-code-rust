@@ -112,14 +112,14 @@ async fn main() -> anyhow::Result<ExitCode> {
             log::debug!("Reading answers from {}", answerpath.display());
             let mut reader = csv::Reader::from_path(&answerpath)
                 .with_context(|| format!("failed to read {}", answerpath.display()))?;
-            for row in reader.deserialize::<Answer>() {
-                let row = row.with_context(|| {
+            for answer in reader.deserialize::<Answer>() {
+                let answer = answer.with_context(|| {
                     format!("failed to read entry from {}", answerpath.display())
                 })?;
                 cases.push(TestCase {
                     workspace_dir: &workspace_dir,
                     year,
-                    answer: row,
+                    answer,
                 });
             }
         }
