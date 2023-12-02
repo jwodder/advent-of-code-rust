@@ -1,0 +1,19 @@
+[package]
+name = "gen"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution package generator"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+anyhow = "1.0.75"
+fs-err = "2.11.0"
+serde = { version = "1.0.193", features = ["derive"] }
+tinytemplate = "1.2.1"
+
+[lints]
+workspace = true

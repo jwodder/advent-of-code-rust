@@ -1,0 +1,20 @@
+use adventutil::Input;
+
+fn solve(input: Input) -> u32 \{
+    todo!()
+}
+
+fn main() \{
+    println!("\{}", solve(Input::from_env()));
+}
+
+#[cfg(test)]
+mod tests \{
+    use super::*;
+
+    #[test]
+    fn test_example1() \{
+        let input = Input::from("...");
+        assert_eq!(solve(input), todo!());
+    }
+}
