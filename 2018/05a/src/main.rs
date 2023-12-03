@@ -1,7 +1,7 @@
 use adventutil::Input;
 
 fn solve(input: Input) -> usize {
-    let mut chars = input.read().trim().chars().collect::<Vec<_>>();
+    let mut chars = input.read().trim().bytes().collect::<Vec<_>>();
     let mut i = 0;
     while i + 1 < chars.len() {
         let c1 = chars[i];
@@ -9,8 +9,7 @@ fn solve(input: Input) -> usize {
         if c1.is_ascii_lowercase() == c2.is_ascii_uppercase()
             && c1.to_ascii_uppercase() == c2.to_ascii_uppercase()
         {
-            chars.remove(i);
-            chars.remove(i);
+            chars.drain(i..i + 2);
             i = i.saturating_sub(1);
         } else {
             i += 1;
