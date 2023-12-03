@@ -5,16 +5,12 @@ fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();
     let mut total = 0;
     for y in 0..grid.height() {
-        let mut number = None;
+        let mut number: Option<u32> = None;
         let mut adjacent = false;
         for x in 0..grid.width() {
             let ch = grid[(y, x)];
             if let Some(digit) = ch.to_digit(10) {
-                if let Some(n) = number {
-                    number = Some(n * 10 + digit);
-                } else {
-                    number = Some(digit);
-                }
+                number = Some(number.unwrap_or_default() * 10 + digit);
                 if !adjacent {
                     let cell = grid.get_cell((y, x)).unwrap();
                     adjacent = cell

@@ -11,11 +11,7 @@ fn solve(input: Input) -> u32 {
         for x in 0..grid.width() {
             let ch = grid[(y, x)];
             if let Some(digit) = ch.to_digit(10) {
-                if let Some(n) = number {
-                    number = Some(n * 10 + digit);
-                } else {
-                    number = Some(digit);
-                }
+                number = Some(number.unwrap_or_default() * 10 + digit);
                 let cell = grid.get_cell((y, x)).unwrap();
                 for adj in cell.adjacent() {
                     if *adj.get() == '*' {
