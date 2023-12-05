@@ -141,6 +141,8 @@ pub enum Token {
     Char(char),
     /// A fixed string
     Str(&'static str),
+    /// LF or CR LF
+    Newline,
     /// One or more Unicode whitespace characters
     Whitespace,
     /// End of input
@@ -157,6 +159,7 @@ impl Token {
         match self {
             Token::Char(c) => data.strip_prefix(*c),
             Token::Str(s) => data.strip_prefix(s),
+            Token::Newline => data.strip_prefix('\r').unwrap_or(data).strip_prefix('\n'),
             Token::Whitespace => {
                 let s = data.trim_start();
                 (s != data).then_some(s)
@@ -174,6 +177,10 @@ impl Token {
         match self {
             Token::Char(c) => s.split_once(*c),
             Token::Str(t) => s.split_once(t),
+            Token::Newline => {
+                let (before, after) = s.split_once('\n')?;
+                Some((before.strip_suffix('\r').unwrap_or(before), after))
+            }
             Token::Whitespace => {
                 let (before, after) = s.split_once(char::is_whitespace)?;
                 Some((before, after.trim_start()))
@@ -299,5 +306,27 @@ mod tests {
             Err(ParseError::MissingToken(Token::Eof)) => (),
             other => panic!("Expected MissingToken(Eof), got {other:?}"),
         }
+    }
+
+    #[rstest]
+    #[case("foo", None)]
+    #[case("\rfoo", None)]
+    #[case("\nfoo", Some("foo"))]
+    #[case("\r\nfoo", Some("foo"))]
+    #[case("\n\rfoo", Some("\rfoo"))]
+    #[case("\n\nfoo", Some("\nfoo"))]
+    fn test_consume_newline(#[case] before: &str, #[case] after: Option<&str>) {
+        assert_eq!(Token::Newline.consume(before), after);
+    }
+
+    #[rstest]
+    #[case("foobar", None)]
+    #[case("foo\rbar", None)]
+    #[case("foo\nbar", Some(("foo", "bar")))]
+    #[case("foo\r\nbar", Some(("foo", "bar")))]
+    #[case("foo\n\rbar", Some(("foo", "\rbar")))]
+    #[case("foo\n\nbar", Some(("foo", "\nbar")))]
+    fn test_split_newline(#[case] s: &str, #[case] split: Option<(&str, &str)>) {
+        assert_eq!(Token::Newline.split(s), split);
     }
 }
