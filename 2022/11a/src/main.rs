@@ -23,7 +23,7 @@ impl FromStr for Monkey {
         parser.skip(Token::Whitespace)?;
         parser.skip("Starting items: ")?;
         let items = parser
-            .scan_to("\n")?
+            .scan_to(Token::Newline)?
             .split(',')
             .map(|t| t.trim().parse::<u32>())
             .collect::<Result<Vec<_>, _>>()?;
