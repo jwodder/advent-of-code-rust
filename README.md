@@ -10,7 +10,9 @@ gain experience in Rust and as general mental exercise.
 
 The input files and answers are encrypted using
 [git-crypt](https://www.agwa.name/projects/git-crypt/) so that others can't use
-them to cheat, and also because the author of Advent of Code has asked people
-not to make the input files public.  They are only kept here for use in
-automated regression testing to ensure I don't break any solutions with some
-later refactor.
+them to cheat, and also because [the author of Advent of Code has asked people
+not to make the input files public][nosharing].  They are only kept here for
+use in automated regression testing to ensure I don't break any solutions with
+some later refactor.
+
+[nosharing]: https://www.reddit.com/r/adventofcode/comments/7lesj5/is_it_kosher_to_share_puzzle_inputs_and_answers/drlt9am/
