@@ -291,7 +291,7 @@ impl<T> TryFrom<Vec<Vec<T>>> for Grid<T> {
     type Error = GridFromError;
 
     fn try_from(data: Vec<Vec<T>>) -> Result<Grid<T>, GridFromError> {
-        let width = match data.get(0) {
+        let width = match data.first() {
             Some(row) => row.len(),
             None => return Err(GridFromError::Empty),
         };

@@ -68,9 +68,7 @@ impl Ray {
     }
 
     fn angle(&self) -> f64 {
-        let angle = f64::try_from(self.y)
-            .unwrap()
-            .atan2(f64::try_from(self.x).unwrap());
+        let angle = f64::from(self.y).atan2(f64::from(self.x));
         (FRAC_PI_2 - angle).rem_euclid(TAU)
     }
 }
