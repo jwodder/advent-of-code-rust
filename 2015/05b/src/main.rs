@@ -1,4 +1,5 @@
 use adventutil::Input;
+use itertools::Itertools;
 use std::collections::HashMap;
 
 fn is_nice(s: &str) -> bool {
@@ -7,15 +8,14 @@ fn is_nice(s: &str) -> bool {
     let mut pair_of_pairs = false;
     let mut aba = false;
     let mut prev = None;
-    for (i, pair) in chars.windows(2).enumerate() {
-        assert!(pair.len() > 1);
+    for (i, (c1, c2)) in chars.into_iter().tuple_windows().enumerate() {
         if let Some(c) = prev {
-            if pair[1] == c {
+            if c2 == c {
                 aba = true;
             }
         }
-        prev.replace(pair[0]);
-        let j = *pairs.entry(pair).or_insert(i);
+        prev.replace(c1);
+        let j = *pairs.entry((c1, c2)).or_insert(i);
         if i > j + 1 {
             pair_of_pairs = true;
         }

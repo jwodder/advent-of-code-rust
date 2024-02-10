@@ -1,13 +1,12 @@
 use adventutil::Input;
+use itertools::Itertools;
 
 fn supports_tls(s: &str) -> bool {
     let mut has_abba = false;
     let mut has_bracketed_abba = false;
     for (bracketed, ss) in [false, true].into_iter().cycle().zip(s.split(['[', ']'])) {
-        let chars = ss.chars().collect::<Vec<_>>();
-        for w in chars.windows(4) {
-            assert!(w.len() > 3);
-            if w[0] != w[1] && w[1] == w[2] && w[0] == w[3] {
+        for (c1, c2, c3, c4) in ss.chars().tuple_windows() {
+            if c1 != c2 && c2 == c3 && c1 == c4 {
                 if bracketed {
                     has_bracketed_abba = true;
                 } else {

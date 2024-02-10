@@ -28,8 +28,7 @@ fn solve(input: Input, preamble_size: usize) -> u64 {
 
 fn find_invalid(numbers: &[u64], preamble_size: usize) -> u64 {
     for w in numbers.windows(preamble_size + 1) {
-        let preceding = &w[0..preamble_size];
-        let n = *w.last().unwrap();
+        let (&n, preceding) = w.split_last().unwrap();
         if !is_sum(preceding, n) {
             return n;
         }

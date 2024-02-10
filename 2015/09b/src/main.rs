@@ -42,8 +42,9 @@ fn solve(input: Input) -> usize {
     (0..qty)
         .permutations(qty)
         .map(|perm| {
-            perm.windows(2)
-                .map(|w| distances[&(w[0], w[1])])
+            perm.into_iter()
+                .tuple_windows()
+                .map(|(p1, p2)| distances[&(p1, p2)])
                 .sum::<usize>()
         })
         .max()

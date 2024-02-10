@@ -18,7 +18,11 @@ fn solve(input: Input) -> usize {
 fn valid(n: u32) -> bool {
     let digits = n.to_string().chars().collect::<Vec<_>>();
     digits.len() == 6
-        && digits.windows(2).all(|w| w[0] <= w[1])
+        && digits
+            .iter()
+            .copied()
+            .tuple_windows()
+            .all(|(d1, d2)| d1 <= d2)
         && digits
             .into_iter()
             .group_by(|&c| c)

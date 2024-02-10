@@ -11,6 +11,7 @@ publish.workspace = true
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+itertools = "0.12.1"
 
 [lints]
 workspace = true

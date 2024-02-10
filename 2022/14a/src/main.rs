@@ -2,6 +2,7 @@ use adventutil::grid::{Coords, Direction, Grid, GridBounds};
 use adventutil::gridgeom::{points_added, Point, PointBounds};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use itertools::Itertools;
 use std::collections::HashSet;
 use std::str::FromStr;
 
@@ -10,9 +11,8 @@ struct RockPath(Vec<Point>);
 impl RockPath {
     fn points(self) -> Vec<Point> {
         let mut points = vec![self.0[0]];
-        for w in self.0.windows(2) {
-            assert!(w.len() > 1);
-            points.extend(points_added(w[0], w[1] - w[0]).unwrap());
+        for (p1, p2) in self.0.into_iter().tuple_windows() {
+            points.extend(points_added(p1, p2 - p1).unwrap());
         }
         points
     }

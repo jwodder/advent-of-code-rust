@@ -1,4 +1,5 @@
 use adventutil::Input;
+use itertools::Itertools;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct BinarySplitter {
@@ -50,10 +51,12 @@ fn pass2id(pass: &str) -> u32 {
 }
 
 fn solve(input: Input) -> u32 {
-    let mut ids = input.lines().map(|s| pass2id(&s)).collect::<Vec<_>>();
-    ids.sort_unstable();
-    ids.windows(2)
-        .find_map(|w| (w[0] + 2 == w[1]).then_some(w[0] + 1))
+    input
+        .lines()
+        .map(|s| pass2id(&s))
+        .sorted_unstable()
+        .tuple_windows()
+        .find_map(|(id1, id2)| (id1 + 2 == id2).then_some(id1 + 1))
         .unwrap()
 }
 

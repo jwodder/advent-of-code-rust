@@ -1,5 +1,6 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use itertools::Itertools;
 use std::ops::RangeInclusive;
 
 fn parse_range(s: &str) -> Result<RangeInclusive<u32>, ParseError> {
@@ -20,12 +21,11 @@ fn valid(n: u32) -> bool {
         return false;
     }
     let mut has_double = false;
-    for w in digits.windows(2) {
-        assert!(w.len() > 1);
-        if w[0] == w[1] {
+    for (d1, d2) in digits.into_iter().tuple_windows() {
+        if d1 == d2 {
             has_double = true;
         }
-        if w[0] > w[1] {
+        if d1 > d2 {
             return false;
         }
     }

@@ -1,20 +1,17 @@
-// https://github.com/rust-lang/rust-clippy/issues/11856
-#![allow(clippy::missing_asserts_for_indexing)]
 use adventutil::Input;
+use itertools::Itertools;
 use std::collections::HashSet;
 
 fn supports_ssl(s: &str) -> bool {
     let mut abas = HashSet::new();
     let mut babs = HashSet::new();
     for (bracketed, ss) in [false, true].into_iter().cycle().zip(s.split(['[', ']'])) {
-        let chars = ss.chars().collect::<Vec<_>>();
-        for w in chars.windows(3) {
-            assert!(w.len() > 2);
-            if w[0] != w[1] && w[0] == w[2] {
+        for (c1, c2, c3) in ss.chars().tuple_windows() {
+            if c1 != c2 && c1 == c3 {
                 if bracketed {
-                    babs.insert((w[1], w[0]));
+                    babs.insert((c2, c1));
                 } else {
-                    abas.insert((w[0], w[1]));
+                    abas.insert((c1, c2));
                 }
             }
         }

@@ -12,6 +12,7 @@ keywords = ["graph-theory", "graph-traversal"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+itertools = "0.12.1"
 
 [lints]
 workspace = true

@@ -1,14 +1,13 @@
 use adventutil::Input;
+use itertools::Itertools;
 
 fn solve(input: Input) -> usize {
     input
         .parse_lines::<u32>()
-        .collect::<Vec<_>>()
-        .windows(3)
-        .map(|w| w.iter().sum::<u32>())
-        .collect::<Vec<_>>()
-        .windows(2)
-        .filter(|w| w[0] < w[1])
+        .tuple_windows()
+        .map(|(v1, v2, v3)| v1 + v2 + v3)
+        .tuple_windows()
+        .filter(|(v1, v2)| v1 < v2)
         .count()
 }
 

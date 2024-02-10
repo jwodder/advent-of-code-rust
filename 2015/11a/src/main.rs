@@ -46,13 +46,17 @@ fn next_letter(c: char) -> char {
 fn is_valid(s: &str) -> bool {
     let chars = s.chars().collect::<Vec<_>>();
     chars
-        .windows(3)
-        .any(|w| next_letter(w[0]) == w[1] && next_letter(w[1]) == w[2] && w[2] > 'b')
+        .iter()
+        .copied()
+        .tuple_windows()
+        .any(|(c1, c2, c3)| next_letter(c1) == c2 && next_letter(c2) == c3 && c3 > 'b')
         && !chars.iter().any(|c| "iol".contains(*c))
         && chars
-            .windows(2)
+            .iter()
+            .copied()
+            .tuple_windows()
             .enumerate()
-            .filter_map(|(i, w)| (w[0] == w[1]).then_some(i))
+            .filter_map(|(i, (c1, c2))| (c1 == c2).then_some(i))
             .tuple_windows()
             .any(|(i, j)| i + 1 < j)
 }
