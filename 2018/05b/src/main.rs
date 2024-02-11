@@ -16,6 +16,7 @@ struct DoubleIndexList<'a, T> {
     adjacencies: Vec<Adjacent>,
     // Index of the first element; `None` if there are no elements
     first: Option<usize>,
+    len: usize,
 }
 
 impl<'a, T> DoubleIndexList<'a, T> {
@@ -30,6 +31,7 @@ impl<'a, T> DoubleIndexList<'a, T> {
                 })
                 .collect(),
             first: (qty > 0).then_some(0),
+            len: qty,
         }
     }
 
@@ -44,6 +46,7 @@ impl<'a, T> DoubleIndexList<'a, T> {
             };
         }
         self.first = (qty > 0).then_some(0);
+        self.len = self.data.len();
     }
 
     /// Retrieve the value at the given index
@@ -88,10 +91,11 @@ impl<'a, T> DoubleIndexList<'a, T> {
         if let Some(i) = next_index {
             self.adjacencies[i].prev_index = prev_index;
         }
+        self.len -= 1;
     }
 
     fn len(&self) -> usize {
-        std::iter::successors(self.first, |&i| self.adjacencies[i].next_index).count()
+        self.len
     }
 
     fn cursor<'c>(&'c mut self) -> Cursor<'a, 'c, T>
