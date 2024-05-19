@@ -4,7 +4,7 @@ use std::fmt::Write;
 
 fn look_and_say(s: &str) -> String {
     s.chars()
-        .group_by(|&c| c)
+        .chunk_by(|&c| c)
         .into_iter()
         .fold(String::new(), |mut buf, (c, run)| {
             write!(&mut buf, "{}{}", run.count(), c).unwrap();
