@@ -11,7 +11,7 @@ publish.workspace = true
 
 [dependencies]
 anyhow = "1.0.70"
-fs-err = "2.11.0"
+fs-err = "2.9.0"
 serde = { version = "1.0.164", features = ["derive"] }
 tinytemplate = "1.2.1"
 
