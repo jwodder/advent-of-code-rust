@@ -17,7 +17,7 @@ fn solve(input: Input) -> usize {
         if let Some(replacements) = rules.get(atom) {
             for r in replacements {
                 let mut newmol = molecule.clone();
-                newmol[i] = r.clone();
+                newmol[i].clone_from(r);
                 outputs.insert(<[String]>::concat(&newmol));
             }
         }
