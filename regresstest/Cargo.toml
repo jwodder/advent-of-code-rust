@@ -10,7 +10,7 @@ license.workspace = true
 publish.workspace = true
 
 [dependencies]
-anyhow = "1.0.71"
+anyhow = "1.0.70"
 csv = "1.2.2"
 fern = "0.6.2"
 fs-err = "2.9.0"
