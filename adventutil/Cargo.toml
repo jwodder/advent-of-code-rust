@@ -17,7 +17,7 @@ thiserror = "1.0.40"
 toml = { version = "0.8.8", features = ["parse"], optional = true }
 
 [dev-dependencies]
-rstest = { version = "0.18.2", default-features = false }
+rstest = { version = "0.19.0", default-features = false }
 
 [features]
 ocr = ["dep:serde", "dep:toml"]
