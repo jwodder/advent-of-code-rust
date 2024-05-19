@@ -25,7 +25,7 @@ fn valid(n: u32) -> bool {
             .all(|(d1, d2)| d1 <= d2)
         && digits
             .into_iter()
-            .group_by(|&c| c)
+            .chunk_by(|&c| c)
             .into_iter()
             .any(|(_, gr)| gr.count() == 2)
 }
