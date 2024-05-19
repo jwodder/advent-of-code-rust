@@ -5,8 +5,8 @@ on:
     branches:
       - master
   pull_request:
-  #schedule:
-  #  - cron: '0 12 * * *'
+  schedule:
+    - cron: '0 16 * * 5'  # 16:00 UTC on Fridays
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref_name }}
