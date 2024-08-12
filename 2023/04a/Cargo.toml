@@ -16,4 +16,4 @@ adventutil = { path = "../../adventutil" }
 workspace = true
 
 [dev-dependencies]
-rstest = { version = "0.21.0", default-features = false }
+rstest = { version = "0.22.0", default-features = false }
