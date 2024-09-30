@@ -17,4 +17,4 @@ itertools = "0.13.0"
 workspace = true
 
 [dev-dependencies]
-rstest = { version = "0.22.0", default-features = false }
+rstest = { version = "0.23.0", default-features = false }
