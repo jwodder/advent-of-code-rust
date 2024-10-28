@@ -13,7 +13,7 @@ publish.workspace = true
 anyhow = "1.0.70"
 csv = "1.2.2"
 fern = "0.7.0"
-fs-err = "2.9.0"
+fs-err = "3.0.0"
 futures-util = { version = "0.3.28", default-features = false, features = ["std"] }
 log = "0.4.18"
 serde = { version = "1.0.164", features = ["derive"] }
