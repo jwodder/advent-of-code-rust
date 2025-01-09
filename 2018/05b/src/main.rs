@@ -198,9 +198,7 @@ fn react(chars: &mut DoubleIndexList<'_, u8>) -> usize {
         let Some(c2) = cursor.peek_next().copied() else {
             break;
         };
-        if c1.is_ascii_lowercase() == c2.is_ascii_uppercase()
-            && c1.to_ascii_uppercase() == c2.to_ascii_uppercase()
-        {
+        if c1.is_ascii_lowercase() == c2.is_ascii_uppercase() && c1.eq_ignore_ascii_case(&c2) {
             cursor.remove_two_and_back();
         } else {
             cursor.move_next();

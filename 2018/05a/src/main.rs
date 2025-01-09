@@ -6,9 +6,7 @@ fn solve(input: Input) -> usize {
     while i + 1 < chars.len() {
         let c1 = chars[i];
         let c2 = chars[i + 1];
-        if c1.is_ascii_lowercase() == c2.is_ascii_uppercase()
-            && c1.to_ascii_uppercase() == c2.to_ascii_uppercase()
-        {
+        if c1.is_ascii_lowercase() == c2.is_ascii_uppercase() && c1.eq_ignore_ascii_case(&c2) {
             chars.drain(i..i + 2);
             i = i.saturating_sub(1);
         } else {
