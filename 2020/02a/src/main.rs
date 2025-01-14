@@ -6,6 +6,7 @@ use std::str::FromStr;
 struct Password {
     char_qty: RangeInclusive<usize>,
     char_c: char,
+    #[allow(clippy::struct_field_names)]
     password: String,
 }
 

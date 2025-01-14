@@ -69,6 +69,7 @@ impl FromStr for CaveSystem {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Path {
+    #[allow(clippy::struct_field_names)]
     path: Vec<Cave>,
     small_seen: HashSet<Cave>,
     smalled_twice: bool,

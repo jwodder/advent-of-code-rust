@@ -6,6 +6,7 @@ struct Password {
     pos1: usize,
     pos2: usize,
     char_c: char,
+    #[allow(clippy::struct_field_names)]
     password: String,
 }
 
