@@ -16,6 +16,7 @@ const TIMEOUT: Duration = Duration::from_secs(30);
 struct Answer {
     problem: String,
     input: String,
+    #[allow(clippy::struct_field_names)]
     answer: String,
 }
 
