@@ -9,13 +9,13 @@ pub mod maxn;
 #[cfg(feature = "ocr")]
 pub mod ocr;
 pub mod pullparser;
-use num_traits::{Bounded, PrimInt};
+pub mod ranges;
+use num_traits::PrimInt;
 use std::collections::{hash_map::Entry, HashMap, HashSet};
 use std::fs::{self, File};
 use std::hash::Hash;
 use std::io::{self, read_to_string, stdin, BufRead, BufReader};
 use std::iter::FusedIterator;
-use std::ops::{Bound, RangeBounds};
 use std::path::PathBuf;
 use std::str::FromStr;
 
@@ -319,58 +319,6 @@ pub trait FromBits: PrimInt {
 
 impl<T: PrimInt> FromBits for T {}
 
-pub fn ranges_overlap<T, R1, R2>(range1: R1, range2: R2) -> bool
-where
-    T: PrimInt,
-    R1: RangeBounds<T>,
-    R2: RangeBounds<T>,
-{
-    let min1 = match range1.start_bound() {
-        Bound::Included(&x) => x,
-        Bound::Excluded(&x) => {
-            let Some(x1) = x.checked_add(&T::one()) else {
-                return false;
-            };
-            x1
-        }
-        Bound::Unbounded => Bounded::min_value(),
-    };
-    let min2 = match range2.start_bound() {
-        Bound::Included(&x) => x,
-        Bound::Excluded(&x) => {
-            let Some(x1) = x.checked_add(&T::one()) else {
-                return false;
-            };
-            x1
-        }
-        Bound::Unbounded => Bounded::min_value(),
-    };
-    let minimum = min1.max(min2);
-    // The following variables are inclusive maximums:
-    let max1 = match range1.end_bound() {
-        Bound::Included(&x) => x,
-        Bound::Excluded(&x) => {
-            let Some(x1) = x.checked_sub(&T::one()) else {
-                return false;
-            };
-            x1
-        }
-        Bound::Unbounded => Bounded::max_value(),
-    };
-    let max2 = match range2.end_bound() {
-        Bound::Included(&x) => x,
-        Bound::Excluded(&x) => {
-            let Some(x1) = x.checked_sub(&T::one()) else {
-                return false;
-            };
-            x1
-        }
-        Bound::Unbounded => Bounded::max_value(),
-    };
-    let maximum = max1.min(max2);
-    minimum <= maximum
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -465,34 +413,5 @@ mod tests {
         assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
         assert_eq!(iter.next(), None);
-    }
-
-    #[test]
-    #[allow(clippy::reversed_empty_ranges)]
-    fn test_ranges_overlap() {
-        assert!(ranges_overlap(0..5, 0..3));
-        assert!(ranges_overlap(0..3, 0..5));
-        assert!(ranges_overlap(3..7, 0..10));
-        assert!(!ranges_overlap(0..3, 3..5));
-        assert!(ranges_overlap(0..=3, 3..5));
-        assert!(ranges_overlap::<usize, _, _>(.., ..));
-        assert!(!ranges_overlap(0..5, 3..0));
-        assert!(!ranges_overlap(
-            (Bound::Excluded(usize::MAX), Bound::Unbounded),
-            0..5
-        ));
-        assert!(!ranges_overlap(
-            (Bound::Unbounded, Bound::Excluded(usize::MIN)),
-            0..5
-        ));
-        assert!(ranges_overlap(
-            (Bound::Excluded(usize::MIN), Bound::Unbounded),
-            0..5
-        ));
-        assert!(ranges_overlap(
-            (Bound::Unbounded, Bound::Excluded(usize::MAX)),
-            0..5
-        ));
-        assert!(ranges_overlap(.., 0..5));
     }
 }

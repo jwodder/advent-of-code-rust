@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{ranges_overlap, Input};
+use adventutil::{ranges::ranges_overlap, Input};
 use std::ops::RangeInclusive;
 use std::str::FromStr;
 
