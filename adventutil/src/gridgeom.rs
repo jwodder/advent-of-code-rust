@@ -1,6 +1,5 @@
 use super::grid::Coords;
-use std::iter::FusedIterator;
-use std::iter::Sum;
+use std::iter::{FusedIterator, Sum};
 use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Range, Sub, SubAssign};
 use thiserror::Error;
 
@@ -274,6 +273,23 @@ impl PointBounds {
         Point { x, y }
     }
 
+    // If `downwards` is true, the Y-axis of the Coords will be treated as
+    // starting at the top of the PointBounds and increasing downwards;
+    // otherwise, it starts at the bottom of the PointBounds and increases
+    // upwards.
+    pub fn coords_of_point(&self, p: Point, downwards: bool) -> Option<Coords> {
+        if !self.contains(p) {
+            return None;
+        }
+        let x = usize::try_from(p.x - self.min_x).unwrap();
+        let y = if downwards {
+            usize::try_from(self.max_y - p.y).unwrap()
+        } else {
+            usize::try_from(p.y - self.min_y).unwrap()
+        };
+        Some(Coords { x, y })
+    }
+
     pub fn for_point(Point { y, x }: Point) -> PointBounds {
         PointBounds {
             min_x: x,
@@ -296,6 +312,10 @@ impl PointBounds {
         let mut iter = iter.into_iter();
         let bounds = PointBounds::for_point(iter.next()?);
         Some(iter.fold(bounds, PointBounds::with_point))
+    }
+
+    pub fn contains(self, point: Point) -> bool {
+        (self.min_x..=self.max_x).contains(&point.x) && (self.min_y..=self.max_y).contains(&point.y)
     }
 }
 

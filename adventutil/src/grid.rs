@@ -194,6 +194,22 @@ impl<T> Grid<T> {
     pub fn iter_cells(&self) -> IterCells<'_, T> {
         IterCells::new(self)
     }
+
+    pub fn embiggened(&self, padding: Padding, fill: T) -> Grid<T>
+    where
+        T: Clone,
+    {
+        let newbounds = GridBounds {
+            height: self.height() + padding.top + padding.bottom,
+            width: self.width() + padding.left + padding.right,
+        };
+        Grid::from_fn(newbounds, |(y, x)| {
+            y.checked_sub(padding.top)
+                .zip(x.checked_sub(padding.left))
+                .filter(|&c| self.bounds().contains(c))
+                .map_or_else(|| fill.clone(), |(oldy, oldx)| self[(oldy, oldx)].clone())
+        })
+    }
 }
 
 impl Grid<bool> {
@@ -462,6 +478,14 @@ impl Direction {
             SouthEast => (Greater, Greater),
         }
     }
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub struct Padding {
+    pub left: usize,
+    pub right: usize,
+    pub top: usize,
+    pub bottom: usize,
 }
 
 #[cfg(test)]
