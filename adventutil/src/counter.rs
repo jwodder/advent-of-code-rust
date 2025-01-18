@@ -29,6 +29,14 @@ impl<T> Counter<T> {
     pub fn into_values(self) -> IntoValues<T, u64> {
         self.inner.into_values()
     }
+
+    pub fn len(&self) -> usize {
+        self.inner.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.inner.is_empty()
+    }
 }
 
 impl<T: Eq + Hash> Counter<T> {
