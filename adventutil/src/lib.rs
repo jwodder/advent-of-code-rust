@@ -6,6 +6,7 @@ pub mod gridgeom;
 pub mod index;
 pub mod intcode;
 pub mod maxn;
+pub mod maxtracker;
 #[cfg(feature = "ocr")]
 pub mod ocr;
 pub mod pullparser;

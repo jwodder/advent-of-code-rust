@@ -1,3 +1,4 @@
+use adventutil::maxtracker::MinTracker;
 use adventutil::Input;
 
 /// A doubly-linked list backed by a borrowed slice, with adjacency of elements
@@ -168,7 +169,7 @@ struct Adjacent {
 
 fn solve(s: &str) -> usize {
     let mut list = DoubleIndexList::new(s.as_bytes());
-    let mut shortest = None;
+    let mut shortest = MinTracker::new();
     for &c in b"abcdefghijklmnopqrstuvwxyz" {
         if c > b'a' {
             list.reset();
@@ -182,11 +183,9 @@ fn solve(s: &str) -> usize {
             }
         }
         let length = react(&mut list);
-        if shortest.map_or(true, |ln| length < ln) {
-            shortest = Some(length);
-        }
+        shortest.add(length);
     }
-    shortest.unwrap()
+    shortest.get().unwrap()
 }
 
 fn react(chars: &mut DoubleIndexList<'_, u8>) -> usize {

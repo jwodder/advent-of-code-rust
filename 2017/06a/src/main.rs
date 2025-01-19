@@ -1,3 +1,4 @@
+use adventutil::maxtracker::FirstMaxKeyTracker;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 
@@ -6,15 +7,11 @@ struct Banks(Vec<u32>);
 
 impl Banks {
     fn maxpos(&self) -> usize {
-        let mut maxval = None;
-        let mut maxpos = None;
+        let mut tracker = FirstMaxKeyTracker::new();
         for (i, &val) in self.0.iter().enumerate() {
-            if !maxval.is_some_and(|x| x >= val) {
-                maxval = Some(val);
-                maxpos = Some(i);
-            }
+            tracker.add(i, val);
         }
-        maxpos.unwrap()
+        tracker.get_key().unwrap()
     }
 
     fn redistribute(&mut self) {
