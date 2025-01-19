@@ -130,15 +130,14 @@ impl Registers {
 
 fn solve(input: Input) -> i32 {
     let mut registers = Registers::new();
-    let mut max_value = None;
-    for instr in input.parse_lines::<Instruction>() {
-        registers.apply(instr);
-        let v = registers.max_value();
-        if !max_value.is_some_and(|m| m >= v) {
-            max_value = Some(v);
-        }
-    }
-    max_value.unwrap_or_default()
+    input
+        .parse_lines::<Instruction>()
+        .map(|instr| {
+            registers.apply(instr);
+            registers.max_value()
+        })
+        .max()
+        .unwrap_or_default()
 }
 
 fn main() {
