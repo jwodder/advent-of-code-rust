@@ -43,7 +43,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn test_example() {
         let input = Input::from("flqrgnkx");
         assert_eq!(solve(input), 8108);
     }
