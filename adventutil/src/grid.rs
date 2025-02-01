@@ -480,6 +480,24 @@ impl Direction {
     }
 }
 
+impl std::ops::Neg for Direction {
+    type Output = Direction;
+
+    fn neg(self) -> Direction {
+        match self {
+            Direction::NorthWest => Direction::SouthEast,
+            Direction::North => Direction::South,
+            Direction::NorthEast => Direction::SouthWest,
+            Direction::West => Direction::East,
+            Direction::Here => Direction::Here,
+            Direction::East => Direction::West,
+            Direction::SouthWest => Direction::NorthEast,
+            Direction::South => Direction::North,
+            Direction::SouthEast => Direction::NorthWest,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Padding {
     pub left: usize,
