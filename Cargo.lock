@@ -586,6 +586,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2016-14a"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+ "hex",
+ "md-5",
+]
+
+[[package]]
 name = "advent-of-code-2017-01a"
 version = "0.1.0"
 dependencies = [
