@@ -1,4 +1,3 @@
 */inputs/* filter=git-crypt diff=git-crypt
-2016/23b.md filter=git-crypt diff=git-crypt
-2021/24.md filter=git-crypt diff=git-crypt
+20*/*.md filter=git-crypt diff=git-crypt
 answers.csv filter=git-crypt diff=git-crypt
