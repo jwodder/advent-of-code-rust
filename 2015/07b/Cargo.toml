@@ -8,7 +8,7 @@ authors.workspace = true
 repository.workspace = true
 license.workspace = true
 publish.workspace = true
-keywords = ["interpreter"]
+keywords = ["interpreter", "pseudo-assembly"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
