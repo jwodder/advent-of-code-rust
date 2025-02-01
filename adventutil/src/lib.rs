@@ -7,6 +7,7 @@ pub mod index;
 pub mod intcode;
 pub mod maxn;
 pub mod maxtracker;
+pub mod numtheory;
 #[cfg(feature = "ocr")]
 pub mod ocr;
 pub mod pullparser;
