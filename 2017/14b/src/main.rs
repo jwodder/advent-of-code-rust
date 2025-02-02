@@ -1,5 +1,5 @@
 use adventutil::grid::{Direction, Grid, GridBounds};
-use adventutil::{one2many_closure, Input};
+use adventutil::{components, Input};
 
 fn knot_hash(key: &[u8]) -> [u8; 16] {
     let mut values = (0u8..=255).collect::<Vec<_>>();
@@ -26,7 +26,7 @@ fn knot_hash(key: &[u8]) -> [u8; 16] {
     hash
 }
 
-fn solve(input: Input) -> u32 {
+fn solve(input: Input) -> usize {
     let keybase = input.read();
     let keybase = keybase.trim();
     let bounds = GridBounds {
@@ -44,19 +44,12 @@ fn solve(input: Input) -> u32 {
             }
         }
     }
-    let mut regions = 0;
-    while let Some(start) = grid.enumerate().find_map(|(c, b)| b.then_some(c)) {
-        let region = one2many_closure(start, |c| {
-            Direction::cardinals()
-                .filter_map(move |d| bounds.move_in(c, d))
-                .filter(|&c| grid[c])
-        });
-        for c in region {
-            grid[c] = false;
-        }
-        regions += 1;
-    }
-    regions
+    components(grid.enumerate().filter_map(|(c, b)| b.then_some(c)), |c| {
+        Direction::cardinals()
+            .filter_map(move |d| bounds.move_in(c, d))
+            .filter(|&c| grid[c])
+    })
+    .len()
 }
 
 fn main() {
