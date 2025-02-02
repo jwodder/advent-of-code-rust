@@ -1,5 +1,4 @@
 pub mod area;
-pub mod closure;
 pub mod counter;
 pub mod grid;
 pub mod gridgeom;
@@ -13,7 +12,7 @@ pub mod ocr;
 pub mod pullparser;
 pub mod ranges;
 use num_traits::PrimInt;
-use std::collections::{hash_map::Entry, HashMap, HashSet};
+use std::collections::{hash_map::Entry, HashMap, HashSet, VecDeque};
 use std::fs::{self, File};
 use std::hash::Hash;
 use std::io::{self, read_to_string, stdin, BufRead, BufReader};
@@ -320,6 +319,24 @@ pub trait FromBits: PrimInt {
 }
 
 impl<T: PrimInt> FromBits for T {}
+
+pub fn one2many_closure<T, F, I>(seed: T, mut generator: F) -> HashSet<T>
+where
+    T: Eq + Hash + Clone,
+    F: FnMut(T) -> I,
+    I: IntoIterator<Item = T>,
+{
+    let mut seen = HashSet::from([seed.clone()]);
+    let mut queue = VecDeque::from([seed]);
+    while let Some(value) = queue.pop_front() {
+        for new in generator(value) {
+            if seen.insert(new.clone()) {
+                queue.push_back(new);
+            }
+        }
+    }
+    seen
+}
 
 #[cfg(test)]
 mod tests {
