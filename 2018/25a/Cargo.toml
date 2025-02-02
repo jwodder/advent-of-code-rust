@@ -1,9 +1,9 @@
 [package]
-name = "advent-of-code-2017-14b"
+name = "advent-of-code-2018-25a"
 version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
-description = "Solution to Advent of Code 2017, problem 14b"
+description = "Solution to Advent of Code 2018, problem 25a"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
