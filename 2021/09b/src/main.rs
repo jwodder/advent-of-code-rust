@@ -1,7 +1,6 @@
-use adventutil::closure::one2many_closure;
 use adventutil::grid::{Cell, Direction, Grid};
 use adventutil::maxn::maxn;
-use adventutil::Input;
+use adventutil::{one2many_closure, Input};
 
 fn solve(input: Input) -> usize {
     maxn(

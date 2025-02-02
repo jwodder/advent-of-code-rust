@@ -1,6 +1,5 @@
-use adventutil::closure::one2many_closure;
 use adventutil::grid::{Direction, Grid, GridBounds};
-use adventutil::Input;
+use adventutil::{one2many_closure, Input};
 
 fn knot_hash(key: &[u8]) -> [u8; 16] {
     let mut values = (0u8..=255).collect::<Vec<_>>();
