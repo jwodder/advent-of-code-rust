@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{one2many_closure, Input};
+use adventutil::{components, Input};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct ProgramSpec {
@@ -20,19 +20,13 @@ impl std::str::FromStr for ProgramSpec {
 }
 
 fn solve(input: Input) -> usize {
+    let mut ids = Vec::new();
     let mut ids2pipes = std::collections::HashMap::new();
     for spec in input.parse_lines::<ProgramSpec>() {
+        ids.push(spec.id);
         ids2pipes.insert(spec.id, spec.pipes_to);
     }
-    let mut groups = 0;
-    while let Some(&start) = ids2pipes.keys().next() {
-        let group = one2many_closure(start, |id| ids2pipes.get(&id).cloned().unwrap_or_default());
-        for id in group {
-            ids2pipes.remove(&id);
-        }
-        groups += 1;
-    }
-    groups
+    components(ids, move |a| ids2pipes.remove(&a).unwrap()).len()
 }
 
 fn main() {

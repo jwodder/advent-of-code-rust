@@ -338,6 +338,30 @@ where
     seen
 }
 
+/// Given an undirected, unweighted, simple graph with vertices `vertices` and
+/// function `adjacent` mapping vertices to their neighbors, compute the
+/// graph's connected components.
+pub fn components<T, I, F, J>(vertices: I, adjacent: F) -> Vec<HashSet<T>>
+where
+    T: Eq + Hash + Clone,
+    I: IntoIterator<Item = T>,
+    F: FnMut(T) -> J + Clone,
+    J: IntoIterator<Item = T>,
+{
+    let mut comps = Vec::new();
+    let mut comped = HashSet::new();
+    for v in vertices {
+        if comped.insert(v.clone()) {
+            let c = one2many_closure(v, adjacent.clone());
+            for u in &c {
+                comped.insert(u.clone());
+            }
+            comps.push(c);
+        }
+    }
+    comps
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
