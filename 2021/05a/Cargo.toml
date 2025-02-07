@@ -12,7 +12,7 @@ keywords = ["grid-movement"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
-either = "1.8.1"
+either.workspace = true
 
 [lints]
 workspace = true

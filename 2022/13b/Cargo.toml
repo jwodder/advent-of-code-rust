@@ -12,10 +12,10 @@ keywords = ["recursive-parse"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
-thiserror = "2.0.0"
+thiserror.workspace = true
 
 [dev-dependencies]
-rstest = { version = "0.24.0", default-features = false }
+rstest.workspace = true
 
 [lints]
 workspace = true

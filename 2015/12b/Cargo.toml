@@ -12,10 +12,10 @@ keywords = ["json"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
-json = "0.12.4"
+json.workspace = true
 
 [dev-dependencies]
-rstest = { version = "0.24.0", default-features = false }
+rstest.workspace = true
 
 [lints]
 workspace = true
