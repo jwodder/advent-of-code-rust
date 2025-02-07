@@ -13,7 +13,7 @@ publish.workspace = true
 anyhow = "1.0.70"
 num-traits = "0.2.15"
 serde = { version = "1.0.164", features = ["derive"], optional = true }
-thiserror = "2.0.0"
+thiserror.workspace = true
 toml = { version = "0.8.8", features = ["parse"], optional = true }
 
 [dev-dependencies]

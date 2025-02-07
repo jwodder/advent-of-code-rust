@@ -14,7 +14,7 @@ keywords = ["Chinese-remainder-theorem", "modular-arithmetic"]
 adventutil = { path = "../../adventutil" }
 
 [dev-dependencies]
-rstest = { version = "0.24.0", default-features = false }
+rstest.workspace = true
 
 [lints]
 workspace = true

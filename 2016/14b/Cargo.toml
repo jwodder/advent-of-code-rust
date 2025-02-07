@@ -12,8 +12,8 @@ keywords = ["md5"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
-hex = "0.4.3"
-md-5 = "0.10.5"
+hex.workspace = true
+md-5.workspace = true
 
 [lints]
 workspace = true

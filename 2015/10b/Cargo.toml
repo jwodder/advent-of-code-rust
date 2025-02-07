@@ -12,10 +12,10 @@ keywords = ["look-and-say-sequence"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
-itertools = "0.14.0"
+itertools.workspace = true
 
 [dev-dependencies]
-rstest = { version = "0.24.0", default-features = false }
+rstest.workspace = true
 
 [lints]
 workspace = true
