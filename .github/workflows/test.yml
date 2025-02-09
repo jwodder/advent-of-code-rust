@@ -48,11 +48,14 @@ jobs:
         if: "!startsWith(github.head_ref, 'renovate/')"
         uses: Swatinem/rust-cache@v2
 
+      - name: Install cargo-hack
+        uses: taiki-e/install-action@cargo-hack
+
       - name: Build crate
-        run: cargo build --workspace --all-targets --all-features --verbose
+        run: cargo hack --workspace --feature-powerset build --all-targets --verbose
 
       - name: Test crate
-        run: cargo test --workspace --all-features --verbose
+        run: cargo hack --workspace --feature-powerset test --verbose
 
   minimal-versions:
     runs-on: ubuntu-latest
@@ -79,10 +82,10 @@ jobs:
           tool: cargo-hack,cargo-minimal-versions
 
       - name: Build crate
-        run: cargo minimal-versions --direct build --workspace --all-targets --all-features --verbose
+        run: cargo minimal-versions --direct --workspace --feature-powerset build --all-targets --verbose
 
       - name: Test crate
-        run: cargo minimal-versions --direct test --workspace --all-features --verbose
+        run: cargo minimal-versions --direct --workspace --feature-powerset test --verbose
 
   coverage:
     # This is separate from the main tests because cargo-llvm-cov doesn't run
@@ -133,11 +136,17 @@ jobs:
         if: "!startsWith(github.head_ref, 'renovate/')"
         uses: Swatinem/rust-cache@v2
 
+      - name: Install cargo-hack
+        uses: taiki-e/install-action@cargo-hack
+
       - name: Check code
-        run: cargo clippy --all-features --all-targets -- -Dwarnings
+        run: cargo hack --workspace --feature-powerset clippy -- -Dwarnings
+
+      - name: Check tests & examples
+        run: cargo hack --workspace --feature-powerset clippy --tests --examples -- -Dwarnings
 
       - name: Check formatting
-        run: cargo fmt --check
+        run: cargo fmt --all --check
 
 #  docs:
 #    runs-on: ubuntu-latest
@@ -157,7 +166,7 @@ jobs:
 #      - name: Check docs
 #        run: cargo doc -p adventutil --no-deps --all-features
 #        env:
-#          RUSTDOCFLAGS: -Dwarnings
+#          RUSTDOCFLAGS: -Dwarnings --cfg docsrs
 
   regression:
     runs-on: ubuntu-latest
@@ -184,8 +193,11 @@ jobs:
         if: "!startsWith(github.head_ref, 'renovate/')"
         uses: Swatinem/rust-cache@v2
 
+      - name: Install cargo-hack
+        uses: taiki-e/install-action@cargo-hack
+
       - name: Build binaries
-        run: cargo build --workspace --bins --release --verbose
+        run: cargo hack --workspace build --bins --release --verbose
 
       - name: Run regression tests
         run: cargo run -r -p regresstest
