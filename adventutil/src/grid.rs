@@ -478,6 +478,37 @@ impl Direction {
             SouthEast => (Greater, Greater),
         }
     }
+
+    // Returns the direction after rotating 90 degrees to the
+    // left/counterclockwise
+    pub fn turn_left(&self) -> Direction {
+        match self {
+            Direction::North => Direction::West,
+            Direction::NorthEast => Direction::NorthWest,
+            Direction::East => Direction::North,
+            Direction::SouthEast => Direction::NorthEast,
+            Direction::South => Direction::East,
+            Direction::SouthWest => Direction::SouthEast,
+            Direction::West => Direction::South,
+            Direction::NorthWest => Direction::SouthWest,
+            Direction::Here => Direction::Here,
+        }
+    }
+
+    // Returns the direction after rotating 90 degrees to the right/clockwise
+    pub fn turn_right(&self) -> Direction {
+        match self {
+            Direction::North => Direction::East,
+            Direction::NorthEast => Direction::SouthEast,
+            Direction::East => Direction::South,
+            Direction::SouthEast => Direction::SouthWest,
+            Direction::South => Direction::West,
+            Direction::SouthWest => Direction::NorthWest,
+            Direction::West => Direction::North,
+            Direction::NorthWest => Direction::NorthEast,
+            Direction::Here => Direction::Here,
+        }
+    }
 }
 
 impl std::ops::Neg for Direction {
