@@ -2107,6 +2107,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2024-07a"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+ "itertools",
+]
+
+[[package]]
 name = "adventutil"
 version = "0.1.0"
 dependencies = [
