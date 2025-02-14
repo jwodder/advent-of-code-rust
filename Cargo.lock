@@ -2079,6 +2079,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2024-05a"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+]
+
+[[package]]
+name = "advent-of-code-2024-05b"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+]
+
+[[package]]
 name = "adventutil"
 version = "0.1.0"
 dependencies = [

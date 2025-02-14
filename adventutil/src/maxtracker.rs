@@ -13,7 +13,7 @@ impl<T> MaxTracker<T> {
 
 impl<T: Ord> MaxTracker<T> {
     pub fn add(&mut self, value: T) {
-        if !self.0.as_ref().is_some_and(|prev| *prev >= value) {
+        if self.0.as_ref().is_none_or(|prev| *prev < value) {
             self.0 = Some(value);
         }
     }
@@ -54,7 +54,7 @@ impl<K, V> FirstMaxKeyTracker<K, V> {
 
 impl<K, V: Ord> FirstMaxKeyTracker<K, V> {
     pub fn add(&mut self, key: K, value: V) {
-        if !self.0.as_ref().is_some_and(|(_, prev)| *prev >= value) {
+        if self.0.as_ref().is_none_or(|(_, prev)| *prev < value) {
             self.0 = Some((key, value));
         }
     }
@@ -107,7 +107,7 @@ impl<K, V> LastMaxKeyTracker<K, V> {
 
 impl<K, V: Ord> LastMaxKeyTracker<K, V> {
     pub fn add(&mut self, key: K, value: V) {
-        if !self.0.as_ref().is_some_and(|(_, prev)| *prev > value) {
+        if self.0.as_ref().is_none_or(|(_, prev)| *prev <= value) {
             self.0 = Some((key, value));
         }
     }
@@ -152,7 +152,7 @@ impl<T> MinTracker<T> {
 
 impl<T: Ord> MinTracker<T> {
     pub fn add(&mut self, value: T) {
-        if !self.0.as_ref().is_some_and(|prev| *prev <= value) {
+        if self.0.as_ref().is_none_or(|prev| *prev > value) {
             self.0 = Some(value);
         }
     }
@@ -193,7 +193,7 @@ impl<K, V> FirstMinKeyTracker<K, V> {
 
 impl<K, V: Ord> FirstMinKeyTracker<K, V> {
     pub fn add(&mut self, key: K, value: V) {
-        if !self.0.as_ref().is_some_and(|(_, prev)| *prev <= value) {
+        if self.0.as_ref().is_none_or(|(_, prev)| *prev > value) {
             self.0 = Some((key, value));
         }
     }
@@ -246,7 +246,7 @@ impl<K, V> LastMinKeyTracker<K, V> {
 
 impl<K, V: Ord> LastMinKeyTracker<K, V> {
     pub fn add(&mut self, key: K, value: V) {
-        if !self.0.as_ref().is_some_and(|(_, prev)| *prev < value) {
+        if self.0.as_ref().is_none_or(|(_, prev)| *prev >= value) {
             self.0 = Some((key, value));
         }
     }
