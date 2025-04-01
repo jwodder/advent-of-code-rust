@@ -64,7 +64,7 @@ impl TestCase<'_> {
                 }
             }
             Ok(Err(e)) => {
-                log::error!("Problem {} binary failed to execute: {}", self, e);
+                log::error!("Problem {self} binary failed to execute: {e}");
                 false
             }
             Err(_) => {
