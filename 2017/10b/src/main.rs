@@ -11,8 +11,7 @@ fn solve(input: Input) -> String {
         .collect::<Vec<_>>();
     let mut values = (0..256).collect::<Vec<_>>();
     let mut pos = 0;
-    for (skip, length) in std::iter::repeat(lengths.into_iter().chain([17, 31, 73, 47, 23]))
-        .take(64)
+    for (skip, length) in std::iter::repeat_n(lengths.into_iter().chain([17, 31, 73, 47, 23]), 64)
         .flatten()
         .enumerate()
     {
