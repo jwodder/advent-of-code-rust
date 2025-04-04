@@ -1,6 +1,6 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
-use std::iter::repeat;
+use std::iter::repeat_n;
 use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -12,9 +12,8 @@ struct Reindeer {
 
 impl Reindeer {
     fn positions(self) -> impl Iterator<Item = usize> {
-        repeat(self.speed)
-            .take(self.flytime)
-            .chain(repeat(0).take(self.resttime))
+        repeat_n(self.speed, self.flytime)
+            .chain(repeat_n(0, self.resttime))
             .cycle()
             .scan(0, |sum, d| {
                 *sum += d;

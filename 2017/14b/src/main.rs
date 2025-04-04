@@ -4,8 +4,7 @@ use adventutil::{components, Input};
 fn knot_hash(key: &[u8]) -> [u8; 16] {
     let mut values = (0u8..=255).collect::<Vec<_>>();
     let mut pos = 0;
-    for (skip, length) in std::iter::repeat(key.iter().copied().chain([17, 31, 73, 47, 23]))
-        .take(64)
+    for (skip, length) in std::iter::repeat_n(key.iter().copied().chain([17, 31, 73, 47, 23]), 64)
         .flatten()
         .enumerate()
     {
