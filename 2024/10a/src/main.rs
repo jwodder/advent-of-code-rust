@@ -1,10 +1,9 @@
-use adventutil::grid::{Direction, Grid};
+use adventutil::grid::Grid;
 use adventutil::Input;
 use std::collections::HashSet;
 
 fn solve(input: Input) -> usize {
     let grid = input.parse::<Grid<char>>().map(|c| c.to_digit(10));
-    let bounds = grid.bounds();
     grid.enumerate()
         .filter_map(|(coord, &height)| (height == Some(0)).then_some(coord))
         .map(|coord| {
@@ -12,11 +11,7 @@ fn solve(input: Input) -> usize {
             for h in 1u32..=9 {
                 locs = locs
                     .into_iter()
-                    .flat_map(|c| {
-                        Direction::cardinals()
-                            .filter_map(move |d| bounds.move_in(c, d))
-                            .filter(|&c2| grid[c2] == Some(h))
-                    })
+                    .flat_map(|c| grid.neighbor_coords(c).filter(|&c2| grid[c2] == Some(h)))
                     .collect();
             }
             locs.len()

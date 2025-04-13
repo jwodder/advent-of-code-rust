@@ -210,6 +210,24 @@ impl<T> Grid<T> {
                 .map_or_else(|| fill.clone(), |(oldy, oldx)| self[(oldy, oldx)].clone())
         })
     }
+
+    /// Returns an iterator of the [`Coords`] of all cardinal neighbors of the
+    /// given coordinate in the grid.
+    ///
+    /// If the given coordinate is not inside the grid, an empty iterator is
+    /// returned.
+    pub fn neighbor_coords(&self, c: Coords) -> NeighborCoords {
+        NeighborCoords::new(self, c)
+    }
+
+    /// Returns an iterator of the [`Coords`] of all adjacent neighbors
+    /// (including diagonals) of the given coordinate in the grid.
+    ///
+    /// If the given coordinate is not inside the grid, an empty iterator is
+    /// returned.
+    pub fn adjacent_coords(&self, c: Coords) -> AdjacentCoords {
+        AdjacentCoords::new(self, c)
+    }
 }
 
 impl Grid<bool> {

@@ -366,6 +366,78 @@ impl<T> FusedIterator for AdjacentWrapCells<'_, T> {}
 
 impl<T> ExactSizeIterator for AdjacentWrapCells<'_, T> {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct NeighborCoords {
+    bounds: GridBounds,
+    center: Coords,
+    inner: Cardinals,
+}
+
+impl NeighborCoords {
+    pub(super) fn new<T>(grid: &Grid<T>, center: Coords) -> Self {
+        NeighborCoords {
+            bounds: grid.bounds(),
+            center,
+            inner: Direction::cardinals(),
+        }
+    }
+}
+
+impl Iterator for NeighborCoords {
+    type Item = Coords;
+
+    fn next(&mut self) -> Option<Coords> {
+        for d in self.inner.by_ref() {
+            if let Some(c) = self.bounds.move_in(self.center, d) {
+                return Some(c);
+            }
+        }
+        None
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
+    }
+}
+
+impl FusedIterator for NeighborCoords {}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct AdjacentCoords {
+    bounds: GridBounds,
+    center: Coords,
+    inner: AdjacentDirs,
+}
+
+impl AdjacentCoords {
+    pub(super) fn new<T>(grid: &Grid<T>, center: Coords) -> Self {
+        AdjacentCoords {
+            bounds: grid.bounds(),
+            center,
+            inner: Direction::adjacent(),
+        }
+    }
+}
+
+impl Iterator for AdjacentCoords {
+    type Item = Coords;
+
+    fn next(&mut self) -> Option<Coords> {
+        for d in self.inner.by_ref() {
+            if let Some(c) = self.bounds.move_in(self.center, d) {
+                return Some(c);
+            }
+        }
+        None
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
+    }
+}
+
+impl FusedIterator for AdjacentCoords {}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -544,6 +616,83 @@ mod tests {
         assert_eq!(iter.size_hint(), (1, Some(1)));
         assert_eq!(iter.next(), Some(Direction::SouthEast));
         assert_eq!(iter.size_hint(), (0, Some(0)));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_neighbor_coords() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.neighbor_coords(Coords { x: 1, y: 1 });
+        assert_eq!(iter.next(), Some(Coords { x: 1, y: 0 }));
+        assert_eq!(iter.next(), Some(Coords { x: 2, y: 1 }));
+        assert_eq!(iter.next(), Some(Coords { x: 1, y: 2 }));
+        assert_eq!(iter.next(), Some(Coords { x: 0, y: 1 }));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_neighbor_coords_partial() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.neighbor_coords(Coords { x: 0, y: 0 });
+        assert_eq!(iter.next(), Some(Coords { x: 1, y: 0 }));
+        assert_eq!(iter.next(), Some(Coords { x: 0, y: 1 }));
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_neighbor_coords_outer() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.neighbor_coords(Coords { x: 5, y: 5 });
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_adjacent_coords() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.adjacent_coords(Coords { x: 1, y: 1 });
+        assert_eq!(iter.next(), Some(Coords { x: 0, y: 0 })); // NW
+        assert_eq!(iter.next(), Some(Coords { x: 1, y: 0 })); // N
+        assert_eq!(iter.next(), Some(Coords { x: 2, y: 0 })); // NE
+        assert_eq!(iter.next(), Some(Coords { x: 0, y: 1 })); // W
+        assert_eq!(iter.next(), Some(Coords { x: 2, y: 1 })); // E
+        assert_eq!(iter.next(), Some(Coords { x: 0, y: 2 })); // SW
+        assert_eq!(iter.next(), Some(Coords { x: 1, y: 2 })); // S
+        assert_eq!(iter.next(), Some(Coords { x: 2, y: 2 })); // SE
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_adjacent_coords_partial() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.adjacent_coords(Coords { x: 0, y: 0 });
+        assert_eq!(iter.next(), Some(Coords { x: 1, y: 0 })); // E
+        assert_eq!(iter.next(), Some(Coords { x: 0, y: 1 })); // S
+        assert_eq!(iter.next(), Some(Coords { x: 1, y: 1 })); // SE
+        assert_eq!(iter.next(), None);
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_adjacent_coords_outer() {
+        let gr = Grid {
+            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+        };
+        let mut iter = gr.adjacent_coords(Coords { x: 5, y: 5 });
         assert_eq!(iter.next(), None);
         assert_eq!(iter.next(), None);
     }

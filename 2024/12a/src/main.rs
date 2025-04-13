@@ -1,4 +1,4 @@
-use adventutil::grid::{Direction, Grid};
+use adventutil::grid::Grid;
 use adventutil::{components, Input};
 
 fn solve(input: Input) -> usize {
@@ -6,11 +6,8 @@ fn solve(input: Input) -> usize {
     // closures:
     let grid = &input.parse::<Grid<char>>();
     let comps = components(grid.iter_coords(), |c| {
-        Direction::cardinals().filter_map(move |d| {
-            grid.bounds()
-                .move_in(c, d)
-                .filter(|&c2| grid[c] == grid[c2])
-        })
+        grid.neighbor_coords(c)
+            .filter(move |&c2| grid[c] == grid[c2])
     });
     let mut price = 0;
     for region in &comps {
@@ -18,12 +15,9 @@ fn solve(input: Input) -> usize {
         let perimeter: usize = region
             .iter()
             .map(|&c| {
-                Direction::cardinals()
-                    .filter(move |&d| {
-                        grid.bounds()
-                            .move_in(c, d)
-                            .is_none_or(|c2| !region.contains(&c2))
-                    })
+                4 - grid
+                    .neighbor_coords(c)
+                    .filter(|c2| region.contains(c2))
                     .count()
             })
             .sum();

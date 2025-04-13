@@ -1,4 +1,4 @@
-use adventutil::grid::{Direction, Grid, GridBounds};
+use adventutil::grid::{Grid, GridBounds};
 use adventutil::{components, Input};
 
 fn knot_hash(key: &[u8]) -> [u8; 16] {
@@ -44,9 +44,7 @@ fn solve(input: Input) -> usize {
         }
     }
     components(grid.enumerate().filter_map(|(c, b)| b.then_some(c)), |c| {
-        Direction::cardinals()
-            .filter_map(move |d| bounds.move_in(c, d))
-            .filter(|&c| grid[c])
+        grid.neighbor_coords(c).filter(|&c| grid[c])
     })
     .len()
 }
