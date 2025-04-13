@@ -256,15 +256,15 @@ impl FusedIterator for Cardinals {}
 impl ExactSizeIterator for Cardinals {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct AdjacentDirs(usize);
+pub struct Adjacent(usize);
 
-impl AdjacentDirs {
-    pub(super) fn new() -> AdjacentDirs {
-        AdjacentDirs(0)
+impl Adjacent {
+    pub(super) fn new() -> Adjacent {
+        Adjacent(0)
     }
 }
 
-impl Iterator for AdjacentDirs {
+impl Iterator for Adjacent {
     type Item = Direction;
 
     fn next(&mut self) -> Option<Direction> {
@@ -289,16 +289,16 @@ impl Iterator for AdjacentDirs {
     }
 }
 
-impl FusedIterator for AdjacentDirs {}
+impl FusedIterator for Adjacent {}
 
-impl ExactSizeIterator for AdjacentDirs {}
+impl ExactSizeIterator for Adjacent {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AdjacentCells<'a, T> {
     grid: &'a Grid<T>,
     center: Coords,
     bounds: GridBounds,
-    inner: AdjacentDirs,
+    inner: Adjacent,
 }
 
 impl<'a, T> AdjacentCells<'a, T> {
@@ -333,7 +333,7 @@ pub struct AdjacentWrapCells<'a, T> {
     grid: &'a Grid<T>,
     center: Coords,
     bounds: GridBounds,
-    inner: AdjacentDirs,
+    inner: Adjacent,
 }
 
 impl<'a, T> AdjacentWrapCells<'a, T> {
@@ -406,7 +406,7 @@ impl FusedIterator for NeighborCoords {}
 pub struct AdjacentCoords {
     bounds: GridBounds,
     center: Coords,
-    inner: AdjacentDirs,
+    inner: Adjacent,
 }
 
 impl AdjacentCoords {

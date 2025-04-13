@@ -477,8 +477,8 @@ impl Direction {
         Cardinals::new()
     }
 
-    pub fn adjacent() -> AdjacentDirs {
-        AdjacentDirs::new()
+    pub fn adjacent() -> Adjacent {
+        Adjacent::new()
     }
 
     pub fn decompose(&self) -> (Ordering, Ordering) {
