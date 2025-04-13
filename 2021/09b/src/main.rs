@@ -29,10 +29,8 @@ fn is_low_point(cell: &Cell<'_, u32>) -> bool {
 
 fn basin_size(cell: Cell<'_, u32>) -> usize {
     let grid = cell.grid();
-    let bounds = grid.bounds();
     one2many_closure(cell.coords(), |c| {
-        Direction::cardinals()
-            .filter_map(move |d| bounds.move_in(c, d))
+        grid.neighbor_coords(c)
             .filter(|&c2| *grid.get(c2).unwrap() < 9)
     })
     .len()

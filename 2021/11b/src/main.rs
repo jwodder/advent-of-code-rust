@@ -1,4 +1,4 @@
-use adventutil::grid::{Direction, Grid, ParseGridError};
+use adventutil::grid::{Grid, ParseGridError};
 use adventutil::Input;
 use std::collections::VecDeque;
 use std::iter::repeat_with;
@@ -19,15 +19,12 @@ impl Octopuses {
                 queue.push_back(coord);
             }
         }
-        let bounds = self.0.bounds();
         while let Some(coord) = queue.pop_front() {
-            for d in Direction::adjacent() {
-                if let Some(c) = bounds.move_in(coord, d) {
-                    self.0[c] += 1;
-                    if self.0[c] == 10 {
-                        flashed += 1;
-                        queue.push_back(c);
-                    }
+            for c in self.0.adjacent_coords(coord) {
+                self.0[c] += 1;
+                if self.0[c] == 10 {
+                    flashed += 1;
+                    queue.push_back(c);
                 }
             }
         }
