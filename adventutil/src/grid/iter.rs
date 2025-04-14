@@ -85,8 +85,7 @@ impl<T> ExactSizeIterator for Enumerate<'_, T> {}
 #[derive(Clone, Debug)]
 pub struct IntoIter<T> {
     coords_iter: IterCoords,
-    rows_iter: std::vec::IntoIter<Vec<T>>,
-    row: Option<std::vec::IntoIter<T>>,
+    values_iter: std::vec::IntoIter<T>,
 }
 
 impl<T> IntoIter<T> {
@@ -94,8 +93,7 @@ impl<T> IntoIter<T> {
         let coords_iter = grid.iter_coords();
         IntoIter {
             coords_iter,
-            rows_iter: grid.data.into_iter(),
-            row: None,
+            values_iter: grid.data.into_iter(),
         }
     }
 }
@@ -104,17 +102,7 @@ impl<T> Iterator for IntoIter<T> {
     type Item = (Coords, T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        let coords = self.coords_iter.next()?;
-        loop {
-            let cell_iter = match self.row.as_mut() {
-                Some(it) => it,
-                None => self.row.insert(self.rows_iter.next()?.into_iter()),
-            };
-            match cell_iter.next() {
-                Some(value) => return Some((coords, value)),
-                None => self.row = None,
-            }
-        }
+        self.coords_iter.next().zip(self.values_iter.next())
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
@@ -445,7 +433,11 @@ mod tests {
     #[test]
     fn test_enumerate() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.enumerate();
         assert_eq!(iter.size_hint(), (9, Some(9)));
@@ -474,7 +466,11 @@ mod tests {
     #[test]
     fn test_into_iter() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.into_iter();
         assert_eq!(iter.size_hint(), (9, Some(9)));
@@ -503,7 +499,11 @@ mod tests {
     #[test]
     fn test_columns() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.columns();
         assert_eq!(iter.size_hint(), (3, Some(3)));
@@ -564,7 +564,11 @@ mod tests {
     #[test]
     fn test_iter_cells() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.iter_cells();
         assert_eq!(iter.next().unwrap(), 1);
@@ -623,7 +627,11 @@ mod tests {
     #[test]
     fn test_neighbor_coords() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.neighbor_coords(Coords { x: 1, y: 1 });
         assert_eq!(iter.next(), Some(Coords { x: 1, y: 0 }));
@@ -637,7 +645,11 @@ mod tests {
     #[test]
     fn test_neighbor_coords_partial() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.neighbor_coords(Coords { x: 0, y: 0 });
         assert_eq!(iter.next(), Some(Coords { x: 1, y: 0 }));
@@ -649,7 +661,11 @@ mod tests {
     #[test]
     fn test_neighbor_coords_outer() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.neighbor_coords(Coords { x: 5, y: 5 });
         assert_eq!(iter.next(), None);
@@ -659,7 +675,11 @@ mod tests {
     #[test]
     fn test_adjacent_coords() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.adjacent_coords(Coords { x: 1, y: 1 });
         assert_eq!(iter.next(), Some(Coords { x: 0, y: 0 })); // NW
@@ -677,7 +697,11 @@ mod tests {
     #[test]
     fn test_adjacent_coords_partial() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.adjacent_coords(Coords { x: 0, y: 0 });
         assert_eq!(iter.next(), Some(Coords { x: 1, y: 0 })); // E
@@ -690,7 +714,11 @@ mod tests {
     #[test]
     fn test_adjacent_coords_outer() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let mut iter = gr.adjacent_coords(Coords { x: 5, y: 5 });
         assert_eq!(iter.next(), None);
