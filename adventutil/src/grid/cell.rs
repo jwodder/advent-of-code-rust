@@ -139,12 +139,17 @@ impl<T: PartialEq> PartialEq<T> for Cell<'_, T> {
 
 #[cfg(test)]
 mod tests {
+    use super::super::GridBounds;
     use super::*;
 
     #[test]
     fn test_cell_corner() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let cell = gr.get_cell((0, 2)).unwrap();
         assert_eq!(cell.get(), &3);
@@ -172,7 +177,11 @@ mod tests {
     #[test]
     fn test_cell_adjacent() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let cell = gr.get_cell((0, 2)).unwrap();
         let mut iter = cell.adjacent();
@@ -186,7 +195,11 @@ mod tests {
     #[test]
     fn test_cell_adjacent_wrap() {
         let gr = Grid {
-            data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
+            data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+            bounds: GridBounds {
+                width: 3,
+                height: 3,
+            },
         };
         let cell = gr.get_cell((0, 2)).unwrap();
         let mut iter = cell.adjacent_wrap();

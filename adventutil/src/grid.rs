@@ -17,10 +17,11 @@ use thiserror::Error;
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct Grid<T> {
     // Invariants:
-    // - `data` is nonempty.
-    // - Every row in `data` is nonempty.
-    // - Every row in `data` has the same length.
-    data: Vec<Vec<T>>,
+    // - `data.len() == bounds.height * bounds.width`
+    // - `bounds.height` is nonzero.
+    // - `bounds.width` is nonzero.
+    data: Vec<T>,
+    bounds: GridBounds,
 }
 
 impl<T> Grid<T> {
@@ -32,12 +33,10 @@ impl<T> Grid<T> {
         // TODO: Panic if `bounds` is empty
         Grid {
             data: (0..bounds.height)
-                .map(|y| {
-                    (0..bounds.width)
-                        .map(|x| f(C::from(Coords::new(y, x))))
-                        .collect::<Vec<_>>()
-                })
+                .flat_map(|y| (0..bounds.width).map(move |x| (y, x)))
+                .map(|(y, x)| f(C::from(Coords::new(y, x))))
                 .collect(),
+            bounds,
         }
     }
 
@@ -46,25 +45,36 @@ impl<T> Grid<T> {
         T: Clone,
     {
         Grid {
-            data: vec![vec![value; bounds.width]; bounds.height],
+            data: vec![value; bounds.width * bounds.height],
+            bounds,
         }
     }
 
     pub fn height(&self) -> usize {
-        self.data.len()
+        self.bounds.height
     }
 
     pub fn width(&self) -> usize {
-        self.data[0].len()
+        self.bounds.width
     }
 
     pub fn bounds(&self) -> GridBounds {
-        GridBounds::new(self.height(), self.width())
+        self.bounds
+    }
+
+    fn get_index(&self, x: usize, y: usize) -> Option<usize> {
+        if x < self.bounds.width && y < self.bounds.height {
+            y.checked_mul(self.bounds.width)
+                .and_then(|yw| yw.checked_add(x))
+        } else {
+            None
+        }
     }
 
     pub fn get<C: Into<(usize, usize)>>(&self, coords: C) -> Option<&T> {
         let (y, x) = coords.into();
-        self.data.get(y).and_then(|row| row.get(x))
+        let i = self.get_index(x, y)?;
+        self.data.get(i)
     }
 
     pub fn get_wrap(&self, (y, x): (isize, isize)) -> &T {
@@ -81,13 +91,16 @@ impl<T> Grid<T> {
 
     pub fn get_mut<C: Into<(usize, usize)>>(&mut self, coords: C) -> Option<&mut T> {
         let (y, x) = coords.into();
-        self.data.get_mut(y).and_then(|row| row.get_mut(x))
+        let i = self.get_index(x, y)?;
+        self.data.get_mut(i)
     }
 
-    // Panics on out-of-bounds
+    // Does nothing on out-of-bounds
     pub fn set<C: Into<(usize, usize)>>(&mut self, coords: C, value: T) {
         let (y, x) = coords.into();
-        self.data[y][x] = value;
+        if let Some(i) = self.get_index(x, y) {
+            self.data[i] = value;
+        }
     }
 
     // Panics on out-of-bounds
@@ -95,9 +108,23 @@ impl<T> Grid<T> {
     where
         T: Clone,
     {
-        let bounds = (range.start_bound().cloned(), range.end_bound().cloned());
+        let start_bound = match range.start_bound().cloned() {
+            std::ops::Bound::Included(y) => y,
+            std::ops::Bound::Excluded(y) => y + 1,
+            std::ops::Bound::Unbounded => 0,
+        };
+        let end_bound = match range.end_bound().cloned() {
+            std::ops::Bound::Included(y) => y + 1,
+            std::ops::Bound::Excluded(y) => y,
+            std::ops::Bound::Unbounded => self.bounds.height,
+        };
         Grid {
-            data: self.data[bounds].to_vec(),
+            data: self.data[(start_bound * self.bounds.width)..(end_bound * self.bounds.width)]
+                .to_vec(),
+            bounds: GridBounds {
+                width: self.bounds.width,
+                height: end_bound - start_bound,
+            },
         }
     }
 
@@ -106,9 +133,26 @@ impl<T> Grid<T> {
     where
         T: Clone,
     {
-        let bounds = (range.start_bound().cloned(), range.end_bound().cloned());
+        let start_bound = match range.start_bound().cloned() {
+            std::ops::Bound::Included(x) => x,
+            std::ops::Bound::Excluded(x) => x + 1,
+            std::ops::Bound::Unbounded => 0,
+        };
+        let end_bound = match range.end_bound().cloned() {
+            std::ops::Bound::Included(x) => x + 1,
+            std::ops::Bound::Excluded(x) => x,
+            std::ops::Bound::Unbounded => self.bounds.width,
+        };
+
         Grid {
-            data: self.data.iter().map(|row| row[bounds].to_vec()).collect(),
+            data: (0..self.bounds.height)
+                .map(|y| y * self.bounds.width)
+                .flat_map(|yw| self.data[(yw + start_bound)..(yw + end_bound)].to_vec())
+                .collect(),
+            bounds: GridBounds {
+                width: end_bound - start_bound,
+                height: self.bounds.height,
+            },
         }
     }
 
@@ -117,11 +161,8 @@ impl<T> Grid<T> {
         F: FnMut(T) -> U,
     {
         Grid {
-            data: self
-                .data
-                .into_iter()
-                .map(|row| row.into_iter().map(&mut f).collect())
-                .collect(),
+            data: self.data.into_iter().map(&mut f).collect(),
+            bounds: self.bounds,
         }
     }
 
@@ -130,30 +171,30 @@ impl<T> Grid<T> {
         F: FnMut(T) -> Result<U, E>,
     {
         let mut data = Vec::with_capacity(self.data.len());
-        for row in self.data {
-            let mut new_row = Vec::with_capacity(row.len());
-            for value in row {
-                new_row.push(f(value)?);
-            }
-            data.push(new_row);
+        for value in self.data {
+            data.push(f(value)?);
         }
-        Ok(Grid { data })
+        Ok(Grid {
+            data,
+            bounds: self.bounds,
+        })
     }
 
     pub fn map_cells<U, F>(&self, mut f: F) -> Grid<U>
     where
         F: FnMut(Cell<'_, T>) -> U,
     {
-        let mut data = Vec::with_capacity(self.height());
+        let mut data = Vec::with_capacity(self.data.len());
         for y in 0..self.height() {
-            let mut new_row = Vec::with_capacity(self.width());
             for x in 0..self.width() {
                 let cell = Cell::new(self, y, x);
-                new_row.push(f(cell));
+                data.push(f(cell));
             }
-            data.push(new_row);
         }
-        Grid { data }
+        Grid {
+            data,
+            bounds: self.bounds,
+        }
     }
 
     pub fn enumerate(&self) -> Enumerate<'_, T> {
@@ -176,15 +217,16 @@ impl<T> Grid<T> {
     where
         P: FnMut(&Vec<T>) -> bool,
     {
-        Grid::try_from(self.data.into_iter().filter(predicate).collect::<Vec<_>>()).ok()
+        Grid::try_from(self.into_rows().filter(predicate).collect::<Vec<_>>()).ok()
     }
 
-    pub fn into_rows(self) -> impl Iterator<Item = Vec<T>> {
-        self.data.into_iter()
+    pub fn into_rows(mut self) -> impl Iterator<Item = Vec<T>> {
+        std::iter::repeat_n(self.bounds.width, self.bounds.height)
+            .map(move |w| self.data.drain(..w).collect())
     }
 
     pub fn into_values(self) -> impl Iterator<Item = T> {
-        self.data.into_iter().flatten()
+        self.data.into_iter()
     }
 
     pub fn iter_coords(&self) -> IterCoords {
@@ -308,14 +350,14 @@ impl<T: FromStr> Grid<T> {
 
 impl<T: fmt::Display> fmt::Display for Grid<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut first = true;
-        for row in &self.data {
-            if !std::mem::replace(&mut first, false) {
+        let mut col = 0;
+        for value in &self.data {
+            if col >= self.bounds.width {
+                col = 0;
                 writeln!(f)?;
             }
-            for cell in row {
-                write!(f, "{cell}")?;
-            }
+            write!(f, "{value}")?;
+            col += 1;
         }
         Ok(())
     }
@@ -325,6 +367,7 @@ impl<T> TryFrom<Vec<Vec<T>>> for Grid<T> {
     type Error = GridFromError;
 
     fn try_from(data: Vec<Vec<T>>) -> Result<Grid<T>, GridFromError> {
+        let height = data.len();
         let width = match data.first() {
             Some(row) => row.len(),
             None => return Err(GridFromError::Empty),
@@ -337,7 +380,10 @@ impl<T> TryFrom<Vec<Vec<T>>> for Grid<T> {
         if width == 0 {
             return Err(GridFromError::Empty);
         }
-        Ok(Grid { data })
+        Ok(Grid {
+            data: data.into_iter().flatten().collect(),
+            bounds: GridBounds { width, height },
+        })
     }
 }
 
@@ -376,14 +422,14 @@ pub struct Draw<'a>(&'a Grid<bool>);
 
 impl fmt::Display for Draw<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut first = true;
-        for row in &self.0.data {
-            if !std::mem::replace(&mut first, false) {
+        let mut col = 0;
+        for &cell in &self.0.data {
+            if col >= self.0.bounds.width {
+                col = 0;
                 writeln!(f)?;
             }
-            for &cell in row {
-                write!(f, "{}", if cell { '#' } else { '.' })?;
-            }
+            write!(f, "{}", if cell { '#' } else { '.' })?;
+            col += 1;
         }
         Ok(())
     }
@@ -565,11 +611,11 @@ mod tests {
         assert_eq!(
             gr,
             Grid {
-                data: vec![
-                    vec!['a', 'b', 'c'],
-                    vec!['d', 'e', 'f'],
-                    vec!['g', 'h', 'i']
-                ]
+                data: vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
+                bounds: GridBounds {
+                    width: 3,
+                    height: 3
+                },
             }
         );
     }
@@ -580,7 +626,11 @@ mod tests {
         assert_eq!(
             gr,
             Grid {
-                data: vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]]
+                data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+                bounds: GridBounds {
+                    width: 3,
+                    height: 3
+                },
             }
         );
     }
@@ -599,12 +649,13 @@ mod tests {
             gr,
             Grid {
                 data: vec![
-                    vec![22, 13, 17, 11, 0],
-                    vec![8, 2, 23, 4, 24],
-                    vec![21, 9, 14, 16, 7],
-                    vec![6, 10, 3, 18, 5],
-                    vec![1, 12, 20, 15, 19],
-                ]
+                    22, 13, 17, 11, 0, 8, 2, 23, 4, 24, 21, 9, 14, 16, 7, 6, 10, 3, 18, 5, 1, 12,
+                    20, 15, 19,
+                ],
+                bounds: GridBounds {
+                    width: 5,
+                    height: 5
+                },
             }
         );
     }
@@ -622,11 +673,11 @@ mod tests {
         assert_eq!(
             gr.row_slice(2..),
             Grid {
-                data: vec![
-                    vec![21, 9, 14, 16, 7],
-                    vec![6, 10, 3, 18, 5],
-                    vec![1, 12, 20, 15, 19],
-                ]
+                data: vec![21, 9, 14, 16, 7, 6, 10, 3, 18, 5, 1, 12, 20, 15, 19],
+                bounds: GridBounds {
+                    width: 5,
+                    height: 3
+                },
             }
         );
     }
@@ -644,13 +695,11 @@ mod tests {
         assert_eq!(
             gr.column_slice(..3),
             Grid {
-                data: vec![
-                    vec![22, 13, 17],
-                    vec![8, 2, 23],
-                    vec![21, 9, 14],
-                    vec![6, 10, 3],
-                    vec![1, 12, 20],
-                ]
+                data: vec![22, 13, 17, 8, 2, 23, 21, 9, 14, 6, 10, 3, 1, 12, 20,],
+                bounds: GridBounds {
+                    width: 3,
+                    height: 5
+                },
             }
         );
     }
