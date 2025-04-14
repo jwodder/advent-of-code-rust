@@ -43,7 +43,7 @@ fn solve(input: Input) -> usize {
             }
         }
     }
-    components(grid.enumerate().filter_map(|(c, b)| b.then_some(c)), |c| {
+    components(grid.iter().filter_map(|(c, b)| b.then_some(c)), |c| {
         grid.neighbor_coords(c).filter(|&c| grid[c])
     })
     .len()

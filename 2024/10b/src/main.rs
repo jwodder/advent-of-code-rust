@@ -3,7 +3,7 @@ use adventutil::Input;
 
 fn solve(input: Input) -> usize {
     let grid = input.parse::<Grid<char>>().map(|c| c.to_digit(10));
-    grid.enumerate()
+    grid.iter()
         .filter_map(|(coord, &height)| (height == Some(0)).then_some(coord))
         .map(|coord| {
             let mut locs = Vec::from([coord]);
