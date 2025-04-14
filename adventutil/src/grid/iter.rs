@@ -50,21 +50,21 @@ impl FusedIterator for IterCoords {}
 impl ExactSizeIterator for IterCoords {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct Enumerate<'a, T> {
+pub struct Iter<'a, T> {
     inner: IterCoords,
     grid: &'a Grid<T>,
 }
 
-impl<'a, T> Enumerate<'a, T> {
+impl<'a, T> Iter<'a, T> {
     pub(super) fn new(grid: &'a Grid<T>) -> Self {
-        Enumerate {
+        Iter {
             inner: grid.iter_coords(),
             grid,
         }
     }
 }
 
-impl<'a, T> Iterator for Enumerate<'a, T> {
+impl<'a, T> Iterator for Iter<'a, T> {
     type Item = (Coords, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -78,9 +78,9 @@ impl<'a, T> Iterator for Enumerate<'a, T> {
     }
 }
 
-impl<T> FusedIterator for Enumerate<'_, T> {}
+impl<T> FusedIterator for Iter<'_, T> {}
 
-impl<T> ExactSizeIterator for Enumerate<'_, T> {}
+impl<T> ExactSizeIterator for Iter<'_, T> {}
 
 #[derive(Clone, Debug)]
 pub struct IntoIter<T> {
@@ -431,7 +431,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_enumerate() {
+    fn test_iter() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -439,7 +439,7 @@ mod tests {
                 height: 3,
             },
         };
-        let mut iter = gr.enumerate();
+        let mut iter = gr.iter();
         assert_eq!(iter.size_hint(), (9, Some(9)));
         assert_eq!(iter.next(), Some((Coords::new(0, 0), &1)));
         assert_eq!(iter.size_hint(), (8, Some(8)));

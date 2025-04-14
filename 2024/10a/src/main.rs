@@ -4,7 +4,7 @@ use std::collections::HashSet;
 
 fn solve(input: Input) -> usize {
     let grid = input.parse::<Grid<char>>().map(|c| c.to_digit(10));
-    grid.enumerate()
+    grid.iter()
         .filter_map(|(coord, &height)| (height == Some(0)).then_some(coord))
         .map(|coord| {
             let mut locs = HashSet::from([coord]);

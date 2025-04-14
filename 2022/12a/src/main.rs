@@ -5,7 +5,7 @@ fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();
     let mut start = None;
     let mut end = None;
-    for (coords, &c) in grid.enumerate() {
+    for (coords, &c) in &grid {
         if c == 'S' {
             start = Some(coords);
         }

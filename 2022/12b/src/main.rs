@@ -9,7 +9,7 @@ enum Point {
 
 fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();
-    let Some((end, _)) = grid.enumerate().find(|(_, &c)| c == 'E') else {
+    let Some((end, _)) = grid.iter().find(|(_, &c)| c == 'E') else {
         panic!("End not found");
     };
     dijkstra_length(

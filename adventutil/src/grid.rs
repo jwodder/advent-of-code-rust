@@ -197,8 +197,8 @@ impl<T> Grid<T> {
         }
     }
 
-    pub fn enumerate(&self) -> Enumerate<'_, T> {
-        Enumerate::new(self)
+    pub fn iter(&self) -> Iter<'_, T> {
+        Iter::new(self)
     }
 
     pub fn columns(&self) -> Columns<'_, T> {
@@ -319,6 +319,15 @@ impl<T> IntoIterator for Grid<T> {
 
     fn into_iter(self) -> IntoIter<T> {
         IntoIter::new(self)
+    }
+}
+
+impl<'a, T> IntoIterator for &'a Grid<T> {
+    type Item = (Coords, &'a T);
+    type IntoIter = Iter<'a, T>;
+
+    fn into_iter(self) -> Iter<'a, T> {
+        Iter::new(self)
     }
 }
 

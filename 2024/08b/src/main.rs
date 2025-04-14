@@ -5,7 +5,7 @@ use std::collections::{HashMap, HashSet};
 fn solve(input: Input) -> usize {
     let grid = input.parse::<Grid<char>>();
     let mut freq2locs: HashMap<char, Vec<Coords>> = HashMap::new();
-    for (coord, &c) in grid.enumerate() {
+    for (coord, &c) in &grid {
         if c != '.' {
             freq2locs.entry(c).or_default().push(coord);
         }
