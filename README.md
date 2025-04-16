@@ -15,4 +15,9 @@ not to make the input files public][nosharing].  They are only kept here for
 use in automated regression testing to ensure I don't break any solutions with
 some later refactor.
 
+Note that some problems (at time of writing, all involving analysis of
+pseudo-assembly programs) were solved by working them out "manually" rather
+than by writing code; their solutions take the form of writeups in `.md` files
+encrypted with git-crypt.
+
 [nosharing]: https://www.reddit.com/r/adventofcode/comments/7lesj5/is_it_kosher_to_share_puzzle_inputs_and_answers/drlt9am/
