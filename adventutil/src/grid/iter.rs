@@ -384,7 +384,7 @@ impl Iterator for NeighborCoords {
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
-        self.inner.size_hint()
+        (0, self.inner.size_hint().1)
     }
 }
 
@@ -420,7 +420,7 @@ impl Iterator for AdjacentCoords {
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
-        self.inner.size_hint()
+        (0, self.inner.size_hint().1)
     }
 }
 
