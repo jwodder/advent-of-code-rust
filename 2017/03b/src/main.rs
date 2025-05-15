@@ -62,7 +62,7 @@ impl SpiralCanvas {
     }
 
     fn get(&self, p: Point) -> Option<u32> {
-        self.point2coords(p).and_then(|c| self.0[c])
+        self.0[self.point2coords(p)?]
     }
 
     fn set(&mut self, p: Point, n: u32) {

@@ -119,11 +119,11 @@ impl<'a, 'c, T> Cursor<'a, 'c, T> {
     }
 
     fn current(&self) -> Option<&'a T> {
-        self.index.and_then(|i| self.list.get(i))
+        self.list.get(self.index?)
     }
 
     fn peek_next(&self) -> Option<&'a T> {
-        self.index.and_then(|i| self.list.get_next(i))
+        self.list.get_next(self.index?)
     }
 
     fn move_next(&mut self) {

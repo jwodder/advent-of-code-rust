@@ -64,8 +64,7 @@ impl<T> Grid<T> {
 
     fn get_index(&self, x: usize, y: usize) -> Option<usize> {
         if x < self.bounds.width && y < self.bounds.height {
-            y.checked_mul(self.bounds.width)
-                .and_then(|yw| yw.checked_add(x))
+            y.checked_mul(self.bounds.width)?.checked_add(x)
         } else {
             None
         }
