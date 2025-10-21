@@ -15,25 +15,20 @@ impl Warehouse {
         // Use `*_wrap` to avoid having to unwrap an Option, which would never
         // be None anyway due to the walls along the warehouse edges.
         let next_loc = bounds.move_in_wrap(self.robot_loc, d);
-        match self.map[next_loc] {
-            Tile::Empty => {
-                self.robot_loc = next_loc;
-            }
-            Tile::Wall => (),
-            Tile::Box => {
-                let mut box_cell = self.map.get_cell(next_loc).unwrap();
-                while *box_cell == Tile::Box {
-                    box_cell = box_cell.neighbor_wrap(d);
-                }
-                if *box_cell == Tile::Empty {
-                    let target_coords = box_cell.coords();
-                    self.map[target_coords] = Tile::Box;
-                    self.map[next_loc] = Tile::Empty;
-                    self.robot_loc = next_loc;
-                }
-                // else: wall; do nothing
-            }
+        let mut box_cell = self.map.get_cell(next_loc).unwrap();
+        while *box_cell == Tile::Box {
+            box_cell = box_cell.neighbor_wrap(d);
         }
+        if *box_cell == Tile::Empty {
+            let target_coords = box_cell.coords();
+            // If there are no boxes in this direction, target_coords will
+            // equal next_loc, and the next two lines will cancel each other
+            // out.
+            self.map[target_coords] = Tile::Box;
+            self.map[next_loc] = Tile::Empty;
+            self.robot_loc = next_loc;
+        }
+        // else: wall; do nothing
     }
 
     fn gps_total(&self) -> usize {
