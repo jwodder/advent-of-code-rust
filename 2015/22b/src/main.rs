@@ -3,14 +3,11 @@ use adventutil::{dijkstra_length, Input};
 use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-enum GameState {
-    Fighting(Battle),
-    Victory,
-}
+struct GameState(Battle);
 
 impl GameState {
     fn new(boss: Boss) -> GameState {
-        GameState::Fighting(Battle {
+        GameState(Battle {
             player_hp: 50,
             mana: 500,
             armor: 0,
@@ -23,18 +20,13 @@ impl GameState {
     /// and the cost of the spell cast.  Returns `None` if the spell couldn't
     /// be cast, if the player is defeated, or if the player has already won.
     fn cast(&self, spell: Spell) -> Option<(GameState, u32)> {
-        match self {
-            GameState::Fighting(battle) => {
-                let mut battle = *battle;
-                let cost = battle.cast(spell)?;
-                if battle.won() {
-                    Some((GameState::Victory, cost))
-                } else {
-                    Some((GameState::Fighting(battle), cost))
-                }
-            }
-            GameState::Victory => None,
-        }
+        let mut battle = self.0;
+        let cost = battle.cast(spell)?;
+        Some((GameState(battle), cost))
+    }
+
+    fn victory(&self) -> bool {
+        self.0.won()
     }
 }
 
@@ -200,7 +192,7 @@ impl FromStr for Boss {
 
 fn solve(input: Input) -> u32 {
     let start = GameState::new(input.parse::<Boss>());
-    dijkstra_length(start, GameState::Victory, |state| {
+    dijkstra_length(start, GameState::victory, |state| {
         Spell::iter()
             .filter_map(|sp| state.cast(sp))
             .collect::<Vec<_>>()

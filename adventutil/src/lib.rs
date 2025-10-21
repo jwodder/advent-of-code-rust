@@ -257,15 +257,16 @@ impl<T> FusedIterator for UnorderedPairs<'_, T> {}
 
 impl<T> ExactSizeIterator for UnorderedPairs<'_, T> {}
 
-/// Returns the length of the shortest path from `start` to `end`.  `func` must
-/// be a function that takes a vertex `v` and returns an iterable of all of its
-/// neighbors and their distances from `v`.  Returns `None` if there is no
-/// route to `end`.
+/// Returns the length of the shortest path from `start` to a node that
+/// satisfies `is_end`.  `func` must be a function that takes a vertex `v` and
+/// returns an iterable of all of its neighbors and their distances from `v`.
+/// Returns `None` if there is no such path.
 ///
-/// `func` will not be called with `&end` as an argument.
-pub fn dijkstra_length<T, F, I>(start: T, end: T, mut func: F) -> Option<u32>
+/// `func` will not be called with the end node as an argument.
+pub fn dijkstra_length<T, P, F, I>(start: T, is_end: P, mut func: F) -> Option<u32>
 where
     T: Eq + Hash + Clone,
+    P: Fn(&T) -> bool,
     F: FnMut(&T) -> I,
     I: IntoIterator<Item = (T, u32)>,
 {
@@ -277,7 +278,7 @@ where
             .filter(|&(k, _)| !visited.contains(k))
             .min_by_key(|&(_, &dist)| dist)
             .map(|(k, &dist)| (k.clone(), dist))?;
-        if current == end {
+        if is_end(&current) {
             return Some(dist);
         }
         for (p, d) in func(&current) {
