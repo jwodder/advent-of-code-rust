@@ -2013,6 +2013,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2023-06b"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+ "itertools",
+]
+
+[[package]]
 name = "advent-of-code-2024-01a"
 version = "0.1.0"
 dependencies = [
