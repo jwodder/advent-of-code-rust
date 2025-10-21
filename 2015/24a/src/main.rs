@@ -82,13 +82,13 @@ fn partitionable(values: &[u64], target_weight: u64) -> bool {
     for row in &mut tbl {
         row[0] = true;
     }
-    for m in 1..=n {
+    for (m, &am) in values.iter().enumerate() {
+        let am = usize::try_from(am).unwrap();
         for b in 1..=t {
-            let am = usize::try_from(values[m - 1]).unwrap();
             if b < am {
-                tbl[m][b] = tbl[m - 1][b];
+                tbl[m + 1][b] = tbl[m][b];
             } else {
-                tbl[m][b] = tbl[m - 1][b] || tbl[m - 1][b - am];
+                tbl[m + 1][b] = tbl[m][b] || tbl[m][b - am];
             }
         }
     }
