@@ -21,7 +21,13 @@ fn solve(input: Input) -> u32 {
     }
     let start = index.get("YOU".into());
     let end = index.get("SAN".into());
-    dijkstra_length(start, end, |i| connections[i].iter().map(|&j| (j, 1))).unwrap() - 2
+    dijkstra_length(
+        start,
+        |&n| n == end,
+        |i| connections[i].iter().map(|&j| (j, 1)),
+    )
+    .unwrap()
+        - 2
 }
 
 fn main() {

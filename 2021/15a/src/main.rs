@@ -5,10 +5,15 @@ fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<u32>>();
     let start = Coords::new(0, 0);
     let end = Coords::new(grid.height() - 1, grid.width() - 1);
-    dijkstra_length(start, end, |&coords| {
-        let cell = grid.get_cell(coords).unwrap();
-        Direction::cardinals().filter_map(move |d| cell.neighbor(d).map(|c| (c.coords(), *c.get())))
-    })
+    dijkstra_length(
+        start,
+        |&n| n == end,
+        |&coords| {
+            let cell = grid.get_cell(coords).unwrap();
+            Direction::cardinals()
+                .filter_map(move |d| cell.neighbor(d).map(|c| (c.coords(), *c.get())))
+        },
+    )
     .expect("No route to end")
 }
 

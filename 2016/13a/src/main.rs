@@ -6,13 +6,17 @@ fn is_open(key: i32, x: i32, y: i32) -> bool {
 }
 
 fn steps(key: i32, target_x: i32, target_y: i32) -> u32 {
-    dijkstra_length((1, 1), (target_x, target_y), |&(x, y)| {
-        [(-1, 0), (1, 0), (0, -1), (0, 1)]
-            .into_iter()
-            .map(move |(i, j)| (x + i, y + j))
-            .filter(|&(i, j)| is_open(key, i, j))
-            .map(|p| (p, 1))
-    })
+    dijkstra_length(
+        (1, 1),
+        |&n| n == (target_x, target_y),
+        |&(x, y)| {
+            [(-1, 0), (1, 0), (0, -1), (0, 1)]
+                .into_iter()
+                .map(move |(i, j)| (x + i, y + j))
+                .filter(|&(i, j)| is_open(key, i, j))
+                .map(|p| (p, 1))
+        },
+    )
     .unwrap()
 }
 

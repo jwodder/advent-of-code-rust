@@ -1,11 +1,5 @@
-use adventutil::grid::{Coords, Direction, Grid};
+use adventutil::grid::{Direction, Grid};
 use adventutil::{dijkstra_length, Input};
-
-#[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
-enum Point {
-    Moving(Coords),
-    LowestPoint,
-}
 
 fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();
@@ -13,27 +7,19 @@ fn solve(input: Input) -> u32 {
         panic!("End not found");
     };
     dijkstra_length(
-        Point::Moving(end),
-        Point::LowestPoint,
-        |&point| match point {
-            Point::Moving(coords) => {
-                let mut nextpoints = Vec::new();
-                let cell = grid.get_cell(coords).unwrap();
-                for d in Direction::cardinals() {
-                    if let Some(c2) = cell.neighbor(d) {
-                        if can_move(*c2.get(), *cell.get()) {
-                            let p = if c2 == 'a' || c2 == 'S' {
-                                Point::LowestPoint
-                            } else {
-                                Point::Moving(c2.coords())
-                            };
-                            nextpoints.push((p, 1));
-                        }
+        end,
+        |&n| matches!(grid[n], 'a' | 'S'),
+        |&coords| {
+            let mut nextpoints = Vec::new();
+            let cell = grid.get_cell(coords).unwrap();
+            for d in Direction::cardinals() {
+                if let Some(c2) = cell.neighbor(d) {
+                    if can_move(*c2.get(), *cell.get()) {
+                        nextpoints.push((c2.coords(), 1));
                     }
                 }
-                nextpoints
             }
-            Point::LowestPoint => unreachable!(),
+            nextpoints
         },
     )
     .expect("No route to lowest point")

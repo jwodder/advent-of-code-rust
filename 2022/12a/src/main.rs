@@ -15,13 +15,17 @@ fn solve(input: Input) -> u32 {
     }
     let start = start.expect("Start not found");
     let end = end.expect("End not found");
-    dijkstra_length(start, end, |&coords| {
-        let cell = grid.get_cell(coords).unwrap();
-        Direction::cardinals().filter_map(move |d| {
-            let c2 = cell.neighbor(d)?;
-            can_move(*cell.get(), *c2.get()).then(|| (c2.coords(), 1))
-        })
-    })
+    dijkstra_length(
+        start,
+        |&n| n == end,
+        |&coords| {
+            let cell = grid.get_cell(coords).unwrap();
+            Direction::cardinals().filter_map(move |d| {
+                let c2 = cell.neighbor(d)?;
+                can_move(*cell.get(), *c2.get()).then(|| (c2.coords(), 1))
+            })
+        },
+    )
     .expect("No route to end")
 }
 
