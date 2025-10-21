@@ -1,20 +1,19 @@
 use adventutil::Input;
 use itertools::Itertools;
-use std::collections::HashSet;
 
 fn possible(towels: &[String], pattern: &str) -> bool {
-    let mut in_progress = HashSet::from([pattern]);
-    while !in_progress.is_empty() {
-        let mut ip2 = HashSet::new();
-        for pat in in_progress {
-            if pat.is_empty() {
-                return true;
+    let mut doable = vec![false; pattern.len() + 1];
+    doable[0] = true;
+    for i in 0..pattern.len() {
+        if doable[i] {
+            for tow in towels {
+                if pattern[i..].starts_with(tow) {
+                    doable[i + tow.len()] = true;
+                }
             }
-            ip2.extend(towels.iter().filter_map(|tow| pat.strip_prefix(tow)));
         }
-        in_progress = ip2;
     }
-    false
+    doable[pattern.len()]
 }
 
 fn solve(input: Input) -> usize {
