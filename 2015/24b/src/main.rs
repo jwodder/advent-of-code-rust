@@ -76,21 +76,22 @@ fn solve(input: Input) -> u64 {
 ///
 /// The sum of the elements in `values` must be thrice `target_weight`.
 fn partitionable(values: &[u64], target_weight: u64) -> bool {
+    // Based on <https://doi.org/10.48550/arXiv.2112.04244>
     let t = usize::try_from(target_weight).unwrap();
     let n = values.len();
     let mut tbl = vec![vec![vec![false; t + 1]; t + 1]; n + 1];
     tbl[0][0][0] = true;
-    for m in 1..=n {
-        let am = usize::try_from(values[m - 1]).unwrap();
+    for (m, &am) in values.iter().enumerate() {
+        let am = usize::try_from(am).unwrap();
         for i in 0..=t {
             for j in 0..=t {
-                if tbl[m - 1][i][j] {
-                    tbl[m][i][j] = true;
+                if tbl[m][i][j] {
+                    tbl[m + 1][i][j] = true;
                     if i + am <= t {
-                        tbl[m][i + am][j] = true;
+                        tbl[m + 1][i + am][j] = true;
                     }
                     if j + am <= t {
-                        tbl[m][i][j + am] = true;
+                        tbl[m + 1][i][j + am] = true;
                     }
                 }
             }
