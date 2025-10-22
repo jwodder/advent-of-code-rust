@@ -1,0 +1,17 @@
+[package]
+name = "advent-of-code-2023-11b"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2023, problem 11b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
+keywords = ["taxicab-metric"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
