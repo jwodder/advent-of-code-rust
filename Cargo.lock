@@ -1037,6 +1037,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2018-14a"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+ "rstest",
+]
+
+[[package]]
+name = "advent-of-code-2018-14b"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+ "rstest",
+]
+
+[[package]]
 name = "advent-of-code-2018-25a"
 version = "0.1.0"
 dependencies = [
