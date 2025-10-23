@@ -902,6 +902,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2017-16a"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+ "thiserror",
+]
+
+[[package]]
 name = "advent-of-code-2018-01a"
 version = "0.1.0"
 dependencies = [
