@@ -19,8 +19,8 @@ fn solve(input: Input) -> usize {
             }
         }
     }
-    let max_y = max_y_tracker.get_ref().copied().unwrap_or_default();
-    let max_x = max_x_tracker.get_ref().copied().unwrap_or_default();
+    let max_y = max_y_tracker.get().unwrap_or_default();
+    let max_x = max_x_tracker.get().unwrap_or_default();
     let mut y_increases = vec![0; max_y + 1];
     for y in 0..=max_y {
         if y_qtys[&y] == 0 {
