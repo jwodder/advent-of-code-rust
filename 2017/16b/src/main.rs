@@ -1,7 +1,18 @@
-// PROBLEM: I think the "Partner" move may preclude treating this as a
-// "permutation exponentiation" problem.
+#![allow(clippy::cast_possible_truncation)]
+// Trying to solve this by just composing all the permutations in order and
+// then raising the result to the power of a billion doesn't work, due to the
+// "Partner" moves not evaluating to the same permutations on subsequent
+// dances.  Instead, the "Partner" moves should be treated as transpositions
+// applied before any dance starts; the correct algorithm is thus:
+//
+// - Compute $p$, the product of all "Partner" moves (with the first move on
+//   the left end), with each such move interpreted as a transposition of
+//   ord(A) and ord(B)
+// - Compute $s$, the product of all other moves (with the first move on the
+//   right)
+// - Compute $r = s^n p^n$ where $n$ is a billion
+// - Permute "a..p" by rearranging the indices according to $r$
 use adventutil::Input;
-use std::collections::VecDeque;
 use std::fmt;
 use thiserror::Error;
 
@@ -10,20 +21,6 @@ enum Move {
     Spin(usize),
     Exchange(usize, usize),
     Partner(u8, u8),
-}
-
-impl Move {
-    fn apply(self, line: &mut VecDeque<u8>) {
-        match self {
-            Move::Spin(offset) => line.rotate_right(offset),
-            Move::Exchange(a, b) => line.swap(a, b),
-            Move::Partner(a, b) => {
-                let i = line.iter().position(|&d| d == a).unwrap();
-                let j = line.iter().position(|&d| d == b).unwrap();
-                line.swap(i, j);
-            }
-        }
-    }
 }
 
 impl std::str::FromStr for Move {
@@ -62,9 +59,7 @@ fn parse_dancer(s: &str) -> Result<u8, ParseMoveError> {
     let c1 = chars.next();
     let c2 = chars.next();
     match (c1, c2) {
-        (Some(ch), None) if ch.is_ascii_lowercase() => {
-            Ok(u8::try_from(u32::from(ch) - 0x61).unwrap())
-        }
+        (Some(ch), None) if ch.is_ascii_lowercase() => Ok(char_to_ord(ch)),
         _ => Err(ParseMoveError::InvalidDancer(s.to_owned())),
     }
 }
@@ -87,21 +82,81 @@ enum ParseMoveError {
 struct Permutation(Vec<u8>);
 
 impl Permutation {
-    fn from_permuted(line: VecDeque<u8>) -> Permutation {
-        let mut perm = vec![0; line.len()];
-        for i in 0..line.len() {
-            perm[usize::from(line[i])] = u8::try_from(i).unwrap();
+    const DEGREE: usize = 16;
+
+    fn permute(&self, slice: &[char]) -> Vec<char> {
+        let mut out = vec!['a'; slice.len()];
+        for (i, &c) in slice.iter().enumerate() {
+            out[usize::from(self.0[i])] = c;
         }
-        Permutation(perm)
+        out
+    }
+
+    fn pow(&self, mut n: usize) -> Permutation {
+        if n == 0 {
+            return Permutation::default();
+        }
+        let mut p = self.clone();
+        while n & 1 == 0 {
+            p *= &p.clone();
+            n >>= 1;
+        }
+        let mut agg = p.clone();
+        p *= &agg;
+        n >>= 1;
+        while n > 0 {
+            if n & 1 == 1 {
+                agg *= &p;
+            }
+            p *= &p.clone();
+            n >>= 1;
+        }
+        agg
+    }
+}
+
+impl Default for Permutation {
+    fn default() -> Permutation {
+        Permutation((0..(Permutation::DEGREE as u8)).collect())
     }
 }
 
 impl fmt::Display for Permutation {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        for i in &self.0 {
-            write!(f, "{}", char::from(i + 0x61))?;
+        for &i in &self.0 {
+            write!(f, "{}", ord_to_char(i))?;
         }
         Ok(())
+    }
+}
+
+impl From<Move> for Permutation {
+    fn from(m: Move) -> Permutation {
+        match m {
+            Move::Spin(offset) => {
+                let mut p = Permutation::default();
+                p.0.rotate_left(offset);
+                p
+            }
+            Move::Exchange(a, b) => {
+                let mut p = Permutation::default();
+                p.0.swap(a, b);
+                p
+            }
+            Move::Partner(a, b) => {
+                let mut p = Permutation::default();
+                p.0.swap(usize::from(a), usize::from(b));
+                p
+            }
+        }
+    }
+}
+
+impl std::ops::Mul for &Permutation {
+    type Output = Permutation;
+
+    fn mul(self, rhs: &Permutation) -> Permutation {
+        Permutation(rhs.0.iter().map(|&i| self.0[usize::from(i)]).collect())
     }
 }
 
@@ -111,47 +166,40 @@ impl std::ops::MulAssign<&Permutation> for Permutation {
     }
 }
 
-fn solve(input: Input, dancers: u8) -> String {
-    let mut line = VecDeque::from_iter(0..dancers);
+fn char_to_ord(c: char) -> u8 {
+    u8::try_from(u32::from(c) - 0x61).unwrap()
+}
+
+fn ord_to_char(i: u8) -> char {
+    char::from(0x61 + i)
+}
+
+fn solve(input: Input) -> String {
+    let mut partners = Permutation::default();
+    let mut sigma = Permutation::default();
     for m in input.parse_csv_line::<Move>() {
-        m.apply(&mut line);
-    }
-    let mut p = Permutation::from_permuted(line);
-    let mut n = 1_000_000_000;
-    while n & 1 == 0 {
-        p *= &p.clone();
-        n >>= 1;
-    }
-    let mut agg = p.clone();
-    p *= &agg;
-    n >>= 1;
-    while n > 0 {
-        if n & 1 == 1 {
-            agg *= &p;
+        let p = Permutation::from(m);
+        if matches!(m, Move::Partner(..)) {
+            partners *= &p;
+        } else {
+            sigma = &p * &sigma;
         }
-        p *= &p.clone();
-        n >>= 1;
     }
-    let mut line2 = vec!['a'; usize::from(dancers)];
-    for i in 0..dancers {
-        line2[usize::from(p.0[usize::from(i)])] = char::from(0x61 + i);
-    }
-    String::from_iter(line2)
+    let n = 1_000_000_000;
+    let res = &sigma.pow(n) * &partners.pow(n);
+    let line = (0..(Permutation::DEGREE as u8))
+        .map(ord_to_char)
+        .collect::<Vec<_>>();
+    String::from_iter(res.permute(&line))
 }
 
 fn main() {
-    println!("{}", solve(Input::from_env(), 16));
+    println!("{}", solve(Input::from_env()));
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn from_permuted() {
-        let line = VecDeque::from([1, 0, 3, 4, 2]);
-        assert_eq!(Permutation::from_permuted(line).to_string(), "baecd");
-    }
 
     #[test]
     fn mul1() {
