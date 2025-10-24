@@ -2,8 +2,9 @@ use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
 use std::collections::HashMap;
 
-// A guess at how long it takes for all collisions to occur
-const TICKS: usize = 1_000_000;
+// A guess at how long it takes for all collisions to occur, decreased
+// experimentally after the fact
+const TICKS: usize = 1000;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 struct Vec3 {
