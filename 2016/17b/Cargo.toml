@@ -12,11 +12,11 @@ keywords = ["md5", "longest-path", "optimization"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
-hex = "0.4.3"
-md-5 = "0.10.5"
+hex.workspace = true
+md-5.workspace = true
 
 [dev-dependencies]
-rstest = { version = "0.24.0", default-features = false }
+rstest.workspace = true
 
 [lints]
 workspace = true
