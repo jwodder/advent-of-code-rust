@@ -2,15 +2,16 @@ use anyhow::{bail, Context};
 use fs_err::read_dir;
 use futures_util::stream::{iter, StreamExt};
 use serde::Deserialize;
-use std::fmt;
+use std::fmt::{self, Write as _};
 use std::path::Path;
 use std::process::ExitCode;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 use tokio::process::Command;
 use tokio::time::timeout;
 
 const WORKERS: usize = 8;
 const TIMEOUT: Duration = Duration::from_secs(30);
+const SLOWEST_QTY: usize = 10;
 
 #[derive(Debug, Deserialize, Eq, PartialEq)]
 struct Answer {
@@ -27,7 +28,7 @@ struct TestCase<'a> {
 }
 
 impl TestCase<'_> {
-    async fn run(self) -> bool {
+    async fn run(self) -> (String, TestResult) {
         log::info!("RUNNING: {self}");
         let mut cmd = Command::new("cargo");
         cmd.arg("run")
@@ -42,34 +43,38 @@ impl TestCase<'_> {
             .arg(format!("{}/inputs/{}", self.year, self.answer.input))
             .current_dir(self.workspace_dir)
             .kill_on_drop(true);
-        match timeout(TIMEOUT, cmd.output()).await {
+        let start = Instant::now();
+        let r = timeout(TIMEOUT, cmd.output()).await;
+        let elapsed = start.elapsed();
+        let name = self.to_string();
+        match r {
             Ok(Ok(out)) => {
                 if out.status.success() {
                     if let Ok(s) = String::from_utf8(out.stdout) {
                         if s.trim() == self.answer.answer {
                             log::info!("PASS: {self}");
-                            true
+                            (name, TestResult::Success { elapsed })
                         } else {
                             log::error!("FAIL: {self}");
-                            false
+                            (name, TestResult::Fail)
                         }
                     } else {
-                        log::info!("Problem {self} binary emitted non-UTF-8");
-                        false
+                        log::error!("Problem {self} binary emitted non-UTF-8");
+                        (name, TestResult::Fail)
                     }
                 } else {
                     log::error!("Problem {} binary failed: {}", self, out.status);
                     // TODO: Display stderr?
-                    false
+                    (name, TestResult::Fail)
                 }
             }
             Ok(Err(e)) => {
                 log::error!("Problem {self} binary failed to execute: {e}");
-                false
+                (name, TestResult::Fail)
             }
             Err(_) => {
                 log::error!("TIMEOUT: {self}");
-                false
+                (name, TestResult::Timeout)
             }
         }
     }
@@ -78,6 +83,70 @@ impl TestCase<'_> {
 impl fmt::Display for TestCase<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}-{}", self.year, self.answer.problem)
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+enum TestResult {
+    Success { elapsed: Duration },
+    Timeout,
+    Fail,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct Reporter {
+    timeouts: Vec<String>,
+    slowest: Vec<(String, Duration)>,
+    success: bool,
+}
+
+impl Reporter {
+    fn from_results(res: Vec<(String, TestResult)>) -> Reporter {
+        let mut success = true;
+        let mut timeouts = Vec::new();
+        let mut slowest = Vec::new();
+        for (name, tr) in res {
+            match tr {
+                TestResult::Success { elapsed } => slowest.push((name, elapsed)),
+                TestResult::Timeout => {
+                    timeouts.push(name);
+                    success = false;
+                }
+                TestResult::Fail => success = false,
+            }
+        }
+        timeouts.sort_unstable();
+        slowest.sort_unstable_by_key(|&(_, dur)| std::cmp::Reverse(dur));
+        slowest.truncate(SLOWEST_QTY);
+        Reporter {
+            timeouts,
+            slowest,
+            success,
+        }
+    }
+
+    fn write_slowest(&self) -> anyhow::Result<()> {
+        let mut s = String::from("## Slowest Solutions\n\n| Problem | Runtime |\n| --- | --- |\n");
+        for name in &self.timeouts {
+            let _ = writeln!(&mut s, "| {name} | TIMEOUT |");
+        }
+        for (name, dur) in &self.slowest {
+            let _ = writeln!(&mut s, "| {name} | {dur:?} |");
+        }
+        if let Some(path) = std::env::var_os("GITHUB_STEP_SUMMARY") {
+            fs_err::write(path, s)?;
+        } else {
+            print!("\n{s}");
+        }
+        Ok(())
+    }
+
+    fn status(&self) -> ExitCode {
+        if self.success {
+            ExitCode::SUCCESS
+        } else {
+            ExitCode::FAILURE
+        }
     }
 }
 
@@ -125,14 +194,12 @@ async fn main() -> anyhow::Result<ExitCode> {
             }
         }
     }
-    if iter(cases)
+    let res = iter(cases)
         .map(TestCase::run)
         .buffer_unordered(WORKERS)
-        .all(|r| async move { r })
-        .await
-    {
-        Ok(ExitCode::SUCCESS)
-    } else {
-        Ok(ExitCode::FAILURE)
-    }
+        .collect::<Vec<_>>()
+        .await;
+    let reporter = Reporter::from_results(res);
+    reporter.write_slowest()?;
+    Ok(reporter.status())
 }
