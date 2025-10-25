@@ -13,8 +13,8 @@ publish.workspace = true
 adventutil = { path = "../../adventutil" }
 itertools.workspace = true
 
-[lints]
-workspace = true
-
 [dev-dependencies]
 rstest.workspace = true
+
+[lints]
+workspace = true

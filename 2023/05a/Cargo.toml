@@ -12,8 +12,8 @@ publish.workspace = true
 [dependencies]
 adventutil = { path = "../../adventutil" }
 
-[lints]
-workspace = true
-
 [dev-dependencies]
 rstest.workspace = true
+
+[lints]
+workspace = true
