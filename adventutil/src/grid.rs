@@ -443,7 +443,7 @@ impl fmt::Display for Draw<'_> {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
 pub struct Coords {
     pub y: usize,
     pub x: usize,
