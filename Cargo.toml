@@ -12,7 +12,6 @@ license = "MIT"
 publish = false
 
 [workspace.dependencies]
-either = "1.8.1"
 hex = "0.4.3"
 itertools = "0.14.0"
 json = "0.12.4"

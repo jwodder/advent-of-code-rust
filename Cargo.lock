@@ -1726,7 +1726,6 @@ name = "advent-of-code-2021-05a"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "either",
 ]
 
 [[package]]
@@ -1734,7 +1733,6 @@ name = "advent-of-code-2021-05b"
 version = "0.1.0"
 dependencies = [
  "adventutil",
- "either",
 ]
 
 [[package]]

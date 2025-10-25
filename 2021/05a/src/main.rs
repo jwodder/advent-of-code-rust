@@ -1,7 +1,6 @@
 use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
-use either::Either;
 use std::cmp::{max, min};
 use std::str::FromStr;
 
@@ -13,13 +12,13 @@ enum Line {
 }
 
 impl Line {
-    fn points(self) -> impl Iterator<Item = (u32, u32)> {
+    fn points(self) -> Box<dyn Iterator<Item = (u32, u32)>> {
         match self {
             Line::Horizontal { y, x1, x2 } => {
-                Either::Left((min(x1, x2)..=max(x1, x2)).map(move |x| (y, x)))
+                Box::new((min(x1, x2)..=max(x1, x2)).map(move |x| (y, x)))
             }
             Line::Vertical { x, y1, y2 } => {
-                Either::Right((min(y1, y2)..=max(y1, y2)).map(move |y| (y, x)))
+                Box::new((min(y1, y2)..=max(y1, y2)).map(move |y| (y, x)))
             }
             Line::Diagonal { .. } => unreachable!(),
         }
