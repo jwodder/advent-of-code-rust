@@ -1,9 +1,10 @@
 use adventutil::Input;
 use itertools::Itertools;
-use std::collections::{BTreeSet, HashMap};
+use std::collections::{BTreeMap, BTreeSet};
+use std::ops::Bound;
 
 fn solve(input: Input) -> String {
-    let mut connected = HashMap::<String, BTreeSet<String>>::new();
+    let mut connected = BTreeMap::<String, BTreeSet<String>>::new();
     for ln in input.lines() {
         let (a, b) = ln.split_once('-').unwrap();
         let a = a.to_owned();
@@ -14,15 +15,16 @@ fn solve(input: Input) -> String {
     let mut complete = connected
         .keys()
         .map(|node| BTreeSet::from([node.clone()]))
-        .collect::<BTreeSet<_>>();
+        .collect::<Vec<_>>();
     loop {
-        let mut complete2 = BTreeSet::new();
-        for (node, xs) in &connected {
-            for graph in &complete {
+        let mut complete2 = Vec::new();
+        for graph in &complete {
+            let bound = graph.last().unwrap().clone();
+            for (node, xs) in connected.range((Bound::Excluded(bound), Bound::Unbounded)) {
                 if xs.is_superset(graph) {
                     let mut graph2 = graph.clone();
                     graph2.insert(node.clone());
-                    complete2.insert(graph2);
+                    complete2.push(graph2);
                 }
             }
         }
