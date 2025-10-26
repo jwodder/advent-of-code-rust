@@ -2301,6 +2301,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2023-15a"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+]
+
+[[package]]
+name = "advent-of-code-2023-15b"
+version = "0.1.0"
+dependencies = [
+ "adventutil",
+ "thiserror",
+]
+
+[[package]]
 name = "advent-of-code-2024-01a"
 version = "0.1.0"
 dependencies = [
