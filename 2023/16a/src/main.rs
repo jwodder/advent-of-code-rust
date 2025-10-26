@@ -8,58 +8,31 @@ fn solve(input: Input) -> usize {
     let mut visited = HashMap::from([(Coords { x: 0, y: 0 }, HashSet::from([Direction::East]))]);
     while !beams.is_empty() {
         let mut beams2 = Vec::new();
-        for (cell, mut dir) in beams {
-            let mut advance = true;
-            match *cell {
-                '.' => (),
-                '/' => {
-                    dir = match dir {
-                        Direction::North => Direction::East,
-                        Direction::East => Direction::North,
-                        Direction::South => Direction::West,
-                        Direction::West => Direction::South,
-                        _ => unreachable!(),
-                    };
+        for (cell, dir) in beams {
+            let outdirs = match (*cell, dir) {
+                ('.', dir) => vec![dir],
+                ('/', Direction::North) => vec![Direction::East],
+                ('/', Direction::East) => vec![Direction::North],
+                ('/', Direction::South) => vec![Direction::West],
+                ('/', Direction::West) => vec![Direction::South],
+                ('\\', Direction::North) => vec![Direction::West],
+                ('\\', Direction::East) => vec![Direction::South],
+                ('\\', Direction::South) => vec![Direction::East],
+                ('\\', Direction::West) => vec![Direction::North],
+                ('-', Direction::North | Direction::South) => {
+                    vec![Direction::East, Direction::West]
                 }
-                '\\' => {
-                    dir = match dir {
-                        Direction::North => Direction::West,
-                        Direction::East => Direction::South,
-                        Direction::South => Direction::East,
-                        Direction::West => Direction::North,
-                        _ => unreachable!(),
-                    }
+                ('-', dir) => vec![dir],
+                ('|', Direction::East | Direction::West) => {
+                    vec![Direction::North, Direction::South]
                 }
-                '-' => {
-                    if matches!(dir, Direction::North | Direction::South) {
-                        for d in [Direction::East, Direction::West] {
-                            if let Some(c2) = cell.neighbor(d) {
-                                if visited.entry(c2.coords()).or_default().insert(d) {
-                                    beams2.push((c2, d));
-                                }
-                            }
-                        }
-                        advance = false;
-                    }
-                }
-                '|' => {
-                    if matches!(dir, Direction::East | Direction::West) {
-                        for d in [Direction::North, Direction::South] {
-                            if let Some(c2) = cell.neighbor(d) {
-                                if visited.entry(c2.coords()).or_default().insert(d) {
-                                    beams2.push((c2, d));
-                                }
-                            }
-                        }
-                        advance = false;
-                    }
-                }
-                c => panic!("Unexpected tile {c:?}"),
-            }
-            if advance {
-                if let Some(c2) = cell.neighbor(dir) {
-                    if visited.entry(c2.coords()).or_default().insert(dir) {
-                        beams2.push((c2, dir));
+                ('|', dir) => vec![dir],
+                (c, d) => panic!("Unexpected tile-dir combo: {c:?}, {d:?}"),
+            };
+            for d in outdirs {
+                if let Some(c2) = cell.neighbor(d) {
+                    if visited.entry(c2.coords()).or_default().insert(d) {
+                        beams2.push((c2, d));
                     }
                 }
             }
