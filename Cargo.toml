@@ -9,7 +9,6 @@ description = "My solutions to <https://adventofcode.com> in Rust"
 authors = ["John Thorvald Wodder II <advent-of-code-rust@varonathe.org>"]
 repository = "https://github.com/jwodder/advent-of-code-rust"
 license = "MIT"
-publish = false
 
 [workspace.dependencies]
 hex = "0.4.3"

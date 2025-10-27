@@ -1,13 +1,11 @@
 [package]
 name = "advent-of-code-2021-09b"
-version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
 description = "Solution to Advent of Code 2021, problem 09b"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
-publish.workspace = true
 keywords = ["graph-theory", "transitive-closure"]
 
 [dependencies]
