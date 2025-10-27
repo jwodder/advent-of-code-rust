@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "advent-of-code-2015-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -12,7 +12,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -20,21 +20,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -42,7 +42,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -50,7 +50,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "hex",
@@ -60,7 +60,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "hex",
@@ -69,7 +69,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -77,7 +77,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -86,14 +86,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -101,7 +101,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -109,7 +109,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -117,7 +117,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -125,7 +125,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -133,7 +133,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -141,7 +141,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -149,7 +149,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -158,7 +158,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -167,7 +167,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -176,7 +176,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-11b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -185,7 +185,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -193,7 +193,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-12b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "json",
@@ -202,7 +202,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -210,7 +210,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -218,7 +218,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -226,7 +226,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-14b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -234,35 +234,35 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-15a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-15b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-16a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-16b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-17a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -270,7 +270,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-17b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -278,21 +278,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-18a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-18b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-19a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -300,7 +300,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-19b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -308,7 +308,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-20a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -316,7 +316,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-20b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -324,7 +324,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-21a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -332,7 +332,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-21b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -340,49 +340,49 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2015-22a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-22b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-23a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-23b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-24a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-24b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2015-25a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -390,7 +390,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -398,35 +398,35 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -434,7 +434,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -442,7 +442,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -450,7 +450,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "hex",
@@ -459,7 +459,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "hex",
@@ -468,21 +468,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -491,7 +491,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -500,21 +500,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -522,7 +522,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -530,49 +530,49 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-12b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "hex",
@@ -581,7 +581,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-14b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "hex",
@@ -590,21 +590,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-15a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-15b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-16a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -612,7 +612,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-16b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -620,7 +620,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-17a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "hex",
@@ -630,70 +630,70 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-18a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-18b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-19a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-20a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-20b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-21a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-21b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-22a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-23a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2016-24a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -701,7 +701,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2016-24b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -709,7 +709,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -717,7 +717,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -725,7 +725,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -733,14 +733,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -748,14 +748,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -763,7 +763,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -771,21 +771,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -793,7 +793,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -801,7 +801,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -809,28 +809,28 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -838,7 +838,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -846,14 +846,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -861,7 +861,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -870,7 +870,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-11b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -878,63 +878,63 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-12b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-14b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-15a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-15b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-16a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -942,7 +942,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-16b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -950,63 +950,63 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-17a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-17b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-18a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-18b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-19a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-19b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-20a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-20b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-21a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -1014,7 +1014,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-21b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -1022,49 +1022,49 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2017-22a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-22b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-23a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-24a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-24b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2017-25a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1072,7 +1072,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1080,7 +1080,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1088,42 +1088,42 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1131,21 +1131,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -1153,7 +1153,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -1161,7 +1161,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1169,21 +1169,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1192,28 +1192,28 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2018-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1221,7 +1221,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-14b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1229,14 +1229,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2018-25a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1244,7 +1244,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1252,21 +1252,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1274,7 +1274,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1282,7 +1282,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1291,7 +1291,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1300,14 +1300,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1315,21 +1315,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1338,7 +1338,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1347,91 +1347,91 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2019-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-11b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2019-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1439,7 +1439,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1447,28 +1447,28 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1476,7 +1476,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1484,7 +1484,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1492,21 +1492,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1514,35 +1514,35 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1550,7 +1550,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1558,49 +1558,49 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-11b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-12b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1608,7 +1608,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1616,14 +1616,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-14b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2020-15a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1631,7 +1631,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-15b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1639,7 +1639,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-17a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1647,7 +1647,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-17b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1655,7 +1655,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-18a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1663,7 +1663,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-19a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1671,7 +1671,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2020-22a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1679,7 +1679,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1687,7 +1687,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1695,84 +1695,84 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1780,21 +1780,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1802,7 +1802,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1810,21 +1810,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-11b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1832,7 +1832,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-12b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1840,7 +1840,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1848,7 +1848,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1856,7 +1856,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1864,14 +1864,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-15a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-16a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1879,7 +1879,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-16b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1887,14 +1887,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2021-22a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2021-25a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -1902,42 +1902,42 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1945,21 +1945,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1967,7 +1967,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -1975,7 +1975,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1983,7 +1983,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -1991,91 +1991,91 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-11b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-12b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2085,7 +2085,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2094,7 +2094,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2102,7 +2102,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-14b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2110,21 +2110,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2022-15a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2022-15b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2132,7 +2132,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2141,7 +2141,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2149,7 +2149,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2157,21 +2157,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2179,7 +2179,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2187,7 +2187,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2195,7 +2195,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2203,7 +2203,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2211,7 +2211,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2220,7 +2220,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2229,7 +2229,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2237,7 +2237,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2245,21 +2245,21 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -2267,49 +2267,49 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-11b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-15a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-15b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "thiserror",
@@ -2317,35 +2317,35 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2023-16a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2023-16b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-01a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-01b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-02a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2353,7 +2353,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-02b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "rstest",
@@ -2361,14 +2361,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-03a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-03b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2376,49 +2376,49 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-04a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-04b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-05a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-05b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-06a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-06b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-07a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2426,7 +2426,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-07b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2434,91 +2434,91 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-08a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-08b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-09a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-09b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-10a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-10b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-11a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-12a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-13a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-13b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-14a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-14b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-15a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2527,7 +2527,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-15b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2536,7 +2536,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-17a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2544,14 +2544,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-18a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-19a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2559,7 +2559,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-19b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2567,28 +2567,28 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-22a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-22b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-23a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "advent-of-code-2024-23b"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2596,7 +2596,7 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-24a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
  "itertools",
@@ -2604,14 +2604,14 @@ dependencies = [
 
 [[package]]
 name = "advent-of-code-2024-25a"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "adventutil",
 ]
 
 [[package]]
 name = "adventutil"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "anyhow",
  "num-traits",
@@ -2761,7 +2761,7 @@ dependencies = [
 
 [[package]]
 name = "gen"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "anyhow",
  "fs-err",
@@ -2937,7 +2937,7 @@ checksum = "7a2d987857b319362043e95f5353c0535c1f58eec5336fdfcf626430af7def58"
 
 [[package]]
 name = "regresstest"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "anyhow",
  "csv",
