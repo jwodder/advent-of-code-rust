@@ -354,9 +354,7 @@ where
     for v in vertices {
         if comped.insert(v.clone()) {
             let c = one2many_closure(v, adjacent.clone());
-            for u in &c {
-                comped.insert(u.clone());
-            }
+            comped.extend(c.iter().cloned());
             comps.push(c);
         }
     }
