@@ -1,7 +1,7 @@
 use adventutil::grid::{Coords, Direction, Grid, GridBounds, ParseGridError};
 use adventutil::Input;
 use std::cell::RefCell;
-use std::collections::{BTreeMap, HashMap, HashSet};
+use std::collections::{btree_map::Entry, BTreeMap, HashSet};
 use std::rc::Rc;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -54,35 +54,42 @@ impl Battlefield {
         }
 
         let mut visited = HashSet::new();
-        let mut pos2paths = HashMap::from([(start, vec![Vec::new()])]);
-        let mut shortest = BTreeMap::<Coords, Vec<Vec<Coords>>>::new();
+        let mut pos2path = BTreeMap::from([(start, Vec::new())]);
+        let mut shortest = BTreeMap::<Coords, Vec<Coords>>::new();
         while shortest.is_empty() {
-            if pos2paths.is_empty() {
+            if pos2path.is_empty() {
                 // No paths to any in_range coords
                 return;
             }
-            let mut pos2paths2 = HashMap::<Coords, Vec<Vec<Coords>>>::new();
-            for (c, paths) in pos2paths {
+            let mut pos2path2 = BTreeMap::<Coords, Vec<Coords>>::new();
+            for (c, path) in pos2path {
                 for c2 in Direction::cardinals()
                     .filter_map(|d| self.bounds.move_in(c, d))
                     .filter(|c2| self.open.contains(c2) && !visited.contains(c2))
                 {
-                    let newpaths = paths.iter().cloned().map(|mut pth| {
-                        pth.push(c2);
-                        pth
-                    });
-                    if in_range.contains(&c2) {
-                        shortest.entry(c2).or_default().extend(newpaths);
+                    let mut newpath = path.clone();
+                    newpath.push(c2);
+                    let map = if in_range.contains(&c2) {
+                        &mut shortest
                     } else {
-                        pos2paths2.entry(c2).or_default().extend(newpaths);
+                        &mut pos2path2
+                    };
+                    match map.entry(c2) {
+                        Entry::Vacant(e) => {
+                            e.insert(newpath);
+                        }
+                        Entry::Occupied(mut e) => {
+                            if newpath[0] < e.get()[0] {
+                                e.insert(newpath);
+                            }
+                        }
                     }
                 }
                 visited.insert(c);
             }
-            pos2paths = pos2paths2;
+            pos2path = pos2path2;
         }
-        let (_, paths) = shortest.pop_first().unwrap();
-        let next_pos = paths.into_iter().map(|pth| pth[0]).min().unwrap();
+        let next_pos = shortest.pop_first().unwrap().1[0];
 
         self.open.insert(start);
         self.open.remove(&next_pos);
