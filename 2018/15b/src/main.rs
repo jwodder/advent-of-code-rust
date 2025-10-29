@@ -257,7 +257,7 @@ fn solve(input: Input) -> u32 {
             match enhbattle.round() {
                 RoundOutcome::Ongoing => (),
                 RoundOutcome::ElfDeath => continue 'powerloop,
-                RoundOutcome::ElfVictory => return rounds * battle.remaining_hp(),
+                RoundOutcome::ElfVictory => return rounds * enhbattle.remaining_hp(),
             }
             rounds += 1;
         }
