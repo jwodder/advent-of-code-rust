@@ -1,4 +1,4 @@
-use adventutil::{parse_csv, Input};
+use adventutil::{Input, parse_csv};
 use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

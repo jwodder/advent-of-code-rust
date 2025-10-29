@@ -1,5 +1,5 @@
-use adventutil::grid::{Direction, Grid};
 use adventutil::Input;
+use adventutil::grid::{Direction, Grid};
 
 fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();

@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::grid::{Coords, Grid, GridBounds};
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use itertools::{Itertools, Product};
 use std::ops::RangeInclusive;
 use std::str::FromStr;

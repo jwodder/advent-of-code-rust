@@ -1,6 +1,6 @@
 use std::collections::{
-    hash_map::{IntoIter, IntoKeys, IntoValues},
     HashMap,
+    hash_map::{IntoIter, IntoKeys, IntoValues},
 };
 use std::hash::Hash;
 

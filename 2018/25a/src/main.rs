@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{components, Input};
+use adventutil::{Input, components};
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 struct Point {

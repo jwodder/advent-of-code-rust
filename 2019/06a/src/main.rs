@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::index::Index;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::collections::HashMap;
 
 fn parse_orbit(s: &str) -> Result<(String, String), ParseError> {

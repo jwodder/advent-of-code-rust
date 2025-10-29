@@ -1,4 +1,4 @@
-use adventutil::{unordered_pairs, Input};
+use adventutil::{Input, unordered_pairs};
 use std::collections::VecDeque;
 
 fn solve(input: Input, preamble_size: usize) -> u64 {

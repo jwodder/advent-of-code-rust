@@ -1,7 +1,7 @@
+use adventutil::Input;
 use adventutil::area::{self, Area};
 use adventutil::grid::{Coords, Grid, GridBounds};
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::str::FromStr;
 
 enum Instruction {

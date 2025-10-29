@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::grid::Grid;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::str::FromStr;
 
 enum Operation {

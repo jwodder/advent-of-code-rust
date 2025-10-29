@@ -1,5 +1,5 @@
-use adventutil::intcode::{Intcode, IntcodeIO};
 use adventutil::Input;
+use adventutil::intcode::{Intcode, IntcodeIO};
 use std::collections::HashMap;
 
 struct Screen {

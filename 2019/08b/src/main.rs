@@ -1,5 +1,5 @@
-use adventutil::grid::{Coords, Grid, GridBounds};
 use adventutil::Input;
+use adventutil::grid::{Coords, Grid, GridBounds};
 
 fn render(input: Input, width: usize, height: usize) -> Grid<bool> {
     let digits = input

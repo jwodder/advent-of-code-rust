@@ -9,10 +9,10 @@ fn is_nice(s: &str) -> bool {
     let mut aba = false;
     let mut prev = None;
     for (i, (c1, c2)) in chars.into_iter().tuple_windows().enumerate() {
-        if let Some(c) = prev {
-            if c2 == c {
-                aba = true;
-            }
+        if let Some(c) = prev
+            && c2 == c
+        {
+            aba = true;
         }
         prev.replace(c1);
         let j = *pairs.entry((c1, c2)).or_insert(i);

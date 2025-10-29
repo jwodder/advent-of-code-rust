@@ -1,5 +1,5 @@
-use adventutil::grid::Grid;
 use adventutil::Input;
+use adventutil::grid::Grid;
 
 fn solve(input: Input) -> u64 {
     let grid = <Grid<bool>>::from_drawing(&input.read()).unwrap();

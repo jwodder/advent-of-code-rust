@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct Banks(Vec<u32>);

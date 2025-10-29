@@ -1,6 +1,6 @@
 use adventutil::grid::{Cell, Direction, Grid};
 use adventutil::maxn::maxn;
-use adventutil::{one2many_closure, Input};
+use adventutil::{Input, one2many_closure};
 
 fn solve(input: Input) -> usize {
     maxn(
@@ -18,10 +18,10 @@ fn solve(input: Input) -> usize {
 fn is_low_point(cell: &Cell<'_, u32>) -> bool {
     let height = cell.get();
     for d in Direction::cardinals() {
-        if let Some(c) = cell.neighbor(d) {
-            if *c.get() <= *height {
-                return false;
-            }
+        if let Some(c) = cell.neighbor(d)
+            && *c.get() <= *height
+        {
+            return false;
         }
     }
     true

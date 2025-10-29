@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{dijkstra_length, Input};
+use adventutil::{Input, dijkstra_length};
 use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]

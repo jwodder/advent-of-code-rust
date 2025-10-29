@@ -1,5 +1,5 @@
-use adventutil::maxtracker::MaxTracker;
 use adventutil::Input;
+use adventutil::maxtracker::MaxTracker;
 use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]

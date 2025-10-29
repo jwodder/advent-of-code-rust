@@ -1,6 +1,6 @@
 use adventutil::counter::Counter;
 use adventutil::maxtracker::MaxTracker;
-use adventutil::{unordered_pairs, Input};
+use adventutil::{Input, unordered_pairs};
 
 fn solve(input: Input) -> usize {
     let mut y_qtys = Counter::new();

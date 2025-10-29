@@ -1,7 +1,7 @@
-use adventutil::grid::{Coords, Grid};
 use adventutil::Input;
+use adventutil::grid::{Coords, Grid};
 use itertools::Itertools;
-use std::collections::{hash_map::Entry, HashMap, HashSet};
+use std::collections::{HashMap, HashSet, hash_map::Entry};
 
 fn solve(input: Input) -> u32 {
     let mut points = HashMap::new();
@@ -37,7 +37,7 @@ fn solve(input: Input) -> u32 {
             let (current, dist) = dists
                 .iter()
                 .filter(|&(k, _)| !visited.contains(k))
-                .min_by_key(|(_, &dist)| dist)
+                .min_by_key(|&(_, &dist)| dist)
                 .map(|(&k, &dist)| (k, dist))
                 .unwrap();
             if let Some(p2) = points

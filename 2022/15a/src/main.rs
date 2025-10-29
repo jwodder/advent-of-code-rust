@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::gridgeom::Point;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::collections::HashSet;
 use std::str::FromStr;
 

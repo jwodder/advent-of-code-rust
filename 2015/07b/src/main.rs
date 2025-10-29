@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
 use std::str::FromStr;
 
@@ -234,8 +234,8 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rstest::rstest;
     use Instruction::*;
+    use rstest::rstest;
 
     #[rstest]
     #[case("x AND y -> z", And {left: WireOrNum::Wire(Wire("x".into())), right: WireOrNum::Wire(Wire("y".into())), output: Wire("z".into())})]

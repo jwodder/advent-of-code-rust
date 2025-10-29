@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::index::Index;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use itertools::Itertools;
 use std::collections::HashMap;
 use std::str::FromStr;

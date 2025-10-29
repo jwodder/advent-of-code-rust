@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 struct Range {

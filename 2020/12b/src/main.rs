@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
 use adventutil::pullparser::ParseError;
-use adventutil::Input;
 use std::str::FromStr;
 
 enum Instruction {

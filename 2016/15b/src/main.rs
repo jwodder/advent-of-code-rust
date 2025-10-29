@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::numtheory::crt;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Disc {

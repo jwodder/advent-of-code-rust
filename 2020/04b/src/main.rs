@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
 use std::str::FromStr;
 
@@ -129,8 +129,8 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rstest::rstest;
     use Field::*;
+    use rstest::rstest;
 
     #[rstest]
     #[case(Byr, "2002", true)]

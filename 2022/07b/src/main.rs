@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
 
 fn solve(input: Input) -> u32 {
@@ -14,12 +14,20 @@ fn solve(input: Input) -> u32 {
             } else {
                 components.push(dir.to_string());
             }
-        } else if let Ok((size, _)) = parse_file_size(&ln) {
-            for i in 0..=components.len() {
-                *dirsizes.entry(components[0..i].to_vec()).or_insert(0) += size;
+        } else {
+            match parse_file_size(&ln) {
+                Ok((size, _)) => {
+                    for i in 0..=components.len() {
+                        *dirsizes.entry(components[0..i].to_vec()).or_insert(0) += size;
+                    }
+                }
+                _ => {
+                    assert!(
+                        ln == "$ ls" || ln.starts_with("dir "),
+                        "Invalid line {ln:?}",
+                    );
+                }
             }
-        } else if ln != "$ ls" && !ln.starts_with("dir ") {
-            panic!("Invalid line {ln:?}");
         }
     }
     let unused = 70_000_000 - dirsizes[&Vec::new()];

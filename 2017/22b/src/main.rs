@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::grid::{Coords, Grid};
 use adventutil::gridgeom::{PointBounds, Vector};
-use adventutil::Input;
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

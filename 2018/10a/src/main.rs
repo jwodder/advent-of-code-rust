@@ -2,10 +2,10 @@
 // enclosing the points of light both decrease up until the message is formed,
 // after which they start increasing again.  Thus, we just need to look for a
 // local minimum of either dimension.
+use adventutil::Input;
 use adventutil::grid::Grid;
 use adventutil::gridgeom::{Point, PointBounds, Vector};
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

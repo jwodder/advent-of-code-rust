@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{one2many_closure, Input};
+use adventutil::{Input, one2many_closure};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct ProgramSpec {

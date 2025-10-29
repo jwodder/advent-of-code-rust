@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::cmp::{max, min};
 use std::str::FromStr;
 

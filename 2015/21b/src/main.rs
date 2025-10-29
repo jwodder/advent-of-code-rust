@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{unordered_pairs, Input};
+use adventutil::{Input, unordered_pairs};
 use itertools::Itertools;
 use std::iter::once;
 use std::str::FromStr;

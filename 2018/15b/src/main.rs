@@ -1,7 +1,7 @@
-use adventutil::grid::{Coords, Direction, Grid, GridBounds, ParseGridError};
 use adventutil::Input;
+use adventutil::grid::{Coords, Direction, Grid, GridBounds, ParseGridError};
 use std::cell::RefCell;
-use std::collections::{btree_map::Entry, BTreeMap, HashSet};
+use std::collections::{BTreeMap, HashSet, btree_map::Entry};
 use std::rc::Rc;
 
 #[derive(Clone, Debug, Eq, PartialEq)]

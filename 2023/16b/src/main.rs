@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::grid::{Coords, Direction, Grid};
 use adventutil::maxtracker::MaxTracker;
-use adventutil::Input;
 use std::collections::{HashMap, HashSet};
 
 fn energize(grid: &Grid<char>, entry: Coords, entry_dir: Direction) -> usize {
@@ -30,10 +30,10 @@ fn energize(grid: &Grid<char>, entry: Coords, entry_dir: Direction) -> usize {
                 (c, d) => panic!("Unexpected tile-dir combo: {c:?}, {d:?}"),
             };
             for d in outdirs {
-                if let Some(c2) = cell.neighbor(d) {
-                    if visited.entry(c2.coords()).or_default().insert(d) {
-                        beams2.push((c2, d));
-                    }
+                if let Some(c2) = cell.neighbor(d)
+                    && visited.entry(c2.coords()).or_default().insert(d)
+                {
+                    beams2.push((c2, d));
                 }
             }
         }

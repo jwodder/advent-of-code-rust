@@ -1,4 +1,4 @@
-use adventutil::{unordered_pairs, Input};
+use adventutil::{Input, unordered_pairs};
 
 fn solve(input: Input) -> u32 {
     let entries = input.parse_lines::<u32>().collect::<Vec<_>>();

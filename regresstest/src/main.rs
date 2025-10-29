@@ -1,6 +1,6 @@
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 use fs_err::read_dir;
-use futures_util::stream::{iter, StreamExt};
+use futures_util::stream::{StreamExt, iter};
 use serde::Deserialize;
 use std::fmt::{self, Write as _};
 use std::path::Path;

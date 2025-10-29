@@ -1,8 +1,8 @@
-use adventutil::{dijkstra_length, Input};
+use adventutil::{Input, dijkstra_length};
 
 fn is_open(key: i32, x: i32, y: i32) -> bool {
     let value = x * x + 3 * x + 2 * x * y + y + y * y + key;
-    value.count_ones() % 2 == 0
+    value.count_ones().is_multiple_of(2)
 }
 
 fn steps(key: i32, target_x: i32, target_y: i32) -> u32 {

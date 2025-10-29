@@ -1,5 +1,5 @@
 use adventutil::grid::{Coords, Grid};
-use adventutil::{parse_csv, Input};
+use adventutil::{Input, parse_csv};
 use std::collections::HashSet;
 
 #[derive(Debug)]

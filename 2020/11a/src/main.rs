@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::grid::Grid;
 use adventutil::pullparser::ParseError;
-use adventutil::Input;
 use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

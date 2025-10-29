@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::maxtracker::MaxTracker;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::collections::HashSet;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]

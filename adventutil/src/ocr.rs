@@ -1,6 +1,6 @@
 use super::grid::Grid;
-use anyhow::{bail, Context};
-use serde::{de::Error, Deserialize, Deserializer};
+use anyhow::{Context, bail};
+use serde::{Deserialize, Deserializer, de::Error};
 
 #[derive(Debug, Deserialize, Eq, PartialEq)]
 struct Font {

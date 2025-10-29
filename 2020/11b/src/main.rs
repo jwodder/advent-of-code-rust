@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::grid::{Cell, Direction, Grid};
 use adventutil::pullparser::ParseError;
-use adventutil::Input;
 use std::iter::successors;
 use std::str::FromStr;
 

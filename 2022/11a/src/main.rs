@@ -1,7 +1,7 @@
+use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::maxn::maxn;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::str::FromStr;
 
 struct Monkey {

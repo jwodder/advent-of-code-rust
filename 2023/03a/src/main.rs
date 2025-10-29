@@ -1,5 +1,5 @@
-use adventutil::grid::Grid;
 use adventutil::Input;
+use adventutil::grid::Grid;
 
 fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();
@@ -24,10 +24,10 @@ fn solve(input: Input) -> u32 {
                 adjacent = false;
             }
         }
-        if let Some(n) = number.take() {
-            if adjacent {
-                total += n;
-            }
+        if let Some(n) = number.take()
+            && adjacent
+        {
+            total += n;
         }
     }
     total

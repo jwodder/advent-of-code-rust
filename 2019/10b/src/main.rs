@@ -1,5 +1,5 @@
-use adventutil::grid::{Coords, Grid};
 use adventutil::Input;
+use adventutil::grid::{Coords, Grid};
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, HashSet, VecDeque};
 use std::f64::consts::{FRAC_PI_2, TAU};

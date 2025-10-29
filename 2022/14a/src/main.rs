@@ -1,7 +1,7 @@
-use adventutil::grid::{Coords, Direction, Grid, GridBounds};
-use adventutil::gridgeom::{points_added, Point, PointBounds};
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::grid::{Coords, Direction, Grid, GridBounds};
+use adventutil::gridgeom::{Point, PointBounds, points_added};
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashSet;
 use std::str::FromStr;

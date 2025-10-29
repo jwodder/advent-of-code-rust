@@ -1,7 +1,7 @@
+use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::gridgeom::{Point, Vector};
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Robot {

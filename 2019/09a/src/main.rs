@@ -1,5 +1,5 @@
-use adventutil::intcode::{Intcode, VecIO};
 use adventutil::Input;
+use adventutil::intcode::{Intcode, VecIO};
 
 fn solve(input: Input) -> i64 {
     let mut program = input.parse::<Intcode>();
@@ -28,7 +28,9 @@ mod tests {
         program.run(&mut io).unwrap();
         assert_eq!(
             io.output,
-            [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99]
+            [
+                109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99
+            ]
         );
     }
 
