@@ -47,7 +47,7 @@ impl Battlefield {
                 }
             }
         }
-        if in_range.contains(&unit.pos()) {
+        if in_range.is_empty() || in_range.contains(&unit.pos()) {
             return unit;
         }
 
@@ -74,6 +74,10 @@ impl Battlefield {
                 visited.insert(c);
             }
             pos2paths = pos2paths2;
+            if pos2paths.is_empty() {
+                // No paths to any in_range coords
+                return unit;
+            }
         }
         let (_, paths) = shortest.pop_first().unwrap();
         let next_pos = paths.into_iter().map(|pth| pth[0]).min().unwrap();
