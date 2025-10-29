@@ -13,6 +13,19 @@ struct Battlefield {
 }
 
 impl Battlefield {
+    fn with_elf_power(&self, power: u32) -> Battlefield {
+        Battlefield {
+            units: self
+                .units
+                .iter()
+                .map(|unit| Rc::new(RefCell::new(Unit::clone(&*unit.borrow()))))
+                .collect(),
+            bounds: self.bounds,
+            open: self.open.clone(),
+            elf_power: power,
+        }
+    }
+
     fn round(&mut self) -> RoundOutcome {
         let mut unit_order = self.units.clone();
         unit_order.sort_unstable_by_key(|u| u.borrow().pos());
@@ -238,8 +251,7 @@ enum AttackOutcome {
 fn solve(input: Input) -> u32 {
     let battle = input.parse::<Battlefield>();
     'powerloop: for power in 4.. {
-        let mut enhbattle = battle.clone();
-        enhbattle.elf_power = power;
+        let mut enhbattle = battle.with_elf_power(power);
         let mut rounds = 0;
         loop {
             match enhbattle.round() {
