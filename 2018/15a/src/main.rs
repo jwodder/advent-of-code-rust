@@ -25,6 +25,7 @@ impl Battlefield {
                 }
             }
         }
+        self.edraw();
         false
     }
 
@@ -60,6 +61,11 @@ impl Battlefield {
         let mut pos2paths = HashMap::from([(start, vec![Vec::new()])]);
         let mut shortest = BTreeMap::<Coords, Vec<Vec<Coords>>>::new();
         while shortest.is_empty() {
+            if pos2paths.is_empty() {
+                // No paths to any in_range coords
+                eprintln!("{} cannot move", unit.borrow());
+                return;
+            }
             let mut pos2paths2 = HashMap::<Coords, Vec<Vec<Coords>>>::new();
             for (c, paths) in pos2paths {
                 for c2 in Direction::cardinals()
@@ -79,11 +85,6 @@ impl Battlefield {
                 visited.insert(c);
             }
             pos2paths = pos2paths2;
-            if pos2paths.is_empty() {
-                // No paths to any in_range coords
-                eprintln!("{} cannot move", unit.borrow());
-                return;
-            }
         }
         let (_, paths) = shortest.pop_first().unwrap();
         let next_pos = paths.into_iter().map(|pth| pth[0]).min().unwrap();
@@ -134,6 +135,25 @@ impl Battlefield {
             }
         }
         true
+    }
+
+    fn edraw(&self) {
+        let mut grid =
+            Grid::<char>::from_fn(
+                self.bounds,
+                |c| if self.open.contains(&c) { '.' } else { '#' },
+            );
+        for u in &self.units {
+            let u = u.borrow();
+            if u.health() > 0 {
+                let chr = match u.species() {
+                    Species::Goblin => 'G',
+                    Species::Elf => 'E',
+                };
+                grid[u.pos()] = chr;
+            }
+        }
+        eprintln!("{grid}");
     }
 }
 
