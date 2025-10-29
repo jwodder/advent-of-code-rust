@@ -2,7 +2,6 @@ use adventutil::grid::{Coords, Direction, Grid, GridBounds, ParseGridError};
 use adventutil::Input;
 use std::cell::RefCell;
 use std::collections::{BTreeMap, HashMap, HashSet};
-use std::fmt;
 use std::rc::Rc;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -25,7 +24,6 @@ impl Battlefield {
                 }
             }
         }
-        self.edraw();
         false
     }
 
@@ -45,7 +43,6 @@ impl Battlefield {
                         if self.open.contains(&c) {
                             in_range.insert(c);
                         } else if c == start {
-                            eprintln!("{} is already in range", unit.borrow());
                             return;
                         }
                     }
@@ -53,7 +50,6 @@ impl Battlefield {
             }
         }
         if in_range.is_empty() {
-            eprintln!("{} has nowhere to move", unit.borrow());
             return;
         }
 
@@ -63,7 +59,6 @@ impl Battlefield {
         while shortest.is_empty() {
             if pos2paths.is_empty() {
                 // No paths to any in_range coords
-                eprintln!("{} cannot move", unit.borrow());
                 return;
             }
             let mut pos2paths2 = HashMap::<Coords, Vec<Vec<Coords>>>::new();
@@ -89,12 +84,6 @@ impl Battlefield {
         let (_, paths) = shortest.pop_first().unwrap();
         let next_pos = paths.into_iter().map(|pth| pth[0]).min().unwrap();
 
-        eprintln!(
-            "{} moves to ({}, {})",
-            unit.borrow(),
-            next_pos.y,
-            next_pos.x
-        );
         self.open.insert(start);
         self.open.remove(&next_pos);
         unit.borrow_mut().pos = next_pos;
@@ -117,7 +106,6 @@ impl Battlefield {
             }
         }
         if !any_enemies {
-            eprintln!("Combat is over!");
             return false;
         }
         if let Some(target_hp) = adj_enemies.iter().map(|u| u.borrow().health()).min() {
@@ -126,34 +114,13 @@ impl Battlefield {
                 .filter(|u| u.borrow().health() == target_hp)
                 .min_by_key(|u| u.borrow().pos())
                 .unwrap();
-            eprintln!("{} attacks {}", unit.borrow(), target.borrow());
             let mut t = target.borrow_mut();
             t.health = t.health.saturating_sub(3);
             if t.health == 0 {
-                eprintln!("{t} dies");
                 self.open.insert(t.pos());
             }
         }
         true
-    }
-
-    fn edraw(&self) {
-        let mut grid =
-            Grid::<char>::from_fn(
-                self.bounds,
-                |c| if self.open.contains(&c) { '.' } else { '#' },
-            );
-        for u in &self.units {
-            let u = u.borrow();
-            if u.health() > 0 {
-                let chr = match u.species() {
-                    Species::Goblin => 'G',
-                    Species::Elf => 'E',
-                };
-                grid[u.pos()] = chr;
-            }
-        }
-        eprintln!("{grid}");
     }
 }
 
@@ -217,12 +184,6 @@ impl Unit {
     }
 }
 
-impl fmt::Display for Unit {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} @ ({}, {})", self.species, self.pos.y, self.pos.x)
-    }
-}
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Species {
     Goblin,
@@ -238,27 +199,16 @@ impl Species {
     }
 }
 
-impl fmt::Display for Species {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Species::Goblin => write!(f, "Goblin"),
-            Species::Elf => write!(f, "Elf"),
-        }
-    }
-}
-
 fn solve(input: Input) -> u32 {
     let mut battle = input.parse::<Battlefield>();
     let mut rounds = 0;
     loop {
-        eprintln!("Round {}", rounds + 1);
         if battle.round() {
             break;
         }
         rounds += 1;
-        eprintln!();
     }
-    dbg!(rounds) * dbg!(battle.remaining_hp())
+    rounds * battle.remaining_hp()
 }
 
 fn main() {
