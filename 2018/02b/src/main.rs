@@ -1,4 +1,4 @@
-use adventutil::{unordered_pairs, Input};
+use adventutil::{Input, unordered_pairs};
 
 fn solve(input: Input) -> String {
     let strs = input.lines().collect::<Vec<_>>();

@@ -1,5 +1,5 @@
-use adventutil::grid::{Grid, ParseGridError};
 use adventutil::Input;
+use adventutil::grid::{Grid, ParseGridError};
 use std::collections::VecDeque;
 use std::iter::repeat_with;
 use std::num::ParseIntError;

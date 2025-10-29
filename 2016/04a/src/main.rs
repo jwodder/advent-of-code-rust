@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser};
-use adventutil::Input;
 use std::str::FromStr;
 
 struct Room {

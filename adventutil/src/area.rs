@@ -1,4 +1,4 @@
-use num_traits::{one, zero, NumCast, PrimInt};
+use num_traits::{NumCast, PrimInt, one, zero};
 use std::iter::FusedIterator;
 use std::ops::Range;
 

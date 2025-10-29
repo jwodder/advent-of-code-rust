@@ -13,11 +13,11 @@ impl BinarySplitter {
     }
 
     fn lower(&mut self) {
-        self.high = (self.low + self.high) / 2;
+        self.high = self.high.midpoint(self.low);
     }
 
     fn upper(&mut self) {
-        self.low = (self.low + self.high) / 2;
+        self.low = self.high.midpoint(self.low);
     }
 
     fn get(&self) -> Option<u32> {

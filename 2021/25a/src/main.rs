@@ -1,5 +1,5 @@
-use adventutil::grid::{Cell, Grid, ParseGridError};
 use adventutil::Input;
+use adventutil::grid::{Cell, Grid, ParseGridError};
 use std::fmt;
 use std::str::FromStr;
 use thiserror::Error;

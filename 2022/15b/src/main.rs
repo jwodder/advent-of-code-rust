@@ -1,7 +1,7 @@
 #![allow(clippy::range_plus_one)]
+use adventutil::Input;
 use adventutil::gridgeom::Point;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::ops::Range;
 use std::str::FromStr;
 

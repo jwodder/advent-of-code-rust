@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::str::FromStr;
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]

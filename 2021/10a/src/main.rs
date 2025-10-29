@@ -31,11 +31,7 @@ fn classify(s: &str) -> Classification {
             c => panic!("Unexpected character: {c:?}"),
         }
     }
-    if stack.is_empty() {
-        Valid
-    } else {
-        Incomplete
-    }
+    if stack.is_empty() { Valid } else { Incomplete }
 }
 
 fn solve(input: Input) -> usize {
@@ -55,8 +51,8 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rstest::rstest;
     use Classification::*;
+    use rstest::rstest;
 
     #[rstest]
     #[case("()", Valid)]

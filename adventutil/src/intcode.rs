@@ -92,7 +92,7 @@ impl Intcode {
                     return Err(IntcodeError::InvalidOpcode {
                         opcode: n,
                         index: i,
-                    })
+                    });
                 }
             }
         }
@@ -128,7 +128,7 @@ impl Intcode {
                     return Err(IntcodeError::InvalidParamMode {
                         mode: n,
                         index: op_index,
-                    })
+                    });
                 }
             }
             opcode /= 10;

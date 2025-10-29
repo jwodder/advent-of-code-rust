@@ -1,5 +1,5 @@
-use adventutil::grid::{Cell, Direction, Grid};
 use adventutil::Input;
+use adventutil::grid::{Cell, Direction, Grid};
 use std::iter::successors;
 
 fn solve(input: Input) -> u32 {

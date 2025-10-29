@@ -1,5 +1,5 @@
-use adventutil::grid::{Grid, GridFromError};
 use adventutil::Input;
+use adventutil::grid::{Grid, GridFromError};
 use std::str::FromStr;
 
 struct ConwayLights(Grid<bool>);

@@ -1,7 +1,7 @@
+use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::maxn::maxn;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::Input;
 use std::str::FromStr;
 
 struct Monkey {
@@ -130,11 +130,7 @@ fn gcd(mut a: u64, mut b: u64) -> u64 {
 
 fn lcm(x: u64, y: u64) -> u64 {
     let d = gcd(x, y);
-    if d == 0 {
-        0
-    } else {
-        x * y / d
-    }
+    if d == 0 { 0 } else { x * y / d }
 }
 
 fn main() {

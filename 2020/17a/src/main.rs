@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::grid::Grid;
-use adventutil::Input;
 use itertools::iproduct;
 use std::collections::HashSet;
 

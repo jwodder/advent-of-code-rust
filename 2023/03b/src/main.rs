@@ -1,5 +1,5 @@
-use adventutil::grid::{Coords, Grid};
 use adventutil::Input;
+use adventutil::grid::{Coords, Grid};
 use std::collections::{HashMap, HashSet};
 
 fn solve(input: Input) -> u32 {

@@ -1,5 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser};
-use adventutil::{unordered_index_pairs, Input};
+use adventutil::{Input, unordered_index_pairs};
 use std::str::FromStr;
 
 struct Vector {

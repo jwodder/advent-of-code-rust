@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 
 #[derive(Clone, Debug, Eq, PartialEq)]

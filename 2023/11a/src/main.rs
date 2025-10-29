@@ -1,7 +1,7 @@
 use adventutil::counter::Counter;
 use adventutil::gridgeom::Point;
 use adventutil::maxtracker::MaxTracker;
-use adventutil::{unordered_pairs, Input};
+use adventutil::{Input, unordered_pairs};
 
 fn solve(input: Input) -> i32 {
     let mut y_qtys = Counter::new();

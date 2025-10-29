@@ -1,4 +1,4 @@
-use adventutil::{unordered_pairs, Input};
+use adventutil::{Input, unordered_pairs};
 use itertools::{Itertools, MinMaxResult::*};
 use std::cmp::Ordering;
 

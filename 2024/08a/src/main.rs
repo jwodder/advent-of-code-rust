@@ -1,5 +1,5 @@
 use adventutil::grid::{Coords, Grid};
-use adventutil::{unordered_pairs, Input};
+use adventutil::{Input, unordered_pairs};
 use std::collections::{HashMap, HashSet};
 
 fn solve(input: Input) -> usize {

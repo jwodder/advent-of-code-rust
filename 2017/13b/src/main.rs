@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Scanner {
@@ -26,7 +26,7 @@ struct BlockRange {
 
 impl BlockRange {
     fn passes(&self, t: usize) -> bool {
-        (t + self.depth) % self.modulus != 0
+        !(t + self.depth).is_multiple_of(self.modulus)
     }
 }
 

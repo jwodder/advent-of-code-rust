@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -72,11 +72,7 @@ fn gcd(mut a: usize, mut b: usize) -> usize {
 
 fn lcm(x: usize, y: usize) -> usize {
     let d = gcd(x, y);
-    if d == 0 {
-        0
-    } else {
-        x * y / d
-    }
+    if d == 0 { 0 } else { x * y / d }
 }
 
 fn main() {

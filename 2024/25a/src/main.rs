@@ -1,5 +1,5 @@
-use adventutil::grid::Grid;
 use adventutil::Input;
+use adventutil::grid::Grid;
 
 fn solve(input: Input) -> usize {
     let mut locks = Vec::new();

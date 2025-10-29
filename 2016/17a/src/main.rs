@@ -1,6 +1,6 @@
 use adventutil::Input;
 use md5::{Digest, Md5};
-use std::collections::{hash_map::Entry, HashMap, HashSet};
+use std::collections::{HashMap, HashSet, hash_map::Entry};
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct State {

@@ -29,7 +29,7 @@ impl Iterator for Factors {
         loop {
             let p = self.inner.next().unwrap();
             let mut k = 0;
-            while self.n % p == 0 {
+            while self.n.is_multiple_of(p) {
                 self.n /= p;
                 k += 1;
             }

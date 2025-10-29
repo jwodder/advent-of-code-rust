@@ -1,5 +1,5 @@
-use adventutil::counter::Counter;
 use adventutil::Input;
+use adventutil::counter::Counter;
 
 fn solve(input: Input) -> usize {
     let (twos, threes): (Vec<_>, Vec<_>) = input.lines().map(box_properties).unzip();

@@ -1,6 +1,6 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
-use std::iter::{once, Sum};
+use adventutil::pullparser::{ParseError, PullParser, Token};
+use std::iter::{Sum, once};
 use std::ops::Add;
 use std::str::FromStr;
 

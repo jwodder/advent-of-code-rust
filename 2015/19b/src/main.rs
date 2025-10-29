@@ -1,8 +1,8 @@
 // Based on <https://www.reddit.com/r/adventofcode/comments/3xflz8/day_19_solutions/cy4k8ca/>.
 // Note that this strategy does not work for the examples in the problem
 // description.
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashMap;
 

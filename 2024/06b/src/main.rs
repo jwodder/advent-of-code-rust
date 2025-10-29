@@ -1,5 +1,5 @@
-use adventutil::grid::{Coords, Direction, Grid};
 use adventutil::Input;
+use adventutil::grid::{Coords, Direction, Grid};
 
 fn solve(input: Input) -> usize {
     let mut start = None;

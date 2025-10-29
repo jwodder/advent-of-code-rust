@@ -1,7 +1,7 @@
 use std::borrow::Borrow;
 use std::collections::{
-    hash_map::{IntoIter, IntoValues},
     HashMap,
+    hash_map::{IntoIter, IntoValues},
 };
 use std::hash::Hash;
 use std::ops::Index;

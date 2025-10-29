@@ -1,5 +1,5 @@
-use adventutil::maxn::maxn;
 use adventutil::Input;
+use adventutil::maxn::maxn;
 
 fn solve(input: Input) -> usize {
     maxn(

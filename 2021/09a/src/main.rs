@@ -1,5 +1,5 @@
-use adventutil::grid::{Cell, Direction, Grid};
 use adventutil::Input;
+use adventutil::grid::{Cell, Direction, Grid};
 
 fn solve(input: Input) -> u32 {
     input
@@ -13,10 +13,10 @@ fn solve(input: Input) -> u32 {
 fn is_low_point(cell: &Cell<'_, u32>) -> bool {
     let height = cell.get();
     for d in Direction::cardinals() {
-        if let Some(c) = cell.neighbor(d) {
-            if *c.get() <= *height {
-                return false;
-            }
+        if let Some(c) = cell.neighbor(d)
+            && *c.get() <= *height
+        {
+            return false;
         }
     }
     true

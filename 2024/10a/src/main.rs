@@ -1,5 +1,5 @@
-use adventutil::grid::Grid;
 use adventutil::Input;
+use adventutil::grid::Grid;
 use std::collections::HashSet;
 
 fn solve(input: Input) -> usize {

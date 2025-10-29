@@ -1,5 +1,5 @@
-use adventutil::grid::Grid;
 use adventutil::Input;
+use adventutil::grid::Grid;
 
 fn solve(input: Input) -> usize {
     let grid = input.parse::<Grid<char>>().map(|c| c.to_digit(10));

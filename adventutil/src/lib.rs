@@ -12,10 +12,10 @@ pub mod ocr;
 pub mod pullparser;
 pub mod ranges;
 use num_traits::PrimInt;
-use std::collections::{hash_map::Entry, HashMap, HashSet, VecDeque};
+use std::collections::{HashMap, HashSet, VecDeque, hash_map::Entry};
 use std::fs::{self, File};
 use std::hash::Hash;
-use std::io::{self, read_to_string, stdin, BufRead, BufReader};
+use std::io::{self, BufRead, BufReader, read_to_string, stdin};
 use std::iter::FusedIterator;
 use std::path::PathBuf;
 use std::str::FromStr;
@@ -202,11 +202,7 @@ impl Iterator for UnorderedIndexPairs {
             0
         } else {
             fn sum_up_to(n: usize) -> usize {
-                if n == 0 {
-                    0
-                } else {
-                    (n * (n - 1)) / 2
-                }
+                if n == 0 { 0 } else { (n * (n - 1)) / 2 }
             }
 
             sum_up_to(self.size - self.i) - (self.j - (self.i + 1))

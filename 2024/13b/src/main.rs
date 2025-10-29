@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 
 const OFFSET: i64 = 10000000000000;
 
@@ -34,11 +34,7 @@ impl Machine {
                 None
             } else {
                 let g = gcd(eq1.a, eq2.b);
-                if eq1.c % g == 0 {
-                    todo!()
-                } else {
-                    None
-                }
+                if eq1.c % g == 0 { todo!() } else { None }
             }
         } else if eq2.c % eq2.b != 0 {
             None

@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -119,7 +119,7 @@ fn run<I: IntoIterator<Item = Instruction>>(iter: I) -> State {
                 i += offset;
             }
             Instruction::Jie(r, offset) => {
-                if state.get(r) % 2 == 0 {
+                if state.get(r).is_multiple_of(2) {
                     i += offset;
                 } else {
                     i += 1;

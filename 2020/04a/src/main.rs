@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser};
 use std::collections::HashSet;
 use std::str::FromStr;
 

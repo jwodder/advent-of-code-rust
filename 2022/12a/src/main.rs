@@ -1,5 +1,5 @@
 use adventutil::grid::{Direction, Grid};
-use adventutil::{dijkstra_length, Input};
+use adventutil::{Input, dijkstra_length};
 
 fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();

@@ -1,5 +1,5 @@
-use adventutil::grid::{Coords, Grid, GridBounds};
 use adventutil::Input;
+use adventutil::grid::{Coords, Grid, GridBounds};
 use itertools::Itertools;
 use std::num::ParseIntError;
 use std::str::FromStr;

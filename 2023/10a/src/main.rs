@@ -1,5 +1,5 @@
-use adventutil::grid::{Direction, Grid};
 use adventutil::Input;
+use adventutil::grid::{Direction, Grid};
 use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

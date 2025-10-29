@@ -94,8 +94,8 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rstest::rstest;
     use Packet::*;
+    use rstest::rstest;
 
     #[rstest]
     #[case(

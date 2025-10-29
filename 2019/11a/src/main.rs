@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
 use adventutil::intcode::{Intcode, IntcodeIO};
-use adventutil::Input;
 use std::collections::HashSet;
 
 struct Hull {

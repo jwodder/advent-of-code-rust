@@ -1,5 +1,5 @@
-use adventutil::grid::{Coords, Direction, Grid};
 use adventutil::Input;
+use adventutil::grid::{Coords, Direction, Grid};
 use std::collections::{HashMap, HashSet};
 
 fn solve(input: Input) -> usize {
@@ -30,10 +30,10 @@ fn solve(input: Input) -> usize {
                 (c, d) => panic!("Unexpected tile-dir combo: {c:?}, {d:?}"),
             };
             for d in outdirs {
-                if let Some(c2) = cell.neighbor(d) {
-                    if visited.entry(c2.coords()).or_default().insert(d) {
-                        beams2.push((c2, d));
-                    }
+                if let Some(c2) = cell.neighbor(d)
+                    && visited.entry(c2.coords()).or_default().insert(d)
+                {
+                    beams2.push((c2, d));
                 }
             }
         }

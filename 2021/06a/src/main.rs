@@ -1,5 +1,5 @@
-use adventutil::counter::Counter;
 use adventutil::Input;
+use adventutil::counter::Counter;
 
 struct Population {
     // Counts of the number of lanternfish with each timer value

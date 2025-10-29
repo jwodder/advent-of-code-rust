@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Scanner {
@@ -23,11 +23,7 @@ fn solve(input: Input) -> usize {
         .parse_lines::<Scanner>()
         .map(|scnr| {
             let pos = scnr.depth % (scnr.range * 2 - 2);
-            if pos == 0 {
-                scnr.depth * scnr.range
-            } else {
-                0
-            }
+            if pos == 0 { scnr.depth * scnr.range } else { 0 }
         })
         .sum()
 }

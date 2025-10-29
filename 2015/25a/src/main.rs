@@ -1,5 +1,5 @@
-use adventutil::pullparser::{ParseError, PullParser};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser};
 
 type UInt = u32;
 
@@ -23,7 +23,8 @@ fn parse_spec(s: &str) -> Result<(UInt, UInt), ParseError> {
 }
 
 fn coord2n(row: UInt, column: UInt) -> UInt {
-    (column * (column - 1) + row * (row - 1)) / 2 + row * column - row + 1
+    // (column * (column - 1) + row * (row - 1)) / 2 + row * column - row + 1
+    (column * (column - 1)).midpoint(row * (row - 1)) + row * column - row + 1
 }
 
 fn nth_code(n: UInt) -> UInt {

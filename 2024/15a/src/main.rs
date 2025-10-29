@@ -1,5 +1,5 @@
-use adventutil::grid::{Coords, Direction, Grid, GridFromError};
 use adventutil::Input;
+use adventutil::grid::{Coords, Direction, Grid, GridFromError};
 use itertools::Itertools;
 use thiserror::Error;
 

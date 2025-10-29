@@ -3,8 +3,8 @@ members = ["adventutil", "gen", "regresstest", "20*/??[ab]"]
 resolver = "2"
 
 [workspace.package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 description = "My solutions to <https://adventofcode.com> in Rust"
 authors = ["John Thorvald Wodder II <advent-of-code-rust@varonathe.org>"]
 repository = "https://github.com/jwodder/advent-of-code-rust"

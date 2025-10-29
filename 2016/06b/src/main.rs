@@ -1,5 +1,5 @@
-use adventutil::counter::Counter;
 use adventutil::Input;
+use adventutil::counter::Counter;
 
 fn solve(input: Input) -> String {
     let input = input

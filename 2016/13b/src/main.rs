@@ -3,7 +3,7 @@ use std::collections::HashSet;
 
 fn is_open(key: i32, x: i32, y: i32) -> bool {
     let value = x * x + 3 * x + 2 * x * y + y + y * y + key;
-    value.count_ones() % 2 == 0
+    value.count_ones().is_multiple_of(2)
 }
 
 fn solve(input: Input) -> usize {

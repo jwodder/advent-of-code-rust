@@ -1,8 +1,8 @@
 // For simplicity, we assume the following:
 // - When matching a rule with alternation, there will never be more than one
 //   matching branch.
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashMap;
 use std::str::FromStr;

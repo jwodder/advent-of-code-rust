@@ -1,5 +1,5 @@
-use adventutil::grid::{Direction, Grid};
 use adventutil::Input;
+use adventutil::grid::{Direction, Grid};
 use std::iter::successors;
 
 fn solve(input: Input) -> usize {

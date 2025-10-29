@@ -1,5 +1,5 @@
 use adventutil::grid::{Coords, Direction, GridBounds};
-use adventutil::{dijkstra_length, Input};
+use adventutil::{Input, dijkstra_length};
 
 fn solve(input: Input, bytes: usize, size: usize) -> u32 {
     let bounds = GridBounds::new(size + 1, size + 1);

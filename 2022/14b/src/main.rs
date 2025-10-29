@@ -1,6 +1,6 @@
-use adventutil::gridgeom::{points_added, Point, PointBounds};
-use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::Input;
+use adventutil::gridgeom::{Point, PointBounds, points_added};
+use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashMap;
 use std::str::FromStr;

@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::grid::{Coords, Grid, GridBounds, Padding};
 use adventutil::gridgeom::{Point, PointBounds, Vector};
-use adventutil::Input;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct LoopIter {

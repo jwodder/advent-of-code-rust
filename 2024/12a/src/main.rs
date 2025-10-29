@@ -1,5 +1,5 @@
 use adventutil::grid::Grid;
-use adventutil::{components, Input};
+use adventutil::{Input, components};
 
 fn solve(input: Input) -> usize {
     // Make this a reference to simplify the `move`-ing of `grid` into
