@@ -1,0 +1,16 @@
+[package]
+name = "advent-of-code-2023-19a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2023, problem 19a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["interpreter"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+itertools.workspace = true
+
+[lints]
+workspace = true
