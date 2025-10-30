@@ -1,0 +1,16 @@
+[package]
+name = "advent-of-code-2018-19a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2018, problem 19a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["interpreter", "pseudo-assembly"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+thiserror.workspace = true
+
+[lints]
+workspace = true
