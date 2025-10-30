@@ -1,0 +1,16 @@
+[package]
+name = "advent-of-code-2018-18b"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2018, problem 18b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["cellular-automata"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+thiserror.workspace = true
+
+[lints]
+workspace = true
