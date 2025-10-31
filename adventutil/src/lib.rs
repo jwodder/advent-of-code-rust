@@ -291,6 +291,7 @@ where
                 }
             }
         }
+        distances.remove(&current);
         visited.insert(current);
     }
 }
