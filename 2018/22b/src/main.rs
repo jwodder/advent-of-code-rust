@@ -92,11 +92,13 @@ impl Node {
             .into_iter()
             .find(|&t| self.tile.allows(t) && t != self.tool)
             .unwrap();
-        output.push({
-            let mut n = *self;
-            n.tool = alt_tool;
-            (n, 7)
-        });
+        if self.pos == map.target && self.tool != Tool::Torch {
+            output.push({
+                let mut n = *self;
+                n.tool = Tool::Torch;
+                (n, 7)
+            });
+        }
         for d in Direction::cardinals() {
             let Some(c2) = self.pos.domove(d) else {
                 continue;
@@ -108,6 +110,14 @@ impl Node {
                     n.pos = c2;
                     n.tile = t2;
                     (n, 1)
+                });
+            } else if t2.allows(alt_tool) {
+                output.push({
+                    let mut n = *self;
+                    n.pos = c2;
+                    n.tile = t2;
+                    n.tool = alt_tool;
+                    (n, 8)
                 });
             }
         }
