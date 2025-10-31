@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2018-22b"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2018, problem 22b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["grid-movement", "optimization", "shortest-path"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
