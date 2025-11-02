@@ -1,0 +1,17 @@
+[package]
+name = "advent-of-code-2019-16a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2019, problem 16a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[dev-dependencies]
+rstest.workspace = true
+
+[lints]
+workspace = true
