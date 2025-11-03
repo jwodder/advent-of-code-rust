@@ -1,5 +1,5 @@
 [workspace]
-members = ["adventutil", "gen", "regresstest", "20*/??[ab]"]
+members = ["adventutil", "tools/*", "20*/??[ab]"]
 resolver = "2"
 
 [workspace.package]
@@ -11,11 +11,17 @@ repository = "https://github.com/jwodder/advent-of-code-rust"
 license = "MIT"
 
 [workspace.dependencies]
+anyhow = "1.0.70"
+csv = "1.2.2"
+fern = "0.7.0"
+fs-err = "3.0.0"
 hex = "0.4.3"
 itertools = "0.14.0"
 json = "0.12.4"
+log = "0.4.18"
 md-5 = "0.10.5"
 rstest = { version = "0.26.0", default-features = false }
+serde = { version = "1.0.164", features = ["derive"] }
 thiserror = "2.0.0"
 
 [workspace.lints.rust]

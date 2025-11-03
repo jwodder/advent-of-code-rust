@@ -1,0 +1,22 @@
+[package]
+name = "cmptimes"
+edition.workspace = true
+rust-version.workspace = true
+description = "Regression testing"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+clap = { version = "4.5.51", default-features = false, features = ["derive", "error-context", "help", "std", "suggestions", "usage", "wrap_help"] }
+csv.workspace = true
+fern.workspace = true
+fs-err.workspace = true
+log.workspace = true
+serde.workspace = true
+serde_json = "1.0.145"
+thiserror.workspace = true
+
+[lints]
+workspace = true
