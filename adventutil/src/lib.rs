@@ -18,6 +18,7 @@ use std::hash::Hash;
 use std::io::{self, BufRead, BufReader, read_to_string, stdin};
 use std::iter::FusedIterator;
 use std::path::PathBuf;
+use std::rc::Rc;
 use std::str::FromStr;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -255,13 +256,14 @@ impl<T> ExactSizeIterator for UnorderedPairs<'_, T> {}
 
 /// Returns the length of the shortest path from `start` to a node that
 /// satisfies `is_end`.  `func` must be a function that takes a vertex `v` and
-/// returns an iterable of all of its neighbors and their distances from `v`.
-/// Returns `None` if there is no such path.
+/// returns an iterable of all of its neighbors (which must not include `v`
+/// itself) and their distances from `v`.  Returns `None` if there is no such
+/// path.
 ///
 /// `func` will not be called with the end node as an argument.
 pub fn dijkstra_length<T, P, F, I>(start: T, is_end: P, mut func: F) -> Option<u32>
 where
-    T: Eq + Hash + Clone,
+    T: Eq + Hash,
     P: Fn(&T) -> bool,
     F: FnMut(&T) -> I,
     I: IntoIterator<Item = (T, u32)>,
@@ -274,19 +276,19 @@ where
         if is_end(&current) {
             return Some(dist);
         }
-        visited.insert(current.clone());
         for (p, d) in func(&current) {
             if !visited.contains(&p) {
                 distances.insert(p, dist + d);
             }
         }
+        visited.insert(current);
     }
 }
 
 #[derive(Clone, Debug)]
 struct DistanceMap<T> {
-    node2dist: HashMap<T, u32>,
-    dist2nodes: BTreeMap<u32, HashSet<T>>,
+    node2dist: HashMap<Rc<T>, u32>,
+    dist2nodes: BTreeMap<u32, HashSet<Rc<T>>>,
 }
 
 impl<T> DistanceMap<T> {
@@ -298,9 +300,10 @@ impl<T> DistanceMap<T> {
     }
 }
 
-impl<T: Eq + Hash + Clone> DistanceMap<T> {
+impl<T: Eq + Hash> DistanceMap<T> {
     fn insert(&mut self, node: T, distance: u32) {
-        match self.node2dist.entry(node.clone()) {
+        let node = Rc::new(node);
+        match self.node2dist.entry(Rc::clone(&node)) {
             Entry::Vacant(e) => {
                 e.insert(distance);
                 self.dist2nodes.entry(distance).or_default().insert(node);
@@ -327,7 +330,11 @@ impl<T: Eq + Hash + Clone> DistanceMap<T> {
                 .extract_if(|_| std::mem::replace(&mut first, false))
                 .next()
             {
-                return Some((node, distance));
+                self.node2dist.remove(&node);
+                return Some((
+                    Rc::into_inner(node).expect("Rc<node> should have exactly one reference"),
+                    distance,
+                ));
             } else {
                 // This HashSet is empty; go to the next one.
                 e.remove();
