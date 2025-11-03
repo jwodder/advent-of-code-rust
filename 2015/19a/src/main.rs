@@ -35,7 +35,6 @@ fn parse_replacement(s: &str) -> Result<(String, String), ParseError> {
 
 fn split_atoms(s: String) -> Vec<String> {
     s.chars()
-        .peekable()
         .batching(|iter| {
             let mut atom = String::from(iter.next()?);
             atom.extend(iter.take_while_ref(char::is_ascii_lowercase));
