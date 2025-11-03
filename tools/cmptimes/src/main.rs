@@ -56,7 +56,7 @@ fn main() -> anyhow::Result<()> {
             .arg("--export-json")
             .arg(&report_path)
             .arg(format!(
-                "target/release/{package} {}/inputs/{}.txt",
+                "target/release/{package} {}/inputs/{:02}.txt",
                 pr.year, pr.day
             ))
             .current_dir(&root_dir)
