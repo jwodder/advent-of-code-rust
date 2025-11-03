@@ -453,6 +453,21 @@ impl Coords {
     pub fn new(y: usize, x: usize) -> Coords {
         Coords { y, x }
     }
+
+    pub fn domove(self, d: Direction) -> Option<Coords> {
+        let (ydiff, xdiff) = d.decompose();
+        let y = match ydiff {
+            Ordering::Less => self.y.checked_sub(1)?,
+            Ordering::Equal => self.y,
+            Ordering::Greater => self.y.checked_add(1)?,
+        };
+        let x = match xdiff {
+            Ordering::Less => self.x.checked_sub(1)?,
+            Ordering::Equal => self.x,
+            Ordering::Greater => self.x.checked_add(1)?,
+        };
+        Some(Coords { y, x })
+    }
 }
 
 impl From<(usize, usize)> for Coords {

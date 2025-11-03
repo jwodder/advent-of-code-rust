@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2022-17a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2022, problem 17a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["grid-movement"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
