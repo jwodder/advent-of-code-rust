@@ -12,12 +12,13 @@ pub mod ocr;
 pub mod pullparser;
 pub mod ranges;
 use num_traits::PrimInt;
-use std::collections::{HashMap, HashSet, VecDeque, hash_map::Entry};
+use std::collections::{BTreeMap, HashMap, HashSet, VecDeque, hash_map::Entry};
 use std::fs::{self, File};
 use std::hash::Hash;
 use std::io::{self, BufRead, BufReader, read_to_string, stdin};
 use std::iter::FusedIterator;
 use std::path::PathBuf;
+use std::rc::Rc;
 use std::str::FromStr;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -255,44 +256,90 @@ impl<T> ExactSizeIterator for UnorderedPairs<'_, T> {}
 
 /// Returns the length of the shortest path from `start` to a node that
 /// satisfies `is_end`.  `func` must be a function that takes a vertex `v` and
-/// returns an iterable of all of its neighbors and their distances from `v`.
-/// Returns `None` if there is no such path.
+/// returns an iterable of all of its neighbors (which must not include `v`
+/// itself) and their distances from `v`.  Returns `None` if there is no such
+/// path.
 ///
 /// `func` will not be called with the end node as an argument.
 pub fn dijkstra_length<T, P, F, I>(start: T, is_end: P, mut func: F) -> Option<u32>
 where
-    T: Eq + Hash + Clone,
+    T: Eq + Hash,
     P: Fn(&T) -> bool,
     F: FnMut(&T) -> I,
     I: IntoIterator<Item = (T, u32)>,
 {
     let mut visited = HashSet::new();
-    let mut distances = HashMap::from([(start, 0)]);
+    let mut distances = DistanceMap::new();
+    distances.insert(start, 0);
     loop {
-        let (current, dist) = distances
-            .iter()
-            .filter(|&(k, _)| !visited.contains(k))
-            .min_by_key(|&(_, &dist)| dist)
-            .map(|(k, &dist)| (k.clone(), dist))?;
+        let (current, dist) = distances.pop_nearest()?;
         if is_end(&current) {
             return Some(dist);
         }
         for (p, d) in func(&current) {
             if !visited.contains(&p) {
-                let newdist = dist + d;
-                match distances.entry(p) {
-                    Entry::Vacant(e) => {
-                        e.insert(newdist);
-                    }
-                    Entry::Occupied(mut e) if *e.get() > newdist => {
-                        e.insert(newdist);
-                    }
-                    _ => (),
-                }
+                distances.insert(p, dist + d);
             }
         }
-        distances.remove(&current);
         visited.insert(current);
+    }
+}
+
+#[derive(Clone, Debug)]
+struct DistanceMap<T> {
+    node2dist: HashMap<Rc<T>, u32>,
+    dist2nodes: BTreeMap<u32, HashSet<Rc<T>>>,
+}
+
+impl<T> DistanceMap<T> {
+    fn new() -> DistanceMap<T> {
+        DistanceMap {
+            node2dist: HashMap::new(),
+            dist2nodes: BTreeMap::new(),
+        }
+    }
+}
+
+impl<T: Eq + Hash> DistanceMap<T> {
+    fn insert(&mut self, node: T, distance: u32) {
+        let node = Rc::new(node);
+        match self.node2dist.entry(Rc::clone(&node)) {
+            Entry::Vacant(e) => {
+                e.insert(distance);
+                self.dist2nodes.entry(distance).or_default().insert(node);
+            }
+            Entry::Occupied(mut e) if *e.get() > distance => {
+                let old_dist = *e.get();
+                e.insert(distance);
+                if let Some(old_set) = self.dist2nodes.get_mut(&old_dist) {
+                    old_set.remove(&node);
+                }
+                self.dist2nodes.entry(distance).or_default().insert(node);
+            }
+            _ => (),
+        }
+    }
+
+    fn pop_nearest(&mut self) -> Option<(T, u32)> {
+        loop {
+            let mut e = self.dist2nodes.first_entry()?;
+            let distance = *e.key();
+            let mut first = true;
+            if let Some(node) = e
+                .get_mut()
+                .extract_if(|_| std::mem::replace(&mut first, false))
+                .next()
+            {
+                self.node2dist.remove(&node);
+                return Some((
+                    Rc::into_inner(node).expect("Rc<node> should have exactly one reference"),
+                    distance,
+                ));
+            } else {
+                // This HashSet is empty; go to the next one.
+                e.remove();
+            }
+        }
     }
 }
 
