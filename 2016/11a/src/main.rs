@@ -9,17 +9,8 @@ struct State {
 }
 
 impl State {
-    fn end(&self) -> State {
-        let all_items = self
-            .floors
-            .iter()
-            .flatten()
-            .cloned()
-            .collect::<BTreeSet<_>>();
-        State {
-            floors: [BTreeSet::new(), BTreeSet::new(), BTreeSet::new(), all_items],
-            elevator: 3,
-        }
+    fn is_end(&self) -> bool {
+        (0..3).all(|i| self.floors[i].is_empty()) && self.elevator == 3
     }
 
     fn advancements(&self) -> Vec<State> {
@@ -201,14 +192,13 @@ impl std::str::FromStr for Item {
 
 fn solve(input: Input) -> u32 {
     let start = input.parse::<State>();
-    let end = start.end();
     let mut visited = HashSet::new();
     let mut steps = 0;
     let mut states = vec![start];
     while !states.is_empty() {
         let mut states2 = Vec::new();
         for n in states {
-            if n == end {
+            if n.is_end() {
                 return steps;
             }
             for n2 in n.advancements() {
