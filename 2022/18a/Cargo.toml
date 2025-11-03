@@ -1,0 +1,14 @@
+[package]
+name = "advent-of-code-2022-18a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2022, problem 18a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
