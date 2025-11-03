@@ -2,7 +2,7 @@
 name = "cmptimes"
 edition.workspace = true
 rust-version.workspace = true
-description = "Regression testing"
+description = "Compare solution runtimes across commits"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true

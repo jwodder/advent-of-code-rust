@@ -2,7 +2,7 @@
 name = "toollib"
 edition.workspace = true
 rust-version.workspace = true
-description = "Regression testing"
+description = "Common utilities for tool programs"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
