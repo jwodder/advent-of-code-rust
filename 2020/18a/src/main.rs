@@ -32,8 +32,8 @@ impl Iterator for Tokenize<'_> {
                 c if c.is_ascii_whitespace() => continue,
                 c if c.is_ascii_digit() => {
                     let mut digits = String::from(c);
-                    while matches!(self.inner.peek(), Some(d) if d.is_ascii_digit()) {
-                        digits.push(self.inner.next().unwrap());
+                    while let Some(d) = self.inner.next_if(char::is_ascii_digit) {
+                        digits.push(d);
                     }
                     return Some(Token::Number(digits.parse().unwrap()));
                 }
