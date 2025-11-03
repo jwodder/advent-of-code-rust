@@ -16,6 +16,7 @@ futures-util = { version = "0.3.28", default-features = false, features = ["std"
 log.workspace = true
 serde.workspace = true
 tokio = { version = "1.28.2", features = ["macros", "process", "rt", "time"] }
+toollib = { path = "../toollib" }
 
 [lints]
 workspace = true

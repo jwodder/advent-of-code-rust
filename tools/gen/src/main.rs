@@ -1,5 +1,4 @@
 use serde::Serialize;
-use std::path::Path;
 use tinytemplate::TinyTemplate;
 
 static CARGO_TOML_TEMPLATE: &str = include_str!("templates/Cargo.toml.tt");
@@ -18,11 +17,7 @@ fn main() -> anyhow::Result<()> {
     let mut tt = TinyTemplate::new();
     tt.add_template("Cargo.toml", CARGO_TOML_TEMPLATE)?;
     tt.add_template("src-main.rs", SRC_MAIN_RS_TEMPLATE)?;
-    let problem_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .expect("CARGO_MANIFEST_DIR lacks parent path")
-        .join(&ctx.year)
-        .join(&ctx.problem);
+    let problem_dir = toollib::project_root()?.join(&ctx.year).join(&ctx.problem);
     fs_err::create_dir_all(problem_dir.join("src"))?;
     fs_err::write(
         problem_dir.join("Cargo.toml"),

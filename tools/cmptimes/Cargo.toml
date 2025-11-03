@@ -15,8 +15,9 @@ fern.workspace = true
 fs-err.workspace = true
 log.workspace = true
 serde.workspace = true
-serde_json = "1.0.145"
+serde_json.workspace = true
 thiserror.workspace = true
+toollib = { path = "../toollib" }
 
 [lints]
 workspace = true

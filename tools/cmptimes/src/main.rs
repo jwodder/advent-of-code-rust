@@ -32,11 +32,9 @@ fn main() -> anyhow::Result<()> {
         .apply()
         .expect("no other logger should have been previously initialized");
     let mut args = Arguments::parse();
-    let root_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .expect("CARGO_MANIFEST_DIR lacks parent path");
+    let root_dir = toollib::project_root()?;
     if args.all {
-        args.problems = all_problems(root_dir)?;
+        args.problems = all_problems(&root_dir)?;
     }
     let mut reporter = Reporter::new(&args.committishes);
     let report_dir = root_dir.join("target").join("cmptimes");
@@ -61,7 +59,7 @@ fn main() -> anyhow::Result<()> {
                 "target/release/{package} {}/inputs/{}.txt",
                 pr.year, pr.day
             ))
-            .current_dir(root_dir)
+            .current_dir(&root_dir)
             .status()
             .context("failed to run hyperfine")?;
         if !rc.success() {

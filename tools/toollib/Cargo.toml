@@ -1,18 +1,16 @@
 [package]
-name = "gen"
+name = "toollib"
 edition.workspace = true
 rust-version.workspace = true
-description = "Solution package generator"
+description = "Regression testing"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
 
 [dependencies]
-anyhow.workspace = true
-fs-err.workspace = true
 serde.workspace = true
-tinytemplate = "1.2.1"
-toollib = { path = "../toollib" }
+serde_json.workspace = true
+thiserror.workspace = true
 
 [lints]
 workspace = true

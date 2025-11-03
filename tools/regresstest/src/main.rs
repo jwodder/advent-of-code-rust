@@ -161,10 +161,7 @@ async fn main() -> anyhow::Result<ExitCode> {
         .apply()
         .expect("no other logger should have been previously initialized");
     let mut cases = Vec::new();
-    let workspace_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .expect("CARGO_MANIFEST_DIR lacks parent path")
-        .to_owned();
+    let workspace_dir = toollib::project_root()?;
     for entry in read_dir(&workspace_dir)? {
         let entry = entry?;
         let answerpath = entry.path().join("answers.csv");
