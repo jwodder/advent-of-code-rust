@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{Input, dijkstra_length};
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, HashSet};
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct State {
@@ -202,12 +202,25 @@ impl std::str::FromStr for Item {
 fn solve(input: Input) -> u32 {
     let start = input.parse::<State>();
     let end = start.end();
-    dijkstra_length(
-        start,
-        |n| n == &end,
-        |state| state.advancements().into_iter().map(|s| (s, 1)),
-    )
-    .unwrap()
+    let mut visited = HashSet::new();
+    let mut steps = 0;
+    let mut states = vec![start];
+    while !states.is_empty() {
+        let mut states2 = Vec::new();
+        for n in states {
+            if n == end {
+                return steps;
+            }
+            for n2 in n.advancements() {
+                if visited.insert(n2.clone()) {
+                    states2.push(n2);
+                }
+            }
+        }
+        states = states2;
+        steps += 1;
+    }
+    panic!("No route to end");
 }
 
 fn main() {
