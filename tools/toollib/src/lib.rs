@@ -8,21 +8,18 @@ pub fn project_root() -> Result<PathBuf, LocateError> {
         .arg("locate-project")
         .arg("--workspace")
         .stderr(Stdio::inherit())
+        .current_dir(env!("CARGO_MANIFEST_DIR"))
         .output()
     {
         Ok(output) if output.status.success() => {
-            match serde_json::from_slice::<LocateProject>(&output.stdout) {
-                Ok(location) => {
-                    if !location.root.is_absolute() {
-                        return Err(LocateError::InvalidPath(location.root));
-                    }
-                    if let Some(root) = location.root.parent() {
-                        Ok(root.to_owned())
-                    } else {
-                        Err(LocateError::InvalidPath(location.root))
-                    }
-                }
-                Err(e) => Err(LocateError::Deserialize(e)),
+            let location = serde_json::from_slice::<LocateProject>(&output.stdout)?;
+            if !location.root.is_absolute() {
+                return Err(LocateError::InvalidPath(location.root));
+            }
+            if let Some(root) = location.root.parent() {
+                Ok(root.to_owned())
+            } else {
+                Err(LocateError::InvalidPath(location.root))
             }
         }
         Ok(output) => Err(LocateError::Exit(output.status)),
