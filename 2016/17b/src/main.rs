@@ -1,7 +1,7 @@
-use adventutil::maxtracker::MaxTracker;
 use adventutil::Input;
+use adventutil::maxtracker::MaxTracker;
 use md5::{Digest, Md5};
-use std::collections::{hash_map::Entry, HashMap, HashSet};
+use std::collections::HashSet;
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct State {
@@ -91,38 +91,27 @@ fn solve(input: Input) -> usize {
     let passcode = input.read().trim().to_owned();
     let start = State::start(passcode);
     let mut visited = HashSet::new();
-    let mut distances = HashMap::from([(start, 0)]);
+    let mut states = vec![start];
+    let mut dist = 0;
     let mut longest_path = MaxTracker::new();
-    loop {
-        let Some((current, dist)) = distances
-            .iter()
-            .filter(|&(k, _)| !visited.contains(k))
-            .min_by_key(|&(_, &dist)| dist)
-            .map(|(k, &dist)| (k.clone(), dist))
-        else {
-            return longest_path.get().unwrap();
-        };
-        visited.insert(current.clone());
-        if current.at_end() {
-            distances.remove(&current);
-            longest_path.add(dist);
-            continue;
-        }
-        for p in current.next_states() {
-            if !visited.contains(&p) {
-                let newdist = dist + 1;
-                match distances.entry(p) {
-                    Entry::Vacant(e) => {
-                        e.insert(newdist);
+    while !states.is_empty() {
+        let mut states2 = Vec::new();
+        for current in states {
+            if current.at_end() {
+                longest_path.add(dist);
+            } else {
+                for p in current.next_states() {
+                    if !visited.contains(&p) {
+                        states2.push(p);
                     }
-                    Entry::Occupied(mut e) if *e.get() > newdist => {
-                        e.insert(newdist);
-                    }
-                    _ => (),
                 }
+                visited.insert(current);
             }
         }
+        states = states2;
+        dist += 1;
     }
+    longest_path.get().unwrap()
 }
 
 fn main() {
