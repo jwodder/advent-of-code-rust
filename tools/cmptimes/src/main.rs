@@ -74,12 +74,14 @@ fn main() -> anyhow::Result<()> {
             .arg("-L")
             .arg("committish")
             .arg(&args.committishes)
-            .arg("-s")
-            .arg(format!(
-                "git checkout {{committish}} && cargo build -r -p {package}"
-            ))
             .arg("-n")
             .arg("{committish}")
+            .arg("--shell=none")
+            .arg("-s")
+            .arg(format!(
+                "bash -c 'git checkout {{committish}} && cargo build -r -p {package}'"
+            ))
+            .arg("-w1")
             .arg("--export-json")
             .arg(&report_path)
             .arg(format!("target/release/{package} {}", pr.input_file()))
