@@ -286,13 +286,13 @@ where
 }
 
 #[derive(Clone, Debug)]
-struct DistanceMap<T> {
+pub struct DistanceMap<T> {
     node2dist: HashMap<Rc<T>, u32>,
     dist2nodes: BTreeMap<u32, HashSet<Rc<T>>>,
 }
 
 impl<T> DistanceMap<T> {
-    fn new() -> DistanceMap<T> {
+    pub fn new() -> DistanceMap<T> {
         DistanceMap {
             node2dist: HashMap::new(),
             dist2nodes: BTreeMap::new(),
@@ -301,7 +301,7 @@ impl<T> DistanceMap<T> {
 }
 
 impl<T: Eq + Hash> DistanceMap<T> {
-    fn insert(&mut self, node: T, distance: u32) {
+    pub fn insert(&mut self, node: T, distance: u32) {
         let node = Rc::new(node);
         match self.node2dist.entry(Rc::clone(&node)) {
             Entry::Vacant(e) => {
@@ -320,7 +320,7 @@ impl<T: Eq + Hash> DistanceMap<T> {
         }
     }
 
-    fn pop_nearest(&mut self) -> Option<(T, u32)> {
+    pub fn pop_nearest(&mut self) -> Option<(T, u32)> {
         loop {
             let mut e = self.dist2nodes.first_entry()?;
             let distance = *e.key();
@@ -340,6 +340,12 @@ impl<T: Eq + Hash> DistanceMap<T> {
                 e.remove();
             }
         }
+    }
+}
+
+impl<T> Default for DistanceMap<T> {
+    fn default() -> DistanceMap<T> {
+        DistanceMap::new()
     }
 }
 
