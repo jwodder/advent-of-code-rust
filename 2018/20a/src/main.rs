@@ -1,7 +1,7 @@
-use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
 use adventutil::maxtracker::MaxTracker;
-use std::collections::{HashMap, HashSet, hash_map::Entry};
+use adventutil::{DistanceMap, Input};
+use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 struct World(HashMap<Point, HashSet<Point>>);
@@ -12,33 +12,20 @@ impl World {
         self.0.entry(p2).or_default().insert(p1);
     }
 
-    fn eccentricity(&self) -> usize {
+    fn eccentricity(&self) -> u32 {
         let mut visited = HashSet::new();
-        let mut distances = HashMap::from([(Point::ORIGIN, 0)]);
+        let mut distances = DistanceMap::new();
+        distances.insert(Point::ORIGIN, 0);
         let mut tracker = MaxTracker::new();
         loop {
-            let Some((current, dist)) = distances
-                .iter()
-                .filter(|&(k, _)| !visited.contains(k))
-                .min_by_key(|&(_, &dist)| dist)
-                .map(|(&k, &dist)| (k, dist))
-            else {
+            let Some((current, dist)) = distances.pop_nearest() else {
                 return tracker.get().unwrap();
             };
             let mut any_steps = false;
             for &p in &self.0[&current] {
                 if !visited.contains(&p) {
                     any_steps = true;
-                    let newdist = dist + 1;
-                    match distances.entry(p) {
-                        Entry::Vacant(e) => {
-                            e.insert(newdist);
-                        }
-                        Entry::Occupied(mut e) if *e.get() > newdist => {
-                            e.insert(newdist);
-                        }
-                        _ => (),
-                    }
+                    distances.insert(p, dist + 1);
                 }
             }
             if !any_steps {
@@ -109,7 +96,7 @@ struct Branch {
     completed: HashSet<Point>,
 }
 
-fn solve(input: Input) -> usize {
+fn solve(input: Input) -> u32 {
     let mut explore = Exploration::new();
     for ch in input.read().trim().chars() {
         match ch {
@@ -149,7 +136,7 @@ mod tests {
         "^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$",
         31
     )]
-    fn example1(#[case] regex: &'static str, #[case] answer: usize) {
+    fn example1(#[case] regex: &'static str, #[case] answer: u32) {
         let input = Input::from(regex);
         assert_eq!(solve(input), answer);
     }

@@ -1,7 +1,7 @@
-use adventutil::Input;
 use adventutil::grid::{Coords, Grid};
+use adventutil::{DistanceMap, Input};
 use itertools::Itertools;
-use std::collections::{HashMap, HashSet, hash_map::Entry};
+use std::collections::{HashMap, HashSet};
 
 fn solve(input: Input) -> u32 {
     let mut points = HashMap::new();
@@ -32,14 +32,10 @@ fn solve(input: Input) -> u32 {
             .filter(|&p2| p1 != p2 && !distances.contains_key(&(p1, p2)))
             .collect::<HashSet<_>>();
         let mut visited = HashSet::new();
-        let mut dists = HashMap::from([(c1, 0)]);
+        let mut dists = DistanceMap::new();
+        dists.insert(c1, 0);
         while !unreached.is_empty() {
-            let (current, dist) = dists
-                .iter()
-                .filter(|&(k, _)| !visited.contains(k))
-                .min_by_key(|&(_, &dist)| dist)
-                .map(|(&k, &dist)| (k, dist))
-                .unwrap();
+            let (current, dist) = dists.pop_nearest().unwrap();
             if let Some(p2) = points
                 .iter()
                 .find_map(|(&p, &c)| (c == current).then_some(p))
@@ -50,16 +46,7 @@ fn solve(input: Input) -> u32 {
             }
             for p in maze.neighbor_coords(current).filter(|&c| maze[c]) {
                 if !visited.contains(&p) {
-                    let newdist = dist + 1;
-                    match dists.entry(p) {
-                        Entry::Vacant(e) => {
-                            e.insert(newdist);
-                        }
-                        Entry::Occupied(mut e) if *e.get() > newdist => {
-                            e.insert(newdist);
-                        }
-                        _ => (),
-                    }
+                    dists.insert(p, dist + 1);
                 }
             }
             visited.insert(current);

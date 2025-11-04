@@ -1,6 +1,6 @@
-use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
-use std::collections::{HashMap, HashSet, hash_map::Entry};
+use adventutil::{DistanceMap, Input};
+use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 struct World(HashMap<Point, HashSet<Point>>);
@@ -13,35 +13,19 @@ impl World {
 
     fn thousand_eccentricities(&self) -> usize {
         let mut visited = HashSet::new();
-        let mut distances = HashMap::from([(Point::ORIGIN, 0)]);
+        let mut distances = DistanceMap::new();
+        distances.insert(Point::ORIGIN, 0);
         let mut qty = 0;
         loop {
-            let Some((current, dist)) = distances
-                .iter()
-                .filter(|&(k, _)| !visited.contains(k))
-                .min_by_key(|&(_, &dist)| dist)
-                .map(|(&k, &dist)| (k, dist))
-            else {
+            let Some((current, dist)) = distances.pop_nearest() else {
                 return qty;
             };
+            if dist >= 1000 {
+                qty += 1;
+            }
             for &p in &self.0[&current] {
                 if !visited.contains(&p) {
-                    let newdist = dist + 1;
-                    match distances.entry(p) {
-                        Entry::Vacant(e) => {
-                            e.insert(newdist);
-                            if newdist >= 1000 {
-                                qty += 1;
-                            }
-                        }
-                        Entry::Occupied(mut e) if *e.get() > newdist => {
-                            e.insert(newdist);
-                            if newdist >= 1000 {
-                                qty += 1;
-                            }
-                        }
-                        _ => (),
-                    }
+                    distances.insert(p, dist + 1);
                 }
             }
             visited.insert(current);
