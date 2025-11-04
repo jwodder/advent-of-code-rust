@@ -2,10 +2,10 @@ use anyhow::Context;
 use clap::Parser;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use std::fmt::{self, Write};
+use std::fmt::Write;
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use thiserror::Error;
+use toollib::Problem;
 
 const MEAN_RATIO_THRESHOLD: f64 = 0.1;
 
@@ -55,10 +55,7 @@ fn main() -> anyhow::Result<()> {
             .arg("{committish}")
             .arg("--export-json")
             .arg(&report_path)
-            .arg(format!(
-                "target/release/{package} {}/inputs/{:02}.txt",
-                pr.year, pr.day
-            ))
+            .arg(format!("target/release/{package} {}", pr.input_file()))
             .current_dir(&root_dir)
             .status()
             .context("failed to run hyperfine")?;
@@ -74,61 +71,6 @@ fn main() -> anyhow::Result<()> {
     print!("{}", reporter.report());
     Ok(())
 }
-
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-struct Problem {
-    year: u32,
-    day: u32,
-    ab: char,
-}
-
-impl Problem {
-    fn from_year_and_id(year: u32, id: &str) -> Option<Problem> {
-        let (day, ab) = parse_problem_id(id)?;
-        Some(Problem { year, day, ab })
-    }
-
-    fn package(self) -> String {
-        format!("advent-of-code-{}-{:02}{}", self.year, self.day, self.ab)
-    }
-}
-
-impl fmt::Display for Problem {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}-{:02}{}", self.year, self.day, self.ab)
-    }
-}
-
-impl std::str::FromStr for Problem {
-    type Err = ParseProblemError;
-
-    fn from_str(s: &str) -> Result<Problem, ParseProblemError> {
-        let (year, pr) = s.split_once('-').ok_or(ParseProblemError)?;
-        let year = year.parse::<u32>().map_err(|_| ParseProblemError)?;
-        if !(2015..2100).contains(&year) {
-            return Err(ParseProblemError);
-        }
-        let (day, ab) = parse_problem_id(pr).ok_or(ParseProblemError)?;
-        Ok(Problem { year, day, ab })
-    }
-}
-
-fn parse_problem_id(s: &str) -> Option<(u32, char)> {
-    if !(s.len() == 3 && s.chars().take(2).all(|c| c.is_ascii_digit())) {
-        return None;
-    }
-    let day = s.get(0..2).and_then(|t| t.parse::<u32>().ok())?;
-    let ab = match s.get(2..) {
-        Some("a") => 'a',
-        Some("b") => 'b',
-        _ => return None,
-    };
-    Some((day, ab))
-}
-
-#[derive(Clone, Copy, Debug, Eq, Error, PartialEq)]
-#[error("problems must in the form 20XX-XX{{a|b}}")]
-struct ParseProblemError;
 
 #[derive(Clone, Debug, PartialEq)]
 struct Reporter {

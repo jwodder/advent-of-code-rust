@@ -2859,7 +2859,6 @@ dependencies = [
  "log",
  "serde",
  "serde_json",
- "thiserror",
  "toollib",
 ]
 
