@@ -1,30 +1,19 @@
-use anyhow::{Context, bail};
-use fs_err::read_dir;
 use futures_util::stream::{StreamExt, iter};
-use serde::Deserialize;
 use std::fmt::{self, Write as _};
 use std::path::Path;
 use std::process::ExitCode;
 use std::time::{Duration, Instant};
-use tokio::process::Command;
-use tokio::time::timeout;
+use tokio::{process::Command, time::timeout};
+use toollib::Problem;
 
 const WORKERS: usize = 8;
 const TIMEOUT: Duration = Duration::from_secs(30);
 const SLOWEST_QTY: usize = 10;
 
-#[derive(Debug, Deserialize, Eq, PartialEq)]
-struct Answer {
-    problem: String,
-    input: String,
-    #[allow(clippy::struct_field_names)]
-    answer: String,
-}
-
 struct TestCase<'a> {
     workspace_dir: &'a Path,
-    year: i32,
-    answer: Answer,
+    problem: Problem,
+    answer: String,
 }
 
 impl TestCase<'_> {
@@ -35,12 +24,9 @@ impl TestCase<'_> {
             .arg("-q")
             .arg("-r")
             .arg("-p")
-            .arg(format!(
-                "advent-of-code-{}-{}",
-                self.year, self.answer.problem
-            ))
+            .arg(self.problem.package())
             .arg("--")
-            .arg(format!("{}/inputs/{}", self.year, self.answer.input))
+            .arg(self.problem.input_file())
             .current_dir(self.workspace_dir)
             .kill_on_drop(true);
         let start = Instant::now();
@@ -51,7 +37,7 @@ impl TestCase<'_> {
             Ok(Ok(out)) => {
                 if out.status.success() {
                     if let Ok(s) = String::from_utf8(out.stdout) {
-                        if s.trim() == self.answer.answer {
+                        if s.trim() == self.answer {
                             log::info!("PASS: {self}");
                             (name, TestResult::Success { elapsed })
                         } else {
@@ -82,7 +68,7 @@ impl TestCase<'_> {
 
 impl fmt::Display for TestCase<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}-{}", self.year, self.answer.problem)
+        write!(f, "{}", self.problem)
     }
 }
 
@@ -125,7 +111,7 @@ impl Reporter {
         }
     }
 
-    fn write_slowest(&self) -> anyhow::Result<()> {
+    fn write_slowest(&self) -> std::io::Result<()> {
         let mut s = String::from("## Slowest Solutions\n\n| Problem | Runtime |\n| --- | --- |\n");
         for name in &self.timeouts {
             let _ = writeln!(&mut s, "| {name} | TIMEOUT |");
@@ -160,42 +146,18 @@ async fn main() -> anyhow::Result<ExitCode> {
         .chain(std::io::stderr())
         .apply()
         .expect("no other logger should have been previously initialized");
-    let mut cases = Vec::new();
     let workspace_dir = toollib::project_root()?;
-    for entry in read_dir(&workspace_dir)? {
-        let entry = entry?;
-        let answerpath = entry.path().join("answers.csv");
-        if entry.file_type()?.is_dir() && answerpath.exists() {
-            let year = match entry.file_name().into_string() {
-                Ok(s) => match s.parse::<i32>() {
-                    Ok(year) => year,
-                    Err(_) => bail!("Found answers.csv in non-year directory {s:?}"),
-                },
-                Err(oss) => bail!(
-                    "Found answers.csv in directory with undecodable name {:?}",
-                    oss.to_string_lossy()
-                ),
-            };
-            log::debug!("Reading answers from {}", answerpath.display());
-            let mut reader = csv::Reader::from_path(&answerpath)
-                .with_context(|| format!("failed to read {}", answerpath.display()))?;
-            for answer in reader.deserialize::<Answer>() {
-                let answer = answer.with_context(|| {
-                    format!("failed to read entry from {}", answerpath.display())
-                })?;
-                cases.push(TestCase {
-                    workspace_dir: &workspace_dir,
-                    year,
-                    answer,
-                });
-            }
-        }
-    }
-    let res = iter(cases)
-        .map(TestCase::run)
-        .buffer_unordered(WORKERS)
-        .collect::<Vec<_>>()
-        .await;
+    let res = iter(toollib::get_all_solutions(&workspace_dir)?.into_iter().map(
+        |(problem, answer)| TestCase {
+            workspace_dir: &workspace_dir,
+            problem,
+            answer,
+        },
+    ))
+    .map(TestCase::run)
+    .buffer_unordered(WORKERS)
+    .collect::<Vec<_>>()
+    .await;
     let reporter = Reporter::from_results(res);
     reporter.write_slowest()?;
     Ok(reporter.status())

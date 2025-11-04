@@ -34,7 +34,11 @@ fn main() -> anyhow::Result<()> {
     let mut args = Arguments::parse();
     let root_dir = toollib::project_root()?;
     if args.all {
-        args.problems = all_problems(&root_dir)?;
+        args.problems = toollib::get_all_solutions(&root_dir)?
+            .into_iter()
+            .map(|(pr, _)| pr)
+            .collect();
+        args.problems.sort_unstable();
     }
     let mut reporter = Reporter::new(&args.committishes);
     let report_dir = root_dir.join("target").join("cmptimes");
@@ -180,49 +184,4 @@ struct HyperfineResult {
     // times: Vec<f64>
     // exit_codes: Vec<u32>,
     // parameters: HashMap<String, String>,
-}
-
-#[derive(Debug, Deserialize, Eq, PartialEq)]
-struct Answer {
-    problem: String,
-    //input: String,
-    //answer: String,
-}
-
-fn all_problems(root: &Path) -> anyhow::Result<Vec<Problem>> {
-    let mut problems = Vec::new();
-    for entry in fs_err::read_dir(root)? {
-        let entry = entry?;
-        let answerpath = entry.path().join("answers.csv");
-        if entry.file_type()?.is_dir() && answerpath.exists() {
-            let year = match entry.file_name().into_string() {
-                Ok(s) => match s.parse::<u32>() {
-                    Ok(year) => year,
-                    Err(_) => anyhow::bail!("Found answers.csv in non-year directory {s:?}"),
-                },
-                Err(oss) => anyhow::bail!(
-                    "Found answers.csv in directory with undecodable name {:?}",
-                    oss.to_string_lossy()
-                ),
-            };
-            log::debug!("Reading answers from {}", answerpath.display());
-            let mut reader = csv::Reader::from_path(&answerpath)
-                .with_context(|| format!("failed to read {}", answerpath.display()))?;
-            for answer in reader.deserialize::<Answer>() {
-                let answer = answer.with_context(|| {
-                    format!("failed to read entry from {}", answerpath.display())
-                })?;
-                if let Some(pr) = Problem::from_year_and_id(year, &answer.problem) {
-                    problems.push(pr);
-                } else {
-                    anyhow::bail!(
-                        "Invalid problem id {} in {year}/answers.csv",
-                        answer.problem
-                    );
-                }
-            }
-        }
-    }
-    problems.sort_unstable();
-    Ok(problems)
 }

@@ -8,6 +8,10 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+anyhow.workspace = true
+csv.workspace = true
+fs-err.workspace = true
+log.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true

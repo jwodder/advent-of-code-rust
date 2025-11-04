@@ -1,6 +1,7 @@
+use anyhow::Context;
 use serde::Deserialize;
 use std::fmt;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus, Stdio};
 use thiserror::Error;
 
@@ -107,3 +108,48 @@ fn parse_problem_id(s: &str) -> Option<(u32, char)> {
 #[derive(Clone, Copy, Debug, Eq, Error, PartialEq)]
 #[error("problems must in the form 20XX-XX{{a|b}}")]
 pub struct ParseProblemError;
+
+pub fn get_all_solutions(root_dir: &Path) -> anyhow::Result<Vec<(Problem, String)>> {
+    let mut cases = Vec::new();
+    for entry in fs_err::read_dir(root_dir)? {
+        let entry = entry?;
+        let answerpath = entry.path().join("answers.csv");
+        if entry.file_type()?.is_dir() && answerpath.exists() {
+            let year = match entry.file_name().into_string() {
+                Ok(s) => match s.parse::<u32>() {
+                    Ok(year) => year,
+                    Err(_) => anyhow::bail!("Found answers.csv in non-year directory {s:?}"),
+                },
+                Err(oss) => anyhow::bail!(
+                    "Found answers.csv in directory with undecodable name {:?}",
+                    oss.to_string_lossy()
+                ),
+            };
+            log::debug!("Reading answers from {}", answerpath.display());
+            let mut reader = csv::Reader::from_path(&answerpath)
+                .with_context(|| format!("failed to read {}", answerpath.display()))?;
+            for answer in reader.deserialize::<Answer>() {
+                let answer = answer.with_context(|| {
+                    format!("failed to read entry from {}", answerpath.display())
+                })?;
+                let Some(pr) = Problem::from_year_and_id(year, &answer.problem) else {
+                    anyhow::bail!(
+                        "Found invalid problem ID {:?} in {}",
+                        answer.problem,
+                        answerpath.display()
+                    );
+                };
+                cases.push((pr, answer.answer));
+            }
+        }
+    }
+    Ok(cases)
+}
+
+#[derive(Debug, Deserialize, Eq, PartialEq)]
+struct Answer {
+    problem: String,
+    input: String,
+    #[allow(clippy::struct_field_names)]
+    answer: String,
+}

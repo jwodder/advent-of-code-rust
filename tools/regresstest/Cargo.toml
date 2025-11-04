@@ -9,12 +9,10 @@ license.workspace = true
 
 [dependencies]
 anyhow.workspace = true
-csv.workspace = true
 fern.workspace = true
 fs-err.workspace = true
 futures-util = { version = "0.3.28", default-features = false, features = ["std"] }
 log.workspace = true
-serde.workspace = true
 tokio = { version = "1.28.2", features = ["macros", "process", "rt", "time"] }
 toollib = { path = "../toollib" }
 
