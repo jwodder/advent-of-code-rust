@@ -8,10 +8,11 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-anyhow = "1.0.70"
-fs-err = "3.0.0"
-serde = { version = "1.0.164", features = ["derive"] }
+anyhow.workspace = true
+fs-err.workspace = true
+serde.workspace = true
 tinytemplate = "1.2.1"
+toollib = { path = "../toollib" }
 
 [lints]
 workspace = true

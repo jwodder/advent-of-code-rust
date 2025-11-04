@@ -10,7 +10,7 @@ license.workspace = true
 [dependencies]
 anyhow = "1.0.70"
 num-traits = "0.2.15"
-serde = { version = "1.0.164", features = ["derive"], optional = true }
+serde = { workspace = true, optional = true }
 thiserror.workspace = true
 toml = { version = "0.9.0", features = ["parse"], optional = true }
 

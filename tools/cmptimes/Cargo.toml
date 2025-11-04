@@ -1,0 +1,23 @@
+[package]
+name = "cmptimes"
+edition.workspace = true
+rust-version.workspace = true
+description = "Compare solution runtimes across commits"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+clap = { version = "4.5.51", default-features = false, features = ["derive", "error-context", "help", "std", "suggestions", "usage", "wrap_help"] }
+csv.workspace = true
+fern.workspace = true
+fs-err.workspace = true
+log.workspace = true
+patharg = "0.4.1"
+serde.workspace = true
+serde_json.workspace = true
+toollib = { path = "../toollib" }
+
+[lints]
+workspace = true
