@@ -1,5 +1,5 @@
 use adventutil::grid::{Direction, Grid};
-use adventutil::{Input, dijkstra_length};
+use adventutil::{Input, unit_dijkstra_length};
 
 fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();
@@ -15,14 +15,14 @@ fn solve(input: Input) -> u32 {
     }
     let start = start.expect("Start not found");
     let end = end.expect("End not found");
-    dijkstra_length(
+    unit_dijkstra_length(
         start,
         |&n| n == end,
         |&coords| {
             let cell = grid.get_cell(coords).unwrap();
             Direction::cardinals().filter_map(move |d| {
                 let c2 = cell.neighbor(d)?;
-                can_move(*cell.get(), *c2.get()).then(|| (c2.coords(), 1))
+                can_move(*cell.get(), *c2.get()).then(|| c2.coords())
             })
         },
     )

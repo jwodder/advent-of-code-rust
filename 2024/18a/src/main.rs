@@ -1,5 +1,5 @@
 use adventutil::grid::{Coords, Direction, GridBounds};
-use adventutil::{Input, dijkstra_length};
+use adventutil::{Input, unit_dijkstra_length};
 
 fn solve(input: Input, bytes: usize, size: usize) -> u32 {
     let bounds = GridBounds::new(size + 1, size + 1);
@@ -12,14 +12,13 @@ fn solve(input: Input, bytes: usize, size: usize) -> u32 {
         let y = ys.parse::<usize>().unwrap();
         corrupted.insert(Coords { y, x });
     }
-    dijkstra_length(
+    unit_dijkstra_length(
         Coords { y: 0, x: 0 },
         |&n| n == Coords { y: size, x: size },
         |&n| {
             Direction::cardinals()
                 .filter_map(|d| bounds.move_in(n, d))
                 .filter(|c| !corrupted.contains(c))
-                .map(|c| (c, 1))
                 .collect::<Vec<_>>()
         },
     )
