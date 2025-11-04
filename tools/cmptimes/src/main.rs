@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fmt::Write;
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Command, Stdio};
 use toollib::Problem;
 
 const MEAN_RATIO_THRESHOLD: f64 = 0.1;
@@ -40,6 +40,7 @@ fn main() -> anyhow::Result<()> {
             .collect();
         args.problems.sort_unstable();
     }
+    let start_head = get_git_head(&root_dir).context("failed to determine current Git HEAD")?;
     let mut reporter = Reporter::new(&args.committishes);
     let report_dir = root_dir.join("target").join("cmptimes");
     fs_err::create_dir_all(&report_dir)?;
@@ -68,6 +69,15 @@ fn main() -> anyhow::Result<()> {
         }
         let hfreport = serde_json::from_slice::<HyperfineReport>(&fs_err::read(report_path)?)?;
         reporter.add(pr, hfreport);
+    }
+    let rc = Command::new("git")
+        .arg("checkout")
+        .arg(start_head)
+        .current_dir(&root_dir)
+        .status()
+        .context("failed to run `git checkout ...`")?;
+    if !rc.success() {
+        log::warn!("Failed to check initial Git HEAD back out");
     }
     reporter
         .export_all(&args.csv_file)
@@ -184,4 +194,39 @@ struct HyperfineResult {
     // times: Vec<f64>
     // exit_codes: Vec<u32>,
     // parameters: HashMap<String, String>,
+}
+
+fn get_git_head(dirpath: &Path) -> anyhow::Result<String> {
+    let git_dir = read_git(dirpath, vec!["rev-parse", "--git-dir"])?;
+    let head = fs_err::read(Path::new(&git_dir).join("HEAD"))?;
+    let head = std::str::from_utf8(&head).context("failed to decode {git_dir}/HEAD contents")?;
+    if let Some(s) = head.trim().strip_prefix("ref: ") {
+        Ok(s.strip_prefix("refs/heads/").unwrap_or(s).to_owned())
+    } else {
+        match read_git(dirpath, vec!["describe", "--tags", "--exact-match", "HEAD"]) {
+            Ok(tag) => Ok(tag),
+            Err(_) => read_git(dirpath, vec!["rev-parse", "--short", "HEAD"]),
+        }
+    }
+}
+
+fn read_git(dirpath: &Path, args: Vec<&'static str>) -> anyhow::Result<String> {
+    let mut cmdline = String::from("git");
+    for s in &args {
+        cmdline.push(' ');
+        cmdline.push_str(s);
+    }
+    let output = Command::new("git")
+        .args(args)
+        .stderr(Stdio::null())
+        .current_dir(dirpath)
+        .output()
+        .with_context(|| format!("failed to run `{cmdline}`"))?;
+    if !output.status.success() {
+        anyhow::bail!("`{cmdline}` command was not successful: {}", output.status);
+    }
+    Ok(std::str::from_utf8(&output.stdout)
+        .with_context(|| format!("`{cmdline}` output was not UTF-8"))?
+        .trim()
+        .to_owned())
 }
