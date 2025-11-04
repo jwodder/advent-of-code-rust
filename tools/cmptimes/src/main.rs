@@ -10,25 +10,37 @@ use toollib::Problem;
 
 const MEAN_RATIO_THRESHOLD: f64 = 0.1;
 
+/// Run the solutions to the given problems across multiple Git committishes,
+/// time the executions, and output notable runtime differences
 #[derive(Clone, Debug, Eq, Parser, PartialEq)]
 struct Arguments {
+    /// Time all solutions
+    ///
+    /// The {year}/answer.csv files must be decrypted before this option can be
+    /// used.
     #[arg(short = 'a', long)]
     all: bool,
 
-    #[arg(short = 'C', long, default_value = "cmptimes.csv")]
+    /// Write a CSV file of all times to the given path
+    #[arg(short = 'C', long, default_value = "cmptimes.csv", value_name = "PATH")]
     csv_file: PathBuf,
 
+    /// Do not emit a report of notable runtime differences
     #[arg(short, long)]
     no_report: bool,
 
-    #[arg(short, long, default_value_t)]
+    /// Write a report of notable runtime differences to the given path
+    #[arg(short, long, default_value_t, value_name = "PATH")]
     outfile: OutputArg,
 
+    /// Include all solutions in the report regardless of runtime ratio
     #[arg(short = 'R', long)]
     report_all: bool,
 
+    /// A comma-separated list of Git committishes from which to time solutions
     committishes: String,
 
+    /// Problem IDs in the form "YYYY-DD{a|b}"
     problems: Vec<Problem>,
 }
 
