@@ -27,6 +27,8 @@ jobs:
 
       - name: Check out repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Decrypt
         run: |
