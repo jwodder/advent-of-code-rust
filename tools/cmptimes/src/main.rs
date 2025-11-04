@@ -155,49 +155,49 @@ impl Reporter {
         Ok(())
     }
 
-    fn report(&self) -> String {
-        let mut notable = Vec::new();
-        for (&pr, rs) in &self.reports {
-            for (i, c1) in self.committishes.iter().enumerate() {
-                let mean1 = rs[c1].mean;
-                for c2 in self.committishes.iter().skip(i + 1) {
-                    let mean2 = rs[c2].mean;
-                    let mut ratio = mean1 / mean2;
-                    if ratio < 1.0 {
-                        ratio = 1.0 / ratio;
-                    }
-                    if ratio >= (1.0 + MEAN_RATIO_THRESHOLD) || self.report_all {
-                        notable.push(pr);
-                    }
+    fn is_notable(&self, rs: &BTreeMap<String, HyperfineResult>) -> bool {
+        if self.report_all {
+            return true;
+        }
+        for (i, c1) in self.committishes.iter().enumerate() {
+            let mean1 = rs[c1].mean;
+            for c2 in self.committishes.iter().skip(i + 1) {
+                let mean2 = rs[c2].mean;
+                let mut ratio = mean1 / mean2;
+                if ratio < 1.0 {
+                    ratio = 1.0 / ratio;
+                }
+                if ratio >= (1.0 + MEAN_RATIO_THRESHOLD) || self.report_all {
+                    return true;
                 }
             }
         }
-        if notable.is_empty() {
-            return String::from("No notable changes in runtime\n");
-        }
-        let mut s = String::from("| Problem |");
-        for cm in &self.committishes {
-            let _ = write!(&mut s, " {cm} |");
-        }
-        let _ = write!(&mut s, "\n| --- |");
-        for _ in 0..self.committishes.len() {
-            let _ = write!(&mut s, " --- |");
-        }
-        let _ = writeln!(&mut s);
-        for pr in notable {
-            let _ = write!(&mut s, "| {pr} |");
-            for cm in &self.committishes {
-                let r = &self.reports[&pr][cm];
-                let _ = write!(
-                    &mut s,
-                    " {} ± {} |",
-                    show_seconds(r.mean),
-                    show_seconds(r.stddev)
-                );
+        false
+    }
+
+    fn report(&self) -> String {
+        let mut table = MarkdownTable::new(
+            std::iter::once("Problem").chain(self.committishes.iter().map(String::as_str)),
+        );
+        for (&pr, rs) in &self.reports {
+            if self.is_notable(rs) {
+                let mut cells = vec![pr.to_string()];
+                for cm in &self.committishes {
+                    let r = &self.reports[&pr][cm];
+                    cells.push(format!(
+                        "{} ± {}",
+                        show_seconds(r.mean),
+                        show_seconds(r.stddev)
+                    ));
+                }
+                table.add_row(cells);
             }
-            let _ = writeln!(&mut s);
         }
-        s
+        if table.is_empty() {
+            String::from("No notable changes in runtime\n")
+        } else {
+            table.display()
+        }
     }
 }
 
@@ -270,4 +270,63 @@ fn show_seconds(s: f64) -> String {
     } else {
         format!("{:.1} ms", s * 1000.0)
     }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct MarkdownTable {
+    headers: Vec<String>,
+    rows: Vec<Vec<String>>,
+    colwidths: Vec<usize>,
+}
+
+impl MarkdownTable {
+    fn new<I: IntoIterator<Item: Into<String>>>(headers: I) -> MarkdownTable {
+        let headers = headers.into_iter().map(Into::into).collect::<Vec<_>>();
+        let colwidths = headers.iter().map(|s| charwidth(s)).collect();
+        MarkdownTable {
+            headers,
+            rows: Vec::new(),
+            colwidths,
+        }
+    }
+
+    fn is_empty(&self) -> bool {
+        self.rows.is_empty()
+    }
+
+    fn add_row<I: IntoIterator<Item: Into<String>>>(&mut self, cells: I) {
+        let cells = cells.into_iter().map(Into::into).collect::<Vec<_>>();
+        assert_eq!(cells.len(), self.headers.len(), "Ragged Markdown table");
+        for (width, cell) in std::iter::zip(&mut self.colwidths, &cells) {
+            let cellwidth = charwidth(cell);
+            if *width < cellwidth {
+                *width = cellwidth;
+            }
+        }
+        self.rows.push(cells);
+    }
+
+    fn display(&self) -> String {
+        let mut s = String::from("|");
+        for (h, &width) in std::iter::zip(&self.headers, &self.colwidths) {
+            let _ = write!(&mut s, " {h:width$} |");
+        }
+        let _ = write!(&mut s, "\n|");
+        for &width in &self.colwidths {
+            let _ = write!(&mut s, " {:-<width$} |", "");
+        }
+        let _ = writeln!(&mut s);
+        for row in &self.rows {
+            let _ = write!(&mut s, "|");
+            for (cell, &width) in std::iter::zip(row, &self.colwidths) {
+                let _ = write!(&mut s, " {cell:width$} |");
+            }
+            let _ = writeln!(&mut s);
+        }
+        s
+    }
+}
+
+fn charwidth(s: &str) -> usize {
+    s.chars().count()
 }
