@@ -2857,6 +2857,7 @@ dependencies = [
  "fern",
  "fs-err",
  "log",
+ "patharg",
  "serde",
  "serde_json",
  "toollib",
@@ -3096,6 +3097,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841"
 dependencies = [
  "autocfg",
+]
+
+[[package]]
+name = "patharg"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4d67efed937875267f39986682045e3430c4da4055785825506837ddb037c771"
+dependencies = [
+ "cfg-if",
+ "either",
 ]
 
 [[package]]

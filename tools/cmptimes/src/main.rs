@@ -1,5 +1,6 @@
 use anyhow::Context;
 use clap::Parser;
+use patharg::OutputArg;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fmt::Write;
@@ -11,11 +12,20 @@ const MEAN_RATIO_THRESHOLD: f64 = 0.1;
 
 #[derive(Clone, Debug, Eq, Parser, PartialEq)]
 struct Arguments {
-    #[arg(long)]
+    #[arg(short = 'a', long)]
     all: bool,
 
-    #[arg(long, default_value = "cmptimes.csv")]
+    #[arg(short = 'C', long, default_value = "cmptimes.csv")]
     csv_file: PathBuf,
+
+    #[arg(short, long)]
+    no_report: bool,
+
+    #[arg(short, long, default_value_t)]
+    outfile: OutputArg,
+
+    #[arg(short = 'R', long)]
+    report_all: bool,
 
     committishes: String,
 
@@ -41,7 +51,7 @@ fn main() -> anyhow::Result<()> {
         args.problems.sort_unstable();
     }
     let start_head = get_git_head(&root_dir).context("failed to determine current Git HEAD")?;
-    let mut reporter = Reporter::new(&args.committishes);
+    let mut reporter = Reporter::new(&args.committishes, args.report_all);
     let report_dir = root_dir.join("target").join("cmptimes");
     fs_err::create_dir_all(&report_dir)?;
     for pr in args.problems {
@@ -82,7 +92,11 @@ fn main() -> anyhow::Result<()> {
     reporter
         .export_all(&args.csv_file)
         .context("failed to export CSV file")?;
-    print!("{}", reporter.report());
+    if !args.no_report {
+        args.outfile
+            .write(reporter.report())
+            .context("failed to write report")?;
+    }
     Ok(())
 }
 
@@ -90,13 +104,15 @@ fn main() -> anyhow::Result<()> {
 struct Reporter {
     committishes: Vec<String>,
     reports: BTreeMap<Problem, BTreeMap<String, HyperfineResult>>,
+    report_all: bool,
 }
 
 impl Reporter {
-    fn new(committishes: &str) -> Reporter {
+    fn new(committishes: &str, report_all: bool) -> Reporter {
         Reporter {
             committishes: committishes.split(',').map(ToOwned::to_owned).collect(),
             reports: BTreeMap::new(),
+            report_all,
         }
     }
 
@@ -138,14 +154,14 @@ impl Reporter {
                     if ratio < 1.0 {
                         ratio = 1.0 / ratio;
                     }
-                    if ratio >= (1.0 + MEAN_RATIO_THRESHOLD) {
+                    if ratio >= (1.0 + MEAN_RATIO_THRESHOLD) || self.report_all {
                         notable.push(pr);
                     }
                 }
             }
         }
         if notable.is_empty() {
-            return String::from("No notable changes in runtime");
+            return String::from("No notable changes in runtime\n");
         }
         let mut s = String::from("| Problem |");
         for cm in &self.committishes {
