@@ -9,11 +9,8 @@ on:
     # one or more labels:
     types: [synchronize, labeled]
 
-# Prevent the workflow from running multiple jobs at once when a PR is created
-# with multiple labels, but do allow multiple jobs if multiple merges and/or
-# releases are made in quick succession:
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.sha }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref_name }}
   cancel-in-progress: true
 
 defaults:
@@ -25,8 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.pull_request.labels.*.name, 'time me')
     steps:
-      - name: Install git-crypt
-        run: sudo apt-get update && sudo apt-get install -y git-crypt
+      - name: Install git-crypt and hyperfine
+        run: sudo apt-get update && sudo apt-get install -y git-crypt hyperfine
 
       - name: Check out repository
         uses: actions/checkout@v5
