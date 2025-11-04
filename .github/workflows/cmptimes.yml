@@ -1,0 +1,75 @@
+name: Compare Times
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    # Run whenever the PR is pushed to, receives a label, or is created with
+    # one or more labels:
+    types: [synchronize, labeled]
+
+# Prevent the workflow from running multiple jobs at once when a PR is created
+# with multiple labels, but do allow multiple jobs if multiple merges and/or
+# releases are made in quick succession:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  cmptimes:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'time me')
+    steps:
+      - name: Install git-crypt
+        run: sudo apt-get update && sudo apt-get install -y git-crypt
+
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Decrypt
+        run: |
+          printf '%s\n' "$GIT_CRYPT_KEY" | base64 -d > key.dat
+          git crypt unlock key.dat
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+
+      - name: Activate cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install cargo-hack
+        uses: taiki-e/install-action@cargo-hack
+
+      - name: Build binaries
+        run: cargo hack --workspace build --bins --release --verbose
+
+      - name: Time everything
+        run: cargo run -r -p cmptimes -- --all --outfile cmptimes.md "master,$PR_BRANCH"
+        env:
+          PR_BRANCH: ${{ github.head_ref }}
+
+      - name: Upload CSV artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cmptimes.csv
+          path: cmptimes.csv
+
+      - name: Post comment on PR
+        run:
+          printf '## Notable Runtime Changes\n\n' > comment.md
+          printf 'As of commit %s\n\n' "$HEAD_SHA" >> comment.md
+          cat cmptimes.md >> comment.md
+          gh pr comment "$PR_NUMBER" --body-file comment.md --edit-last --create-if-none
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
