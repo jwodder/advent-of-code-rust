@@ -426,6 +426,79 @@ impl Iterator for AdjacentCoords {
 
 impl FusedIterator for AdjacentCoords {}
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct CardinalNeighbors<'a, T> {
+    grid: &'a Grid<T>,
+    center: Coords,
+    bounds: GridBounds,
+    inner: Cardinals,
+}
+
+impl<'a, T> CardinalNeighbors<'a, T> {
+    pub(super) fn new(cell: &Cell<'a, T>) -> Self {
+        let grid = cell.grid();
+        CardinalNeighbors {
+            grid,
+            center: cell.coords(),
+            bounds: grid.bounds(),
+            inner: Direction::cardinals(),
+        }
+    }
+}
+
+impl<'a, T> Iterator for CardinalNeighbors<'a, T> {
+    type Item = Cell<'a, T>;
+
+    fn next(&mut self) -> Option<Cell<'a, T>> {
+        for d in self.inner.by_ref() {
+            if let Some(c) = self.bounds.move_in(self.center, d) {
+                return self.grid.get_cell(c);
+            }
+        }
+        None
+    }
+}
+
+impl<T> FusedIterator for CardinalNeighbors<'_, T> {}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct CardinalNeighborsWrap<'a, T> {
+    grid: &'a Grid<T>,
+    center: Coords,
+    bounds: GridBounds,
+    inner: Cardinals,
+}
+
+impl<'a, T> CardinalNeighborsWrap<'a, T> {
+    pub(super) fn new(cell: &Cell<'a, T>) -> Self {
+        let grid = cell.grid();
+        CardinalNeighborsWrap {
+            grid,
+            center: cell.coords(),
+            bounds: grid.bounds(),
+            inner: Direction::cardinals(),
+        }
+    }
+}
+
+impl<'a, T> Iterator for CardinalNeighborsWrap<'a, T> {
+    type Item = Cell<'a, T>;
+
+    fn next(&mut self) -> Option<Cell<'a, T>> {
+        let d = self.inner.next()?;
+        let c = self.bounds.move_in_wrap(self.center, d);
+        self.grid.get_cell(c)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
+    }
+}
+
+impl<T> FusedIterator for CardinalNeighborsWrap<'_, T> {}
+
+impl<T> ExactSizeIterator for CardinalNeighborsWrap<'_, T> {}
+
 #[cfg(test)]
 mod tests {
     use super::*;
