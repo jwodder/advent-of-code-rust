@@ -352,12 +352,12 @@ impl<T: Eq + Hash> DistanceMap<T> {
 /// `func` will not be called with the end node as an argument.
 pub fn unit_dijkstra_length<T, P, F, I>(start: T, is_end: P, mut func: F) -> Option<u32>
 where
-    T: Eq + Hash,
+    T: Eq + Hash + Clone,
     P: Fn(&T) -> bool,
     F: FnMut(&T) -> I,
     I: IntoIterator<Item = T>,
 {
-    let mut visited = HashSet::new();
+    let mut seen = HashSet::new();
     let mut dist = 0;
     let mut states = vec![start];
     while !states.is_empty() {
@@ -367,11 +367,10 @@ where
                 return Some(dist);
             }
             for n2 in func(&n) {
-                if !visited.contains(&n2) {
+                if seen.insert(n2.clone()) {
                     states2.push(n2);
                 }
             }
-            visited.insert(n);
         }
         states = states2;
         dist += 1;
