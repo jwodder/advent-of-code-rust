@@ -188,7 +188,12 @@ impl Reporter {
             let _ = write!(&mut s, "| {pr} |");
             for cm in &self.committishes {
                 let r = &self.reports[&pr][cm];
-                let _ = write!(&mut s, " {} s ± {} s |", r.mean, r.stddev);
+                let _ = write!(
+                    &mut s,
+                    " {} ± {} |",
+                    show_seconds(r.mean),
+                    show_seconds(r.stddev)
+                );
             }
             let _ = writeln!(&mut s);
         }
@@ -257,4 +262,12 @@ fn read_git(dirpath: &Path, args: Vec<&'static str>) -> anyhow::Result<String> {
         .with_context(|| format!("`{cmdline}` output was not UTF-8"))?
         .trim()
         .to_owned())
+}
+
+fn show_seconds(s: f64) -> String {
+    if s >= 1.0 {
+        format!("{s:.1} s")
+    } else {
+        format!("{:.1} ms", s * 1000.0)
+    }
 }
