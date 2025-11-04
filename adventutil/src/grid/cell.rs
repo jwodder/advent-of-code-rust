@@ -1,4 +1,4 @@
-use super::iter::{AdjacentCells, AdjacentWrapCells};
+use super::iter::{AdjacentCells, AdjacentWrapCells, CardinalNeighbors, CardinalNeighborsWrap};
 use super::{Coords, Direction, Grid};
 use std::ops::Deref;
 
@@ -50,6 +50,14 @@ impl<'a, T> Cell<'a, T> {
 
     pub fn adjacent_wrap(&self) -> AdjacentWrapCells<'a, T> {
         AdjacentWrapCells::new(self)
+    }
+
+    pub fn cardinal_neighbors(&self) -> CardinalNeighbors<'a, T> {
+        CardinalNeighbors::new(self)
+    }
+
+    pub fn cardinal_neighbors_wrap(&self) -> CardinalNeighborsWrap<'a, T> {
+        CardinalNeighborsWrap::new(self)
     }
 
     pub fn north(&self) -> Option<Cell<'a, T>> {

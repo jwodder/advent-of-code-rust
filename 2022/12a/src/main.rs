@@ -1,4 +1,4 @@
-use adventutil::grid::{Direction, Grid};
+use adventutil::grid::Grid;
 use adventutil::{Input, unit_dijkstra_length};
 
 fn solve(input: Input) -> u32 {
@@ -20,10 +20,9 @@ fn solve(input: Input) -> u32 {
         |&n| n == end,
         |&coords| {
             let cell = grid.get_cell(coords).unwrap();
-            Direction::cardinals().filter_map(move |d| {
-                let c2 = cell.neighbor(d)?;
-                can_move(*cell.get(), *c2.get()).then(|| c2.coords())
-            })
+            cell.cardinal_neighbors()
+                .filter(move |c2| can_move(*cell.get(), *c2.get()))
+                .map(|c2| c2.coords())
         },
     )
     .expect("No route to end")
