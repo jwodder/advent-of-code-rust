@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2016-19b"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2016, problem 19b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["Josephus-problem"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
