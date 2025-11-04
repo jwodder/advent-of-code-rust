@@ -1,12 +1,12 @@
 use adventutil::grid::{Direction, Grid};
-use adventutil::{Input, dijkstra_length};
+use adventutil::{Input, unit_dijkstra_length};
 
 fn solve(input: Input) -> u32 {
     let grid = input.parse::<Grid<char>>();
     let Some((end, _)) = grid.iter().find(|&(_, &c)| c == 'E') else {
         panic!("End not found");
     };
-    dijkstra_length(
+    unit_dijkstra_length(
         end,
         |&n| matches!(grid[n], 'a' | 'S'),
         |&coords| {
@@ -16,7 +16,7 @@ fn solve(input: Input) -> u32 {
                 if let Some(c2) = cell.neighbor(d)
                     && can_move(*c2.get(), *cell.get())
                 {
-                    nextpoints.push((c2.coords(), 1));
+                    nextpoints.push(c2.coords());
                 }
             }
             nextpoints

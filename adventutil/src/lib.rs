@@ -343,6 +343,41 @@ impl<T: Eq + Hash> DistanceMap<T> {
     }
 }
 
+/// Returns the length of the shortest path from `start` to a node that
+/// satisfies `is_end`.  `func` must be a function that takes a vertex `v` and
+/// returns an iterable of all of its neighbors, which are assumed to each be
+/// one unit of distance away (and must not include `v` itself).  Returns
+/// `None` if there is no such path.
+///
+/// `func` will not be called with the end node as an argument.
+pub fn unit_dijkstra_length<T, P, F, I>(start: T, is_end: P, mut func: F) -> Option<u32>
+where
+    T: Eq + Hash + Clone,
+    P: Fn(&T) -> bool,
+    F: FnMut(&T) -> I,
+    I: IntoIterator<Item = T>,
+{
+    let mut seen = HashSet::new();
+    let mut dist = 0;
+    let mut states = vec![start];
+    while !states.is_empty() {
+        let mut states2 = Vec::new();
+        for n in states {
+            if is_end(&n) {
+                return Some(dist);
+            }
+            for n2 in func(&n) {
+                if seen.insert(n2.clone()) {
+                    states2.push(n2);
+                }
+            }
+        }
+        states = states2;
+        dist += 1;
+    }
+    None
+}
+
 pub trait FromBits: PrimInt {
     /// Converts an iterable of bits (most significant first) into an integer.
     /// Does not guard against overflow/underflow.

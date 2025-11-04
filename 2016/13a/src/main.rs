@@ -1,4 +1,4 @@
-use adventutil::{Input, dijkstra_length};
+use adventutil::{Input, unit_dijkstra_length};
 
 fn is_open(key: i32, x: i32, y: i32) -> bool {
     let value = x * x + 3 * x + 2 * x * y + y + y * y + key;
@@ -6,7 +6,7 @@ fn is_open(key: i32, x: i32, y: i32) -> bool {
 }
 
 fn steps(key: i32, target_x: i32, target_y: i32) -> u32 {
-    dijkstra_length(
+    unit_dijkstra_length(
         (1, 1),
         |&n| n == (target_x, target_y),
         |&(x, y)| {
@@ -14,7 +14,6 @@ fn steps(key: i32, target_x: i32, target_y: i32) -> u32 {
                 .into_iter()
                 .map(move |(i, j)| (x + i, y + j))
                 .filter(|&(i, j)| is_open(key, i, j))
-                .map(|p| (p, 1))
         },
     )
     .unwrap()
