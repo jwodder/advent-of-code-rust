@@ -90,7 +90,7 @@ impl State {
 fn solve(input: Input) -> usize {
     let passcode = input.read().trim().to_owned();
     let start = State::start(passcode);
-    let mut visited = HashSet::new();
+    let mut seen = HashSet::new();
     let mut states = vec![start];
     let mut dist = 0;
     let mut longest_path = MaxTracker::new();
@@ -101,11 +101,10 @@ fn solve(input: Input) -> usize {
                 longest_path.add(dist);
             } else {
                 for p in current.next_states() {
-                    if !visited.contains(&p) {
+                    if seen.insert(p.clone()) {
                         states2.push(p);
                     }
                 }
-                visited.insert(current);
             }
         }
         states = states2;
