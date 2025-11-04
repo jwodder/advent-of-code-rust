@@ -1,4 +1,4 @@
-use adventutil::grid::{Direction, Grid};
+use adventutil::grid::Grid;
 use adventutil::{Input, unit_dijkstra_length};
 
 fn solve(input: Input) -> u32 {
@@ -12,10 +12,8 @@ fn solve(input: Input) -> u32 {
         |&coords| {
             let mut nextpoints = Vec::new();
             let cell = grid.get_cell(coords).unwrap();
-            for d in Direction::cardinals() {
-                if let Some(c2) = cell.neighbor(d)
-                    && can_move(*c2.get(), *cell.get())
-                {
+            for c2 in cell.cardinal_neighbors() {
+                if can_move(*c2.get(), *cell.get()) {
                     nextpoints.push(c2.coords());
                 }
             }
