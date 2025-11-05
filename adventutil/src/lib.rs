@@ -358,7 +358,7 @@ impl<T> Default for DistanceMap<T> {
 /// `func` will not be called with the end node as an argument.
 pub fn unit_dijkstra_length<T, P, F, I>(start: T, is_end: P, mut func: F) -> Option<u32>
 where
-    T: Eq + Hash + Clone,
+    T: Eq + Hash + Clone + std::fmt::Debug,
     P: Fn(&T) -> bool,
     F: FnMut(&T) -> I,
     I: IntoIterator<Item = T>,
