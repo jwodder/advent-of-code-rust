@@ -1,0 +1,16 @@
+[package]
+name = "advent-of-code-2024-16b"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2024, problem 16b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["maze", "grid-movement", "optimization", "shortest-path"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+thiserror.workspace = true
+
+[lints]
+workspace = true
