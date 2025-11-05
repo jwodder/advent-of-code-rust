@@ -1,5 +1,5 @@
+use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
-use adventutil::{DistanceMap, Input};
 use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
@@ -12,24 +12,26 @@ impl World {
     }
 
     fn thousand_eccentricities(&self) -> usize {
-        let mut visited = HashSet::new();
-        let mut distances = DistanceMap::new();
-        distances.insert(Point::ORIGIN, 0);
+        let mut seen = HashSet::new();
+        let mut nodes = vec![Point::ORIGIN];
+        let mut dist = 0;
         let mut qty = 0;
-        loop {
-            let Some((current, dist)) = distances.pop_nearest() else {
-                return qty;
-            };
+        while !nodes.is_empty() {
             if dist >= 1000 {
-                qty += 1;
+                qty += nodes.len();
             }
-            for &p in &self.0[&current] {
-                if !visited.contains(&p) {
-                    distances.insert(p, dist + 1);
+            let mut nodes2 = Vec::new();
+            for current in nodes {
+                for &p in &self.0[&current] {
+                    if seen.insert(p) {
+                        nodes2.push(p);
+                    }
                 }
             }
-            visited.insert(current);
+            nodes = nodes2;
+            dist += 1;
         }
+        qty
     }
 }
 

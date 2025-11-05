@@ -6,7 +6,7 @@ description = "Solution to Advent of Code 2018, problem 20a"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
-keywords = ["grid-movement", "graph-theory", "shortest-path"]
+keywords = ["grid-movement", "graph-theory", "longest-path"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
