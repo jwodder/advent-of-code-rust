@@ -16,10 +16,22 @@ impl State {
     fn advancements(&self) -> Vec<State> {
         let mut next_states = Vec::new();
         for picked in self.floors[self.elevator].pick_ones_and_twos() {
-            next_states.extend(self.move_up_with(&picked));
-            next_states.extend(self.move_down_with(&picked));
+            next_states.extend(self.move_up_with(&picked).map(|s| (s, picked.len(), true)));
+            next_states.extend(
+                self.move_down_with(&picked)
+                    .map(|s| (s, picked.len(), false)),
+            );
         }
-        next_states
+        // "If you can move two items upstairs, don't bother bringing one item
+        // upstairs.  If you can move one item downstairs, don't bother bringing
+        // two items downstairs." — /u/p_tseng on /r/adventofcode
+        if next_states.iter().any(|&(_, qty, up)| up && qty == 2) {
+            next_states.retain(|&(_, qty, up)| !up || qty == 2);
+        }
+        if next_states.iter().any(|&(_, qty, up)| !up && qty == 1) {
+            next_states.retain(|&(_, qty, up)| up || qty == 1);
+        }
+        next_states.into_iter().map(|(s, _, _)| s).collect()
     }
 
     fn move_up_with(&self, items: &Items) -> Option<State> {
@@ -65,6 +77,10 @@ struct Items {
 impl Items {
     fn is_empty(&self) -> bool {
         self.microchips.is_empty() && self.generators.is_empty()
+    }
+
+    fn len(&self) -> usize {
+        self.microchips.len() + self.generators.len()
     }
 
     fn is_safe(&self) -> bool {
