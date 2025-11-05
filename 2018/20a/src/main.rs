@@ -1,6 +1,6 @@
+use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
 use adventutil::maxtracker::MaxTracker;
-use adventutil::{DistanceMap, Input};
 use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
@@ -13,26 +13,28 @@ impl World {
     }
 
     fn eccentricity(&self) -> u32 {
-        let mut visited = HashSet::new();
-        let mut distances = DistanceMap::new();
-        distances.insert(Point::ORIGIN, 0);
+        let mut seen = HashSet::new();
+        let mut nodes = vec![Point::ORIGIN];
+        let mut dist = 0;
         let mut tracker = MaxTracker::new();
-        loop {
-            let Some((current, dist)) = distances.pop_nearest() else {
-                return tracker.get().unwrap();
-            };
-            let mut any_steps = false;
-            for &p in &self.0[&current] {
-                if !visited.contains(&p) {
-                    any_steps = true;
-                    distances.insert(p, dist + 1);
+        while !nodes.is_empty() {
+            let mut nodes2 = Vec::new();
+            for current in nodes {
+                let mut any_steps = false;
+                for &p in &self.0[&current] {
+                    if seen.insert(p) {
+                        any_steps = true;
+                        nodes2.push(p);
+                    }
+                }
+                if !any_steps {
+                    tracker.add(dist);
                 }
             }
-            if !any_steps {
-                tracker.add(dist);
-            }
-            visited.insert(current);
+            nodes = nodes2;
+            dist += 1;
         }
+        tracker.get().unwrap()
     }
 }
 
