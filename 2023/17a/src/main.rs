@@ -1,5 +1,5 @@
 use adventutil::grid::{Coords, Direction, Grid};
-use adventutil::{dijkstra_length, Input};
+use adventutil::{Input, dijkstra_length};
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 struct Node {
@@ -47,17 +47,17 @@ fn solve(input: Input) -> u32 {
                     *c2,
                 ));
             }
-            if n.straightness < 3 {
-                if let Some(c2) = cell.neighbor(n.dir) {
-                    next_steps.push((
-                        Node {
-                            pos: c2.coords(),
-                            dir: n.dir,
-                            straightness: n.straightness + 1,
-                        },
-                        *c2,
-                    ));
-                }
+            if n.straightness < 3
+                && let Some(c2) = cell.neighbor(n.dir)
+            {
+                next_steps.push((
+                    Node {
+                        pos: c2.coords(),
+                        dir: n.dir,
+                        straightness: n.straightness + 1,
+                    },
+                    *c2,
+                ));
             }
             next_steps
         },
