@@ -1,4 +1,4 @@
-use adventutil::gridgeom::{Point, PointBounds, Vector};
+use adventutil::gridgeom::{Point, Vector};
 use adventutil::intcode::{Intcode, Outcome};
 use adventutil::{Input, unit_dijkstra_length};
 use std::collections::HashMap;
@@ -21,48 +21,30 @@ impl Map {
         }
     }
 
-    fn explore(&mut self) -> bool {
-        for d in [
-            self.droid_dir.turn_left(),
-            self.droid_dir,
-            self.droid_dir.turn_right(),
-            -self.droid_dir,
-        ] {
-            let p2 = self.droid_pos + d;
-            if self.known.get(&p2).is_none_or(|&t| t != Tile::Wall) {
-                let t = self.droid.domove(d);
-                let prev = self.known.insert(p2, t);
-                assert!(prev.is_none_or(|p| p == t));
-                if t != Tile::Wall {
-                    self.droid_pos = p2;
-                    self.droid_dir = d;
-                    return p2 != Point::ORIGIN;
+    fn explore(&mut self) {
+        'a: loop {
+            for d in [
+                self.droid_dir.turn_left(),
+                self.droid_dir,
+                self.droid_dir.turn_right(),
+                -self.droid_dir,
+            ] {
+                let p2 = self.droid_pos + d;
+                if self.known.get(&p2).is_none_or(|&t| t != Tile::Wall) {
+                    let t = self.droid.domove(d);
+                    let prev = self.known.insert(p2, t);
+                    assert!(prev.is_none_or(|p| p == t));
+                    if t != Tile::Wall {
+                        self.droid_pos = p2;
+                        self.droid_dir = d;
+                        if p2 == Point::ORIGIN {
+                            return;
+                        }
+                        continue 'a;
+                    }
                 }
             }
-        }
-        panic!("I'm trapped!");
-    }
-
-    // DEBUG
-    fn draw(&self) {
-        let bounds = PointBounds::for_points(self.known.keys().copied()).unwrap();
-        for y in bounds.min_y..=bounds.max_y {
-            for x in bounds.min_x..=bounds.max_x {
-                let ch = if (x, y) == (0, 0) {
-                    'S'
-                } else if (Point { x, y }) == self.droid_pos {
-                    'D'
-                } else {
-                    match self.known.get(&Point { x, y }) {
-                        None => ' ',
-                        Some(Tile::Wall) => '#',
-                        Some(Tile::Empty) => '.',
-                        Some(Tile::Oxygen) => 'O',
-                    }
-                };
-                print!("{ch}");
-            }
-            println!();
+            panic!("I'm trapped!");
         }
     }
 
@@ -117,17 +99,7 @@ enum Tile {
 fn solve(input: Input) -> u32 {
     let program = input.parse::<Intcode>();
     let mut map = Map::new(program);
-    let mut i: usize = 0; // DEBUG
-    while map.explore() {
-        // BEGIN DEBUG
-        i += 1;
-        if i == 1000 || (i > 1000 && (i - 1000).is_multiple_of(50)) {
-            map.draw();
-            println!();
-        }
-        // END DEBUG
-    }
-    map.draw(); // DEBUG
+    map.explore();
     map.shortest_dist()
 }
 
