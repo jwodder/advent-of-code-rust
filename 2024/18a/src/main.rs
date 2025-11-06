@@ -17,9 +17,8 @@ fn solve(input: Input, bytes: usize, size: usize) -> u32 {
         |&n| n == Coords { y: size, x: size },
         |&n| {
             Direction::cardinals()
-                .filter_map(|d| bounds.move_in(n, d))
+                .filter_map(move |d| bounds.move_in(n, d))
                 .filter(|c| !corrupted.contains(c))
-                .collect::<Vec<_>>()
         },
     )
     .unwrap()
