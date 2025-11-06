@@ -1,12 +1,13 @@
 use adventutil::gridgeom::{Point, PointBounds, Vector};
 use adventutil::intcode::{Intcode, Outcome};
 use adventutil::{Input, unit_dijkstra_length};
-use std::collections::{HashMap, VecDeque};
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Map {
     known: HashMap<Point, Tile>,
     droid_pos: Point,
+    droid_dir: Vector,
     droid: Droid,
 }
 
@@ -15,51 +16,31 @@ impl Map {
         Map {
             known: HashMap::from([(Point::ORIGIN, Tile::Empty)]),
             droid_pos: Point::ORIGIN,
+            droid_dir: Vector::NORTH,
             droid: Droid(program),
         }
     }
 
-    fn to_explore(&self) -> Option<ExplorePoint> {
-        let mut points = VecDeque::from([ExplorePoint {
-            path: Vec::new(),
-            final_pos: self.droid_pos,
-            penult_pos: None,
-        }]);
-        while let Some(exp) = points.pop_front() {
-            if !self.known.contains_key(&exp.final_pos) {
-                return Some(exp);
-            }
-            for dir in [Vector::NORTH, Vector::SOUTH, Vector::EAST, Vector::WEST] {
-                let p2 = exp.final_pos + dir;
-                if self.known.get(&p2).is_none_or(|&t| t != Tile::Wall) {
-                    let mut path2 = exp.path.clone();
-                    path2.push(dir);
-                    points.push_back(ExplorePoint {
-                        path: path2,
-                        final_pos: p2,
-                        penult_pos: Some(exp.final_pos),
-                    });
+    fn explore(&mut self) -> bool {
+        for d in [
+            self.droid_dir.turn_left(),
+            self.droid_dir,
+            self.droid_dir.turn_right(),
+            -self.droid_dir,
+        ] {
+            let p2 = self.droid_pos + d;
+            if self.known.get(&p2).is_none_or(|&t| t != Tile::Wall) {
+                let t = self.droid.domove(d);
+                let prev = self.known.insert(p2, t);
+                assert!(prev.is_none_or(|p| p == t));
+                if t != Tile::Wall {
+                    self.droid_pos = p2;
+                    self.droid_dir = d;
+                    return p2 != Point::ORIGIN;
                 }
             }
         }
-        None
-    }
-
-    fn explore(&mut self) -> bool {
-        let Some(exp) = self.to_explore() else {
-            return false;
-        };
-        match self.droid.explore(exp.path) {
-            Tile::Wall => {
-                self.known.insert(exp.final_pos, Tile::Wall);
-                self.droid_pos = exp.penult_pos.unwrap();
-            }
-            t => {
-                self.known.insert(exp.final_pos, t);
-                self.droid_pos = exp.final_pos;
-            }
-        }
-        true
+        panic!("I'm trapped!");
     }
 
     // DEBUG
@@ -104,15 +85,6 @@ impl Map {
 struct Droid(Intcode);
 
 impl Droid {
-    fn explore(&mut self, motions: Vec<Vector>) -> Tile {
-        let n = motions.len();
-        assert!(n > 0);
-        for &d in &motions[..(n - 1)] {
-            assert_eq!(self.domove(d), Tile::Empty);
-        }
-        self.domove(motions[n - 1])
-    }
-
     fn domove(&mut self, dir: Vector) -> Tile {
         assert_eq!(self.0.run_sans_io().unwrap(), Outcome::AwaitingInput);
         let inp = match dir {
@@ -140,13 +112,6 @@ enum Tile {
     Wall,
     Empty,
     Oxygen,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-struct ExplorePoint {
-    path: Vec<Vector>,
-    final_pos: Point,
-    penult_pos: Option<Point>,
 }
 
 fn solve(input: Input) -> u32 {
