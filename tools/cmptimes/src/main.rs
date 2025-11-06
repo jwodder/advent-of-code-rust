@@ -22,8 +22,8 @@ struct Arguments {
     all: bool,
 
     /// Write a CSV file of all times to the given path
-    #[arg(short = 'C', long, default_value = "cmptimes.csv", value_name = "PATH")]
-    csv_file: PathBuf,
+    #[arg(short = 'C', long, value_name = "PATH")]
+    csv_file: Option<PathBuf>,
 
     /// Do not emit a report of notable runtime differences
     #[arg(short, long)]
@@ -103,9 +103,11 @@ fn main() -> anyhow::Result<()> {
     if !rc.success() {
         log::warn!("Failed to check initial Git HEAD back out");
     }
-    reporter
-        .export_all(&args.csv_file)
-        .context("failed to export CSV file")?;
+    if let Some(ref path) = args.csv_file {
+        reporter
+            .export_all(path)
+            .context("failed to export CSV file")?;
+    }
     if !args.no_report {
         args.outfile
             .write(reporter.report())
