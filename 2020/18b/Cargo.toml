@@ -1,0 +1,18 @@
+[package]
+name = "advent-of-code-2020-18b"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2020, problem 18b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["context-free-grammar", "parse-math-expression"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[dev-dependencies]
+rstest.workspace = true
+
+[lints]
+workspace = true
