@@ -34,6 +34,11 @@ impl Intcode {
     }
 
     pub fn run_sans_io(&mut self) -> Result<Outcome, IntcodeError> {
+        match self.state {
+            State::Running => (),
+            State::Awaiting { .. } => return Ok(Outcome::AwaitingInput),
+            State::Terminated => return Ok(Outcome::Terminated),
+        }
         loop {
             match self.get(self.op_index) % 100 {
                 1 => {
