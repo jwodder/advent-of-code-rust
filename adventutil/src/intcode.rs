@@ -8,6 +8,8 @@ pub struct Intcode {
     pub program: Vec<i64>,
     pub extra_memory: HashMap<usize, i64>,
     pub relative_base: i64,
+    pub op_index: usize,
+    pub state: State,
 }
 
 impl Intcode {
@@ -16,85 +18,106 @@ impl Intcode {
             program,
             extra_memory: HashMap::new(),
             relative_base: 0,
+            op_index: 0,
+            state: State::Running,
         }
     }
 
     pub fn run<IO: IntcodeIO>(&mut self, io: &mut IO) -> Result<(), IntcodeError> {
-        let mut i = 0;
         loop {
-            match self.get(i) % 100 {
+            match self.run_sans_io()? {
+                Outcome::Output(value) => io.send(value),
+                Outcome::AwaitingInput => self.provide(io.recv())?,
+                Outcome::Terminated => return Ok(()),
+            }
+        }
+    }
+
+    pub fn run_sans_io(&mut self) -> Result<Outcome, IntcodeError> {
+        loop {
+            match self.get(self.op_index) % 100 {
                 1 => {
-                    let params = self.get_params(i, 3)?;
+                    let params = self.get_params(3)?;
                     self.write_to_param(
                         params[2],
                         self.eval_param(params[0]) + self.eval_param(params[1]),
                     )?;
-                    i += 4;
+                    self.op_index += 4;
                 }
                 2 => {
-                    let params = self.get_params(i, 3)?;
+                    let params = self.get_params(3)?;
                     self.write_to_param(
                         params[2],
                         self.eval_param(params[0]) * self.eval_param(params[1]),
                     )?;
-                    i += 4;
+                    self.op_index += 4;
                 }
                 3 => {
-                    let params = self.get_params(i, 1)?;
-                    let value = io.recv();
-                    self.write_to_param(params[0], value)?;
-                    i += 2;
+                    let params = self.get_params(1)?;
+                    self.op_index += 2;
+                    self.state = State::Awaiting { dest: params[0] };
+                    return Ok(Outcome::AwaitingInput);
                 }
                 4 => {
-                    let params = self.get_params(i, 1)?;
-                    io.send(self.eval_param(params[0]));
-                    i += 2;
+                    let params = self.get_params(1)?;
+                    self.op_index += 2;
+                    return Ok(Outcome::Output(self.eval_param(params[0])));
                 }
                 5 => {
-                    let params = self.get_params(i, 2)?;
+                    let params = self.get_params(2)?;
                     if self.eval_param(params[0]) != 0 {
-                        i = value2addr(self.eval_param(params[1]))?;
+                        self.op_index = value2addr(self.eval_param(params[1]))?;
                     } else {
-                        i += 3;
+                        self.op_index += 3;
                     }
                 }
                 6 => {
-                    let params = self.get_params(i, 2)?;
+                    let params = self.get_params(2)?;
                     if self.eval_param(params[0]) == 0 {
-                        i = value2addr(self.eval_param(params[1]))?;
+                        self.op_index = value2addr(self.eval_param(params[1]))?;
                     } else {
-                        i += 3;
+                        self.op_index += 3;
                     }
                 }
                 7 => {
-                    let params = self.get_params(i, 3)?;
+                    let params = self.get_params(3)?;
                     self.write_to_param(
                         params[2],
                         i64::from(self.eval_param(params[0]) < self.eval_param(params[1])),
                     )?;
-                    i += 4;
+                    self.op_index += 4;
                 }
                 8 => {
-                    let params = self.get_params(i, 3)?;
+                    let params = self.get_params(3)?;
                     self.write_to_param(
                         params[2],
                         i64::from(self.eval_param(params[0]) == self.eval_param(params[1])),
                     )?;
-                    i += 4;
+                    self.op_index += 4;
                 }
                 9 => {
-                    let params = self.get_params(i, 1)?;
+                    let params = self.get_params(1)?;
                     self.relative_base += self.eval_param(params[0]);
-                    i += 2;
+                    self.op_index += 2;
                 }
-                99 => return Ok(()),
+                99 => return Ok(Outcome::Terminated),
                 n => {
                     return Err(IntcodeError::InvalidOpcode {
                         opcode: n,
-                        index: i,
+                        index: self.op_index,
                     });
                 }
             }
+        }
+    }
+
+    pub fn provide(&mut self, value: i64) -> Result<(), IntcodeError> {
+        if let State::Awaiting { dest } = self.state {
+            self.write_to_param(dest, value)?;
+            self.state = State::Running;
+            Ok(())
+        } else {
+            panic!("Intcode::provide() called when not awaiting input");
         }
     }
 
@@ -114,10 +137,10 @@ impl Intcode {
         }
     }
 
-    fn get_params(&self, op_index: usize, qty: usize) -> Result<Vec<Parameter>, IntcodeError> {
+    fn get_params(&self, qty: usize) -> Result<Vec<Parameter>, IntcodeError> {
         let mut params = Vec::with_capacity(qty);
-        let mut opcode = self.get(op_index) / 100;
-        for i in (op_index + 1)..(op_index + 1 + qty) {
+        let mut opcode = self.get(self.op_index) / 100;
+        for i in (self.op_index + 1)..(self.op_index + 1 + qty) {
             match opcode % 10 {
                 0 => params.push(Parameter::Address(value2addr(self.get(i))?)),
                 1 => params.push(Parameter::Value(self.get(i))),
@@ -127,7 +150,7 @@ impl Intcode {
                 n => {
                     return Err(IntcodeError::InvalidParamMode {
                         mode: n,
-                        index: op_index,
+                        index: self.op_index,
                     });
                 }
             }
@@ -165,7 +188,21 @@ impl FromStr for Intcode {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum Parameter {
+pub enum Outcome {
+    Output(i64),
+    AwaitingInput,
+    Terminated,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum State {
+    Running,
+    Awaiting { dest: Parameter },
+    Terminated,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Parameter {
     Address(usize),
     Value(i64),
 }
