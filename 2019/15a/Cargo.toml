@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2019-15a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2019, problem 15a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["maze", "intcode", "grid-movement", "optimization", "shortest-path"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
