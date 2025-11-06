@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2019-17a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2019, problem 17a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["intcode"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
