@@ -47,7 +47,9 @@ impl Iterator for Tokenize<'_> {
 
 fn eval_expr(s: &str) -> u64 {
     let mut iter = tokenize(s).peekable();
-    eval_expr_tokens(&mut iter)
+    let r = eval_expr_tokens(&mut iter);
+    assert!(iter.next().is_none(), "Trailing tokens in expression");
+    r
 }
 
 fn eval_expr_tokens(iter: &mut Peekable<Tokenize<'_>>) -> u64 {
