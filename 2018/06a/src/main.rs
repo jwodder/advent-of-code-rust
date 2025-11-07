@@ -1,3 +1,16 @@
+// Strategy: Identify the coordinates with infinite area by determining the
+// bounding box (inclusive) for the coordinates as a whole and then shrinking
+// it as follows:
+//
+// - For each side of the bounding box:
+//     - Loop:
+//         - Move the side one unit inwards.
+//         - If there exists a point along the side whose closest coordinates
+//           are all within the bounds, exit the loop.
+//
+// Afterwards, the coordinates outside the bounds are the ones with infinite
+// area, and the bounding box contains all points whose nearest coordinate is
+// one with finite area.
 use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::gridgeom::{Point, PointBounds};
@@ -14,6 +27,7 @@ fn solve(input: Input) -> u64 {
     let mut bounds = PointBounds::for_points(coords.iter().copied()).unwrap();
 
     'minx: loop {
+        bounds.min_x += 1;
         let mut points_outside = Vec::new();
         let mut points_inside = Vec::new();
         for &p in &coords {
@@ -41,10 +55,10 @@ fn solve(input: Input) -> u64 {
                 }
             }
         }
-        bounds.min_x += 1;
     }
 
     'maxx: loop {
+        bounds.max_x -= 1;
         let mut points_outside = Vec::new();
         let mut points_inside = Vec::new();
         for &p in &coords {
@@ -72,10 +86,10 @@ fn solve(input: Input) -> u64 {
                 }
             }
         }
-        bounds.max_x -= 1;
     }
 
     'miny: loop {
+        bounds.min_y += 1;
         let mut points_outside = Vec::new();
         let mut points_inside = Vec::new();
         for &p in &coords {
@@ -103,10 +117,10 @@ fn solve(input: Input) -> u64 {
                 }
             }
         }
-        bounds.min_y += 1;
     }
 
     'maxy: loop {
+        bounds.max_y -= 1;
         let mut points_outside = Vec::new();
         let mut points_inside = Vec::new();
         for &p in &coords {
@@ -134,7 +148,6 @@ fn solve(input: Input) -> u64 {
                 }
             }
         }
-        bounds.max_y -= 1;
     }
 
     let mut counter = Counter::new();

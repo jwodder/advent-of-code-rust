@@ -1,3 +1,7 @@
+// This naïve attempt really only gives the right answer because I got lucky
+// with the input.  A correct solution would have to expand the bounding box to
+// include all possible points that satisfy the total distance condition, but I
+// don't have test cases for checking such a solution.
 use adventutil::Input;
 use adventutil::gridgeom::{Point, PointBounds};
 
