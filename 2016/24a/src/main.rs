@@ -32,8 +32,7 @@ fn solve(input: Input) -> u32 {
             .filter(|&p2| p1 != p2 && !distances.contains_key(&(p1, p2)))
             .collect::<HashSet<_>>();
         let mut visited = HashSet::new();
-        let mut dists = DistanceMap::new();
-        dists.insert(c1, 0);
+        let mut dists = DistanceMap::from([(c1, 0)]);
         while !unreached.is_empty() {
             let (current, dist) = dists.pop_nearest().unwrap();
             if let Some(p2) = points

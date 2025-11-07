@@ -269,8 +269,7 @@ where
     I: IntoIterator<Item = (T, u32)>,
 {
     let mut visited = HashSet::new();
-    let mut distances = DistanceMap::new();
-    distances.insert(start, 0);
+    let mut distances = DistanceMap::from([(start, 0)]);
     loop {
         let (current, dist) = distances.pop_nearest()?;
         if is_end(&current) {
@@ -346,6 +345,34 @@ impl<T: Eq + Hash> DistanceMap<T> {
 impl<T> Default for DistanceMap<T> {
     fn default() -> DistanceMap<T> {
         DistanceMap::new()
+    }
+}
+
+impl<T: Eq + Hash, const N: usize> From<[(T, u32); N]> for DistanceMap<T> {
+    fn from(data: [(T, u32); N]) -> DistanceMap<T> {
+        let mut map = DistanceMap::new();
+        for (node, dist) in data {
+            map.insert(node, dist);
+        }
+        map
+    }
+}
+
+impl<T: Eq + Hash> Extend<(T, u32)> for DistanceMap<T> {
+    fn extend<I: IntoIterator<Item = (T, u32)>>(&mut self, iter: I) {
+        for (node, dist) in iter {
+            self.insert(node, dist);
+        }
+    }
+}
+
+impl<T: Eq + Hash> FromIterator<(T, u32)> for DistanceMap<T> {
+    fn from_iter<I: IntoIterator<Item = (T, u32)>>(iter: I) -> DistanceMap<T> {
+        let mut map = DistanceMap::new();
+        for (node, dist) in iter {
+            map.insert(node, dist);
+        }
+        map
     }
 }
 

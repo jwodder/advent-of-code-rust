@@ -14,8 +14,7 @@ impl Maze {
     fn best_seats(&self) -> usize {
         let mut visited = HashSet::new();
         let start = (self.start, Direction::East);
-        let mut distances = DistanceMap::new();
-        distances.insert(start, 0);
+        let mut distances = DistanceMap::from([(start, 0)]);
         let mut paths = ShortestPathTracker::new();
         paths.add(start, 0, HashSet::from([start]));
         while let Some((current, dist)) = distances.pop_nearest() {
