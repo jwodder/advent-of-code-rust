@@ -90,8 +90,7 @@ fn solve(input: Input) -> String {
     let passcode = input.read().trim().to_owned();
     let start = State::start(passcode);
     let mut visited = HashSet::new();
-    let mut distances = DistanceMap::new();
-    distances.insert(start, 0);
+    let mut distances = DistanceMap::from([(start, 0)]);
     loop {
         let (current, dist) = distances.pop_nearest().unwrap();
         if current.at_end() {
