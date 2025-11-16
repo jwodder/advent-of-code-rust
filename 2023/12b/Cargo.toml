@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2023-12b"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2023, problem 12b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["dynamic-programming"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
