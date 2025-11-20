@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2020-22b"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2020, problem 22b"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+itertools.workspace = true
+
+[lints]
+workspace = true
