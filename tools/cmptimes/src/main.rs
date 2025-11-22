@@ -234,16 +234,12 @@ struct HyperfineResult {
 }
 
 fn get_git_head(dirpath: &Path) -> anyhow::Result<String> {
-    let git_dir = read_git(dirpath, vec!["rev-parse", "--git-dir"])?;
-    let head = fs_err::read(dirpath.join(git_dir).join("HEAD"))?;
-    let head = std::str::from_utf8(&head).context("failed to decode {git_dir}/HEAD contents")?;
+    let head = fs_err::read_to_string(dirpath.join(".git").join("HEAD"))?;
     if let Some(s) = head.trim().strip_prefix("ref: ") {
         Ok(s.strip_prefix("refs/heads/").unwrap_or(s).to_owned())
     } else {
-        match read_git(dirpath, vec!["describe", "--tags", "--exact-match", "HEAD"]) {
-            Ok(tag) => Ok(tag),
-            Err(_) => read_git(dirpath, vec!["rev-parse", "--short", "HEAD"]),
-        }
+        read_git(dirpath, vec!["describe", "--tags", "--exact-match", "HEAD"])
+            .or_else(|_| read_git(dirpath, vec!["rev-parse", "--short", "HEAD"]))
     }
 }
 
