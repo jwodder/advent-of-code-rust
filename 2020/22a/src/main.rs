@@ -41,7 +41,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Player 1:\n",
             "9\n",

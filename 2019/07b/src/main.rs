@@ -4,6 +4,7 @@ use itertools::Itertools;
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::thread::spawn;
 
+#[derive(Debug)]
 struct ChannelIO {
     receiver: Receiver<i64>,
     sender: Sender<i64>,
@@ -98,7 +99,7 @@ mod tests {
         "3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10",
         18216
     )]
-    fn test_solve(#[case] program: &'static str, #[case] thrust: i64) {
+    fn examples(#[case] program: &'static str, #[case] thrust: i64) {
         let input = Input::from(program);
         assert_eq!(solve(input), thrust);
     }

@@ -3,7 +3,6 @@ use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::{HashMap, HashSet};
 use std::fmt;
-use std::str::FromStr;
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 struct Cave(String);
@@ -28,6 +27,7 @@ impl Cave {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct CaveSystem {
     map: HashMap<Cave, Vec<Cave>>,
 }
@@ -51,7 +51,7 @@ impl CaveSystem {
     }
 }
 
-impl FromStr for CaveSystem {
+impl std::str::FromStr for CaveSystem {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<CaveSystem, ParseError> {
@@ -135,7 +135,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "start-A\n",
             "start-b\n",
@@ -149,7 +149,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "dc-end\n",
             "HN-start\n",
@@ -166,7 +166,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let input = Input::from(concat!(
             "fs-end\n",
             "he-DX\n",

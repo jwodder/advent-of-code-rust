@@ -1,8 +1,8 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::ops::RangeInclusive;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct RangePair {
     first: RangeInclusive<u32>,
     second: RangeInclusive<u32>,
@@ -15,7 +15,7 @@ impl RangePair {
     }
 }
 
-impl FromStr for RangePair {
+impl std::str::FromStr for RangePair {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<RangePair, ParseError> {
@@ -47,7 +47,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "2-4,6-8\n",
             "2-3,4-5\n",

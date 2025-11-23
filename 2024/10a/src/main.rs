@@ -28,13 +28,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("0123\n1234\n8765\n9876\n");
         assert_eq!(solve(input), 1);
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "...0...\n",
             "...1...\n",
@@ -48,7 +48,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let input = Input::from(concat!(
             "..90..9\n",
             "...1.98\n",
@@ -62,7 +62,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example4() {
+    fn example4() {
         let input = Input::from(concat!(
             "10..9..\n",
             "2...8..\n",
@@ -76,7 +76,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example5() {
+    fn example5() {
         let input = Input::from(concat!(
             "89010123\n",
             "78121874\n",

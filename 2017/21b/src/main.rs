@@ -1,5 +1,6 @@
 use adventutil::grid::{Grid, GridBounds};
 use adventutil::{FromBits, Input};
+use std::collections::HashMap;
 use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -147,7 +148,7 @@ enum ParseBitmapError {
 }
 
 fn solve(input: Input, iterations: usize) -> usize {
-    let mut enhancements = std::collections::HashMap::new();
+    let mut enhancements = HashMap::new();
     for ln in input.lines() {
         let (before, after) = ln.trim().split_once(" => ").unwrap();
         let before = before.parse::<Bitmap>().unwrap();

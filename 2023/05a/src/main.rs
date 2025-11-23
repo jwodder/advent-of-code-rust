@@ -1,6 +1,5 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 struct Almanac {
@@ -26,7 +25,7 @@ impl Almanac {
     }
 }
 
-impl FromStr for Almanac {
+impl std::str::FromStr for Almanac {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Almanac, ParseError> {
@@ -128,7 +127,7 @@ impl MapEntry {
     }
 }
 
-impl FromStr for MapEntry {
+impl std::str::FromStr for MapEntry {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<MapEntry, ParseError> {
@@ -202,7 +201,7 @@ mod tests {
     );
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(EXAMPLE);
         assert_eq!(solve(input), 35);
     }
@@ -212,7 +211,7 @@ mod tests {
     #[case(14, 43)]
     #[case(55, 86)]
     #[case(13, 35)]
-    fn test_seed_to_location(#[case] seed: u32, #[case] loc: u32) {
+    fn seed_to_location(#[case] seed: u32, #[case] loc: u32) {
         let almanac = EXAMPLE.parse::<Almanac>().unwrap();
         assert_eq!(almanac.seed2location(seed), loc);
     }

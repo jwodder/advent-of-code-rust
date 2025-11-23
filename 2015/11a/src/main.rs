@@ -3,6 +3,7 @@ use itertools::Itertools;
 
 const ORD_A: u32 = 'a' as u32;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct PasswordIter {
     current: Vec<char>,
 }
@@ -82,14 +83,14 @@ mod tests {
     #[case("abbcegjk", false)]
     #[case("abcdffaa", true)]
     #[case("ghjaabcc", true)]
-    fn test_is_valid(#[case] s: &str, #[case] valid: bool) {
-        assert_eq!(is_valid(s), valid);
+    fn is_valid(#[case] s: &str, #[case] valid: bool) {
+        assert_eq!(super::is_valid(s), valid);
     }
 
     #[rstest]
     #[case("abcdefgh", "abcdffaa")]
     #[case("ghijklmn", "ghjaabcc")]
-    fn test_next_password(#[case] before: &'static str, #[case] after: &str) {
+    fn next_password(#[case] before: &'static str, #[case] after: &str) {
         let input = Input::from(before);
         assert_eq!(solve(input), after);
     }

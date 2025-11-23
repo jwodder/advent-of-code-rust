@@ -2,8 +2,8 @@ use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::maxn::maxn;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Monkey {
     index: usize,
     items: Vec<u32>,
@@ -13,7 +13,7 @@ struct Monkey {
     test_false: usize,
 }
 
-impl FromStr for Monkey {
+impl std::str::FromStr for Monkey {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Monkey, ParseError> {
@@ -48,6 +48,7 @@ impl FromStr for Monkey {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Operation {
     Add(u32),
     Mul(u32),
@@ -64,7 +65,7 @@ impl Operation {
     }
 }
 
-impl FromStr for Operation {
+impl std::str::FromStr for Operation {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Operation, ParseError> {
@@ -121,7 +122,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Monkey 0:\n",
             "  Starting items: 79, 98\n",

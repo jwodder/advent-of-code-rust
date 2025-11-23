@@ -153,7 +153,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let m = concat!(
             "Button A: X+94, Y+34\n",
             "Button B: X+22, Y+67\n",
@@ -165,7 +165,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let m = concat!(
             "Button A: X+26, Y+66\n",
             "Button B: X+67, Y+21\n",
@@ -177,7 +177,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let m = concat!(
             "Button A: X+17, Y+86\n",
             "Button B: X+84, Y+37\n",
@@ -189,7 +189,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example4() {
+    fn example4() {
         let m = concat!(
             "Button A: X+69, Y+23\n",
             "Button B: X+27, Y+71\n",

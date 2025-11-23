@@ -53,7 +53,7 @@ mod tests {
     #[case([1, 3, 2, 4, 5], false)]
     #[case([8, 6, 4, 4, 1], false)]
     #[case([1, 3, 6, 7, 9], true)]
-    fn test_is_gradual(#[case] report: [u32; 5], #[case] r: bool) {
+    fn examples(#[case] report: [u32; 5], #[case] r: bool) {
         assert_eq!(is_gradual(report), r);
     }
 }

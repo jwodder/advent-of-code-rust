@@ -29,7 +29,7 @@ mod tests {
     use rstest::rstest;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet\n");
         assert_eq!(solve(input), 142);
     }
@@ -39,7 +39,7 @@ mod tests {
     #[case("pqr3stu8vwx", 38)]
     #[case("a1b2c3d4e5f", 15)]
     #[case("treb7uchet", 77)]
-    fn test_line2number(#[case] line: &str, #[case] number: u32) {
-        assert_eq!(line2number(line), number);
+    fn line2number(#[case] line: &str, #[case] number: u32) {
+        assert_eq!(super::line2number(line), number);
     }
 }

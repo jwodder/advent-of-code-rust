@@ -1,7 +1,7 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Password {
     pos1: usize,
     pos2: usize,
@@ -21,7 +21,7 @@ impl Password {
     }
 }
 
-impl FromStr for Password {
+impl std::str::FromStr for Password {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Password, ParseError> {
@@ -60,7 +60,7 @@ mod tests {
     #[case("1-3 a: abcde", true)]
     #[case("1-3 b: cdefg", false)]
     #[case("2-9 c: ccccccccc", false)]
-    fn test_valid(#[case] password: Password, #[case] valid: bool) {
+    fn examples(#[case] password: Password, #[case] valid: bool) {
         assert_eq!(password.valid(), valid);
     }
 }

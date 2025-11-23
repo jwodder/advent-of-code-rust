@@ -138,7 +138,7 @@ mod tests {
         "^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$",
         31
     )]
-    fn example1(#[case] regex: &'static str, #[case] answer: u32) {
+    fn examples(#[case] regex: &'static str, #[case] answer: u32) {
         let input = Input::from(regex);
         assert_eq!(solve(input), answer);
     }

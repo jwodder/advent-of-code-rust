@@ -22,7 +22,7 @@ mod tests {
     #[case(r#""abc""#, 4)]
     #[case(r#""aaa\"aaa""#, 6)]
     #[case(r#""\x27""#, 5)]
-    fn test_repr_delta(#[case] s: &str, #[case] delta: usize) {
+    fn examples(#[case] s: &str, #[case] delta: usize) {
         assert_eq!(repr_delta(s), delta);
     }
 }

@@ -18,7 +18,7 @@ mod tests {
     #[case("+1\n+1\n+1\n", 3)]
     #[case("+1\n+1\n-2\n", 0)]
     #[case("-1\n-2\n-3\n", -6)]
-    fn test_solve(#[case] s: &'static str, #[case] result: i32) {
+    fn examples(#[case] s: &'static str, #[case] result: i32) {
         let input = Input::from(s);
         assert_eq!(solve(input), result);
     }

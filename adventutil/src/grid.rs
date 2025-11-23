@@ -10,7 +10,6 @@ use super::gridgeom::{Point, PointBounds};
 use std::cmp::Ordering;
 use std::collections::HashSet;
 use std::fmt;
-use std::ops::{Index, IndexMut, RangeBounds};
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -103,7 +102,7 @@ impl<T> Grid<T> {
     }
 
     // Panics on out-of-bounds
-    pub fn row_slice<R: RangeBounds<usize>>(&self, range: R) -> Grid<T>
+    pub fn row_slice<R: std::ops::RangeBounds<usize>>(&self, range: R) -> Grid<T>
     where
         T: Clone,
     {
@@ -128,7 +127,7 @@ impl<T> Grid<T> {
     }
 
     // Panics on out-of-bounds
-    pub fn column_slice<R: RangeBounds<usize>>(&self, range: R) -> Grid<T>
+    pub fn column_slice<R: std::ops::RangeBounds<usize>>(&self, range: R) -> Grid<T>
     where
         T: Clone,
     {
@@ -330,7 +329,7 @@ impl<'a, T> IntoIterator for &'a Grid<T> {
     }
 }
 
-impl<C: Into<(usize, usize)>, T> Index<C> for Grid<T> {
+impl<C: Into<(usize, usize)>, T> std::ops::Index<C> for Grid<T> {
     type Output = T;
 
     fn index(&self, index: C) -> &T {
@@ -338,7 +337,7 @@ impl<C: Into<(usize, usize)>, T> Index<C> for Grid<T> {
     }
 }
 
-impl<C: Into<(usize, usize)>, T> IndexMut<C> for Grid<T> {
+impl<C: Into<(usize, usize)>, T> std::ops::IndexMut<C> for Grid<T> {
     fn index_mut(&mut self, index: C) -> &mut T {
         self.get_mut(index).unwrap()
     }
@@ -629,7 +628,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_parse_grid_char() {
+    fn parse_grid_char() {
         let gr = "abc\ndef\nghi\n".parse::<Grid<char>>().unwrap();
         assert_eq!(
             gr,
@@ -644,7 +643,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parse_grid_i32() {
+    fn parse_grid_i32() {
         let gr = "123\n456\n789\n".parse::<Grid<i32>>().unwrap();
         assert_eq!(
             gr,
@@ -659,7 +658,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parse_grid_i32_words() {
+    fn parse_grid_i32_words() {
         let gr = Grid::<i32>::parse_words(concat!(
             "22 13 17 11  0\n",
             " 8  2 23  4 24\n",
@@ -684,7 +683,7 @@ mod tests {
     }
 
     #[test]
-    fn test_row_slice() {
+    fn row_slice() {
         let gr = Grid::<i32>::parse_words(concat!(
             "22 13 17 11  0\n",
             " 8  2 23  4 24\n",
@@ -706,7 +705,7 @@ mod tests {
     }
 
     #[test]
-    fn test_column_slice() {
+    fn column_slice() {
         let gr = Grid::<i32>::parse_words(concat!(
             "22 13 17 11  0\n",
             " 8  2 23  4 24\n",

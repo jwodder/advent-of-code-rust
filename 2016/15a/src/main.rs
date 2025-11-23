@@ -42,7 +42,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "Disc #1 has 5 positions; at time=0, it is at position 4.\n",
             "Disc #2 has 2 positions; at time=0, it is at position 1.\n",

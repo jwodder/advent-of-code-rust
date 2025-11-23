@@ -29,7 +29,7 @@ mod tests {
     #[rstest]
     #[case(")", 1)]
     #[case("()())", 5)]
-    fn test_first_basement(#[case] s: &'static str, #[case] pos: usize) {
+    fn first_basement(#[case] s: &'static str, #[case] pos: usize) {
         let input = Input::from(s);
         assert_eq!(solve(input), pos);
     }

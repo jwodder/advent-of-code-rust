@@ -1,7 +1,6 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser};
 use std::collections::HashSet;
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
 enum Field {
@@ -15,7 +14,7 @@ enum Field {
     Cid,
 }
 
-impl FromStr for Field {
+impl std::str::FromStr for Field {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Field, ParseError> {
@@ -34,6 +33,7 @@ impl FromStr for Field {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Passport {
     fields: HashSet<Field>,
 }
@@ -44,7 +44,7 @@ impl Passport {
     }
 }
 
-impl FromStr for Passport {
+impl std::str::FromStr for Passport {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Passport, ParseError> {
@@ -75,7 +75,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd\n",
             "byr:1937 iyr:2017 cid:147 hgt:183cm\n",

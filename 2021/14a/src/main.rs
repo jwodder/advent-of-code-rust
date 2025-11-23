@@ -3,8 +3,8 @@ use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::{Itertools, MinMaxResult};
 use std::collections::HashMap;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Rule {
     pair: String,
     insert: char,
@@ -16,7 +16,7 @@ impl Rule {
     }
 }
 
-impl FromStr for Rule {
+impl std::str::FromStr for Rule {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Rule, ParseError> {
@@ -69,7 +69,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "NNCB\n",
             "\n",

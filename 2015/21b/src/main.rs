@@ -2,7 +2,6 @@ use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::{Input, unordered_pairs};
 use itertools::Itertools;
 use std::iter::once;
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Combatant {
@@ -11,7 +10,7 @@ struct Combatant {
     armor: i32,
 }
 
-impl FromStr for Combatant {
+impl std::str::FromStr for Combatant {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Combatant, ParseError> {

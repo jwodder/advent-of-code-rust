@@ -1,14 +1,14 @@
 use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Instruction {
     Left(i32),
     Right(i32),
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
@@ -25,6 +25,7 @@ impl FromStr for Instruction {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Position {
     pos: Point,
     facing: Vector,
@@ -75,7 +76,7 @@ mod tests {
     #[case("R2, L3", 5)]
     #[case("R2, R2, R2", 2)]
     #[case("R5, L5, R5, R3", 12)]
-    fn test_solve(#[case] s: &'static str, #[case] blocks: i32) {
+    fn examples(#[case] s: &'static str, #[case] blocks: i32) {
         assert_eq!(solve(Input::from(s)), blocks);
     }
 }

@@ -1,6 +1,5 @@
 use std::collections::{HashMap, VecDeque};
 use std::num::{ParseIntError, TryFromIntError};
-use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -180,7 +179,7 @@ impl Intcode {
     }
 }
 
-impl FromStr for Intcode {
+impl std::str::FromStr for Intcode {
     type Err = ParseIntError;
 
     fn from_str(s: &str) -> Result<Intcode, ParseIntError> {

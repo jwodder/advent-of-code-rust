@@ -5,6 +5,7 @@ fn factor(n: u32) -> Factors {
     Factors::new(n)
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Factors {
     n: u32,
     inner: Primeish,
@@ -44,6 +45,7 @@ impl Iterator for Factors {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Primeish(u32);
 
 impl Primeish {
@@ -135,7 +137,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_powers() {
+    fn powers() {
         assert_eq!(Powers::new(2, 5).collect::<Vec<_>>(), [1, 2, 4, 8, 16, 32]);
     }
 }

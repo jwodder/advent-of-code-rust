@@ -105,7 +105,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Step C must be finished before step A can begin.\n",
             "Step C must be finished before step F can begin.\n",

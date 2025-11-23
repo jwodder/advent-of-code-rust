@@ -145,7 +145,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "b inc 5 if a > 1\n",
             "a inc 1 if b < 5\n",

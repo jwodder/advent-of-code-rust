@@ -1,7 +1,6 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Hash, Eq, Ord, PartialEq, PartialOrd)]
 enum Property {
@@ -28,7 +27,7 @@ impl Property {
     }
 }
 
-impl FromStr for Property {
+impl std::str::FromStr for Property {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Property, ParseError> {
@@ -49,12 +48,13 @@ impl FromStr for Property {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct AuntSue {
     id: usize,
     properties: HashMap<Property, usize>,
 }
 
-impl FromStr for AuntSue {
+impl std::str::FromStr for AuntSue {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<AuntSue, ParseError> {

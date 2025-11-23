@@ -1,5 +1,6 @@
 use adventutil::Input;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Partition {
     // The weights of the packages in the passenger compartment, in ascending
     // order
@@ -109,7 +110,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("1\n2\n3\n4\n5\n7\n8\n9\n10\n11\n");
         assert_eq!(solve(input), 44);
     }

@@ -1,6 +1,7 @@
 use adventutil::Input;
 use adventutil::counter::Counter;
 use itertools::Itertools;
+use std::collections::BTreeMap;
 use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
@@ -121,7 +122,7 @@ impl TryFrom<char> for CardRank {
 struct ParseCardRankError(char);
 
 fn solve(input: Input) -> u32 {
-    let mut hands = std::collections::BTreeMap::new();
+    let mut hands = BTreeMap::new();
     for ln in input.lines() {
         let (word1, word2) = ln.split_whitespace().collect_tuple().unwrap();
         let hand = word1.parse::<Hand>().unwrap();

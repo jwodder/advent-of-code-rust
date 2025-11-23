@@ -1,7 +1,7 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Game {
     players: usize,
     last_marble: usize,
@@ -26,7 +26,7 @@ impl Game {
     }
 }
 
-impl FromStr for Game {
+impl std::str::FromStr for Game {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Game, ParseError> {
@@ -62,7 +62,7 @@ mod tests {
     #[case("17 players; last marble is worth 1104 points", 2764)]
     #[case("21 players; last marble is worth 6111 points", 54718)]
     #[case("30 players; last marble is worth 5807 points", 37305)]
-    fn test_high_score(#[case] game: Game, #[case] score: usize) {
+    fn high_score(#[case] game: Game, #[case] score: usize) {
         assert_eq!(game.high_score(), score);
     }
 }

@@ -16,7 +16,6 @@ use std::collections::{BTreeMap, HashMap, HashSet, VecDeque, hash_map::Entry};
 use std::fs::{self, File};
 use std::hash::Hash;
 use std::io::{self, BufRead, BufReader, read_to_string, stdin};
-use std::iter::FusedIterator;
 use std::path::PathBuf;
 use std::rc::Rc;
 use std::str::FromStr;
@@ -212,7 +211,7 @@ impl Iterator for UnorderedIndexPairs {
     }
 }
 
-impl FusedIterator for UnorderedIndexPairs {}
+impl std::iter::FusedIterator for UnorderedIndexPairs {}
 
 impl ExactSizeIterator for UnorderedIndexPairs {}
 
@@ -250,7 +249,7 @@ impl<'a, T> Iterator for UnorderedPairs<'a, T> {
     }
 }
 
-impl<T> FusedIterator for UnorderedPairs<'_, T> {}
+impl<T> std::iter::FusedIterator for UnorderedPairs<'_, T> {}
 
 impl<T> ExactSizeIterator for UnorderedPairs<'_, T> {}
 
@@ -477,95 +476,103 @@ where
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_unordered_index_pairs() {
-        let mut iter = unordered_index_pairs(4);
-        assert_eq!(iter.size_hint(), (6, Some(6)));
-        assert_eq!(iter.next(), Some((0, 1)));
-        assert_eq!(iter.size_hint(), (5, Some(5)));
-        assert_eq!(iter.next(), Some((0, 2)));
-        assert_eq!(iter.size_hint(), (4, Some(4)));
-        assert_eq!(iter.next(), Some((0, 3)));
-        assert_eq!(iter.size_hint(), (3, Some(3)));
-        assert_eq!(iter.next(), Some((1, 2)));
-        assert_eq!(iter.size_hint(), (2, Some(2)));
-        assert_eq!(iter.next(), Some((1, 3)));
-        assert_eq!(iter.size_hint(), (1, Some(1)));
-        assert_eq!(iter.next(), Some((2, 3)));
-        assert_eq!(iter.size_hint(), (0, Some(0)));
-        assert_eq!(iter.next(), None);
-        assert_eq!(iter.next(), None);
+    mod unordered_index_pairs {
+        use super::*;
+
+        #[test]
+        fn size4() {
+            let mut iter = unordered_index_pairs(4);
+            assert_eq!(iter.size_hint(), (6, Some(6)));
+            assert_eq!(iter.next(), Some((0, 1)));
+            assert_eq!(iter.size_hint(), (5, Some(5)));
+            assert_eq!(iter.next(), Some((0, 2)));
+            assert_eq!(iter.size_hint(), (4, Some(4)));
+            assert_eq!(iter.next(), Some((0, 3)));
+            assert_eq!(iter.size_hint(), (3, Some(3)));
+            assert_eq!(iter.next(), Some((1, 2)));
+            assert_eq!(iter.size_hint(), (2, Some(2)));
+            assert_eq!(iter.next(), Some((1, 3)));
+            assert_eq!(iter.size_hint(), (1, Some(1)));
+            assert_eq!(iter.next(), Some((2, 3)));
+            assert_eq!(iter.size_hint(), (0, Some(0)));
+            assert_eq!(iter.next(), None);
+            assert_eq!(iter.next(), None);
+        }
+
+        #[test]
+        fn size2() {
+            let mut iter = unordered_index_pairs(2);
+            assert_eq!(iter.size_hint(), (1, Some(1)));
+            assert_eq!(iter.next(), Some((0, 1)));
+            assert_eq!(iter.size_hint(), (0, Some(0)));
+            assert_eq!(iter.next(), None);
+            assert_eq!(iter.next(), None);
+        }
+
+        #[test]
+        fn size1() {
+            let mut iter = unordered_index_pairs(1);
+            assert_eq!(iter.size_hint(), (0, Some(0)));
+            assert_eq!(iter.next(), None);
+            assert_eq!(iter.next(), None);
+        }
+
+        #[test]
+        fn size0() {
+            let mut iter = unordered_index_pairs(0);
+            assert_eq!(iter.size_hint(), (0, Some(0)));
+            assert_eq!(iter.next(), None);
+            assert_eq!(iter.next(), None);
+        }
     }
 
-    #[test]
-    fn test_unordered_index_pairs_size_2() {
-        let mut iter = unordered_index_pairs(2);
-        assert_eq!(iter.size_hint(), (1, Some(1)));
-        assert_eq!(iter.next(), Some((0, 1)));
-        assert_eq!(iter.size_hint(), (0, Some(0)));
-        assert_eq!(iter.next(), None);
-        assert_eq!(iter.next(), None);
-    }
+    mod unordered_pairs {
+        use super::*;
 
-    #[test]
-    fn test_unordered_index_pairs_size_1() {
-        let mut iter = unordered_index_pairs(1);
-        assert_eq!(iter.size_hint(), (0, Some(0)));
-        assert_eq!(iter.next(), None);
-        assert_eq!(iter.next(), None);
-    }
+        #[test]
+        fn size4() {
+            let mut iter = unordered_pairs(&[1, 2, 3, 4]);
+            assert_eq!(iter.size_hint(), (6, Some(6)));
+            assert_eq!(iter.next(), Some((&1, &2)));
+            assert_eq!(iter.size_hint(), (5, Some(5)));
+            assert_eq!(iter.next(), Some((&1, &3)));
+            assert_eq!(iter.size_hint(), (4, Some(4)));
+            assert_eq!(iter.next(), Some((&1, &4)));
+            assert_eq!(iter.size_hint(), (3, Some(3)));
+            assert_eq!(iter.next(), Some((&2, &3)));
+            assert_eq!(iter.size_hint(), (2, Some(2)));
+            assert_eq!(iter.next(), Some((&2, &4)));
+            assert_eq!(iter.size_hint(), (1, Some(1)));
+            assert_eq!(iter.next(), Some((&3, &4)));
+            assert_eq!(iter.size_hint(), (0, Some(0)));
+            assert_eq!(iter.next(), None);
+            assert_eq!(iter.next(), None);
+        }
 
-    #[test]
-    fn test_unordered_index_pairs_size_0() {
-        let mut iter = unordered_index_pairs(0);
-        assert_eq!(iter.size_hint(), (0, Some(0)));
-        assert_eq!(iter.next(), None);
-        assert_eq!(iter.next(), None);
-    }
+        #[test]
+        fn size2() {
+            let mut iter = unordered_pairs(&[1, 2]);
+            assert_eq!(iter.size_hint(), (1, Some(1)));
+            assert_eq!(iter.next(), Some((&1, &2)));
+            assert_eq!(iter.size_hint(), (0, Some(0)));
+            assert_eq!(iter.next(), None);
+            assert_eq!(iter.next(), None);
+        }
 
-    #[test]
-    fn test_unordered_pairs() {
-        let mut iter = unordered_pairs(&[1, 2, 3, 4]);
-        assert_eq!(iter.size_hint(), (6, Some(6)));
-        assert_eq!(iter.next(), Some((&1, &2)));
-        assert_eq!(iter.size_hint(), (5, Some(5)));
-        assert_eq!(iter.next(), Some((&1, &3)));
-        assert_eq!(iter.size_hint(), (4, Some(4)));
-        assert_eq!(iter.next(), Some((&1, &4)));
-        assert_eq!(iter.size_hint(), (3, Some(3)));
-        assert_eq!(iter.next(), Some((&2, &3)));
-        assert_eq!(iter.size_hint(), (2, Some(2)));
-        assert_eq!(iter.next(), Some((&2, &4)));
-        assert_eq!(iter.size_hint(), (1, Some(1)));
-        assert_eq!(iter.next(), Some((&3, &4)));
-        assert_eq!(iter.size_hint(), (0, Some(0)));
-        assert_eq!(iter.next(), None);
-        assert_eq!(iter.next(), None);
-    }
+        #[test]
+        fn size1() {
+            let mut iter = unordered_pairs(&[1]);
+            assert_eq!(iter.size_hint(), (0, Some(0)));
+            assert_eq!(iter.next(), None);
+            assert_eq!(iter.next(), None);
+        }
 
-    #[test]
-    fn test_unordered_pairs_size_2() {
-        let mut iter = unordered_pairs(&[1, 2]);
-        assert_eq!(iter.size_hint(), (1, Some(1)));
-        assert_eq!(iter.next(), Some((&1, &2)));
-        assert_eq!(iter.size_hint(), (0, Some(0)));
-        assert_eq!(iter.next(), None);
-        assert_eq!(iter.next(), None);
-    }
-
-    #[test]
-    fn test_unordered_pairs_size_1() {
-        let mut iter = unordered_pairs(&[1]);
-        assert_eq!(iter.size_hint(), (0, Some(0)));
-        assert_eq!(iter.next(), None);
-        assert_eq!(iter.next(), None);
-    }
-
-    #[test]
-    fn test_unordered_pairs_size_0() {
-        let mut iter: UnorderedPairs<'_, i32> = unordered_pairs(&[]);
-        assert_eq!(iter.size_hint(), (0, Some(0)));
-        assert_eq!(iter.next(), None);
-        assert_eq!(iter.next(), None);
+        #[test]
+        fn size0() {
+            let mut iter: UnorderedPairs<'_, i32> = unordered_pairs(&[]);
+            assert_eq!(iter.size_hint(), (0, Some(0)));
+            assert_eq!(iter.next(), None);
+            assert_eq!(iter.next(), None);
+        }
     }
 }

@@ -30,7 +30,7 @@ mod tests {
     #[case("123425", 4)]
     #[case("123123", 12)]
     #[case("12131415", 4)]
-    fn test_solve(#[case] s: &'static str, #[case] total: u32) {
+    fn examples(#[case] s: &'static str, #[case] total: u32) {
         assert_eq!(solve(Input::from(s)), total);
     }
 }

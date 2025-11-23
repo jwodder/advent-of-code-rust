@@ -33,7 +33,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         assert_eq!(steps(10, 7, 4), 11);
     }
 }

@@ -44,7 +44,7 @@ mod tests {
     #[case("jchzalrnumimnmhp", false)]
     #[case("haegwjzuvuyypxyu", false)]
     #[case("dvszwmarrgswjxmb", false)]
-    fn test_is_nice(#[case] s: &str, #[case] nice: bool) {
+    fn examples(#[case] s: &str, #[case] nice: bool) {
         assert_eq!(is_nice(s), nice);
     }
 }

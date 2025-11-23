@@ -1,9 +1,6 @@
 use adventutil::Input;
 use adventutil::grid::{Grid, ParseGridError};
 use std::collections::VecDeque;
-use std::iter::repeat_with;
-use std::num::ParseIntError;
-use std::str::FromStr;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Octopuses(Grid<u32>);
@@ -38,15 +35,15 @@ impl Octopuses {
 
     fn first_synced_flash(&mut self) -> usize {
         let area = self.0.height() * self.0.width();
-        repeat_with(|| self.step())
+        std::iter::repeat_with(|| self.step())
             .position(|f| f == area)
             .expect("No synchronized flash!")
             + 1
     }
 }
 
-impl FromStr for Octopuses {
-    type Err = ParseGridError<ParseIntError>;
+impl std::str::FromStr for Octopuses {
+    type Err = ParseGridError<std::num::ParseIntError>;
 
     fn from_str(s: &str) -> Result<Octopuses, Self::Err> {
         s.parse::<Grid<u32>>().map(Octopuses)
@@ -66,7 +63,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example() {
         let input = Input::from(concat!(
             "5483143223\n",
             "2745854711\n",

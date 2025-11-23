@@ -1,6 +1,5 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::{Input, dijkstra_length};
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 struct GameState(Battle);
@@ -177,7 +176,7 @@ struct Boss {
     damage: i32,
 }
 
-impl FromStr for Boss {
+impl std::str::FromStr for Boss {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Boss, ParseError> {

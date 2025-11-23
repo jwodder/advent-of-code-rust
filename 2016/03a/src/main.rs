@@ -28,7 +28,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_valid_example1() {
+    fn valid_example1() {
         assert!(!valid(5, 10, 25));
     }
 }

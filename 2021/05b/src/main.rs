@@ -2,7 +2,6 @@ use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::cmp::{max, min};
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Line {
@@ -30,7 +29,7 @@ impl Line {
     }
 }
 
-impl FromStr for Line {
+impl std::str::FromStr for Line {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Line, ParseError> {
@@ -72,7 +71,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "0,9 -> 5,9\n",
             "8,0 -> 0,8\n",

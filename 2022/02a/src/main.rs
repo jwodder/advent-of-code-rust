@@ -68,7 +68,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("A Y\nB X\nC Z\n");
         assert_eq!(solve(input), 15);
     }

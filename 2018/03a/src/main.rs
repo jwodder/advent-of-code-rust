@@ -2,8 +2,8 @@ use adventutil::Input;
 use adventutil::area::{self, Area};
 use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Claim {
     #[allow(unused)]
     id: String,
@@ -13,7 +13,7 @@ struct Claim {
     height: usize,
 }
 
-impl FromStr for Claim {
+impl std::str::FromStr for Claim {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Claim, ParseError> {
@@ -69,7 +69,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("#1 @ 1,3: 4x4\n#2 @ 3,1: 4x4\n#3 @ 5,5: 2x2\n");
         assert_eq!(solve(input), 4);
     }

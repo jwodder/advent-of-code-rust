@@ -1,5 +1,6 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
+use std::collections::HashSet;
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct Banks(Vec<u32>);
@@ -39,7 +40,7 @@ impl std::str::FromStr for Banks {
 }
 
 fn solve(input: Input) -> usize {
-    let mut seen = std::collections::HashSet::new();
+    let mut seen = HashSet::new();
     let mut banks = input.parse::<Banks>();
     seen.insert(banks.clone());
     let mut cycles = 0;
@@ -62,7 +63,7 @@ mod tests {
     use rstest::rstest;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from("0 2 7 0");
         assert_eq!(solve(input), 5);
     }
@@ -73,7 +74,7 @@ mod tests {
     #[case("3 1 2 3", "0 2 3 4")]
     #[case("0 2 3 4", "1 3 4 1")]
     #[case("1 3 4 1", "2 4 1 2")]
-    fn test_redistribute(#[case] mut before: Banks, #[case] after: Banks) {
+    fn redistribute(#[case] mut before: Banks, #[case] after: Banks) {
         before.redistribute();
         assert_eq!(before, after);
     }

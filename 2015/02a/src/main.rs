@@ -1,8 +1,8 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::cmp::max;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Present {
     length: u32,
     width: u32,
@@ -19,7 +19,7 @@ impl Present {
     }
 }
 
-impl FromStr for Present {
+impl std::str::FromStr for Present {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Present, ParseError> {
@@ -51,13 +51,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let present = "2x3x4".parse::<Present>().unwrap();
         assert_eq!(present.paper_needed(), 58);
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let present = "1x1x10".parse::<Present>().unwrap();
         assert_eq!(present.paper_needed(), 43);
     }

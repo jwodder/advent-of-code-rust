@@ -35,19 +35,19 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("AAAA\nBBCD\nBBCC\nEEEC\n");
         assert_eq!(solve(input), 140);
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from("OOOOO\nOXOXO\nOOOOO\nOXOXO\nOOOOO\n");
         assert_eq!(solve(input), 772);
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let input = Input::from(concat!(
             "RRRRIICCFF\n",
             "RRRRIICCCF\n",

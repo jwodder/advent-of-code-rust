@@ -1,8 +1,8 @@
 use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
 use adventutil::pullparser::ParseError;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Instruction {
     North(i32),
     South(i32),
@@ -13,7 +13,7 @@ enum Instruction {
     Forward(i32),
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
@@ -75,7 +75,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("F10\nN3\nF7\nR90\nF11\n");
         assert_eq!(solve(input), 25);
     }

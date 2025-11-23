@@ -52,7 +52,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "467..114..\n",
             "...*......\n",

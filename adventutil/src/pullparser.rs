@@ -1,5 +1,4 @@
 //! Types for simple string parsing
-use std::marker::{Send, Sync};
 use std::num::ParseIntError;
 use std::str::FromStr;
 use thiserror::Error;
@@ -259,7 +258,7 @@ mod tests {
     use super::*;
     use rstest::rstest;
 
-    fn parse_coord(s: &str) -> Result<(usize, usize), ParseError> {
+    fn coord_parser(s: &str) -> Result<(usize, usize), ParseError> {
         let mut parser = PullParser::new(s);
         parser.skip('(')?;
         let x = parser.parse_to::<usize, _>(',')?;
@@ -280,11 +279,11 @@ mod tests {
     #[case("(2, 3) ", None)]
     #[case("(2,3)", None)]
     #[case("2, 3)", None)]
-    fn test_parse_coord(#[case] s: &str, #[case] parsed: Option<(usize, usize)>) {
-        assert_eq!(parse_coord(s).ok(), parsed);
+    fn parse_coord(#[case] s: &str, #[case] parsed: Option<(usize, usize)>) {
+        assert_eq!(coord_parser(s).ok(), parsed);
     }
 
-    fn parse_ints(s: &str) -> Result<Vec<usize>, ParseError> {
+    fn int_parser(s: &str) -> Result<Vec<usize>, ParseError> {
         PullParser::new(s).delimited(',', |s| Ok(s.parse::<usize>()?))
     }
 
@@ -296,13 +295,13 @@ mod tests {
     #[case("1,2a,3", None)]
     #[case("1,2,", None)]
     #[case(",1,2", None)]
-    fn test_parse_ints(#[case] s: &str, #[case] parsed: Option<Vec<usize>>) {
-        assert_eq!(parse_ints(s).ok(), parsed);
+    fn parse_ints(#[case] s: &str, #[case] parsed: Option<Vec<usize>>) {
+        assert_eq!(int_parser(s).ok(), parsed);
     }
 
     #[test]
-    fn test_parse_ints_delim_at_end() {
-        match parse_ints("1,2,3,") {
+    fn parse_ints_delim_at_end() {
+        match int_parser("1,2,3,") {
             Err(ParseError::MissingToken(Token::Eof)) => (),
             other => panic!("Expected MissingToken(Eof), got {other:?}"),
         }
@@ -315,7 +314,7 @@ mod tests {
     #[case("\r\nfoo", Some("foo"))]
     #[case("\n\rfoo", Some("\rfoo"))]
     #[case("\n\nfoo", Some("\nfoo"))]
-    fn test_consume_newline(#[case] before: &str, #[case] after: Option<&str>) {
+    fn consume_newline(#[case] before: &str, #[case] after: Option<&str>) {
         assert_eq!(Token::Newline.consume(before), after);
     }
 
@@ -326,7 +325,7 @@ mod tests {
     #[case("foo\r\nbar", Some(("foo", "bar")))]
     #[case("foo\n\rbar", Some(("foo", "\rbar")))]
     #[case("foo\n\nbar", Some(("foo", "\nbar")))]
-    fn test_split_newline(#[case] s: &str, #[case] split: Option<(&str, &str)>) {
+    fn split_newline(#[case] s: &str, #[case] split: Option<(&str, &str)>) {
         assert_eq!(Token::Newline.split(s), split);
     }
 }

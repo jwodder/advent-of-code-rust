@@ -42,7 +42,7 @@ mod tests {
     #[case("{{<ab>},{<ab>},{<ab>},{<ab>}}", 9)]
     #[case("{{<!!>},{<!!>},{<!!>},{<!!>}}", 9)]
     #[case("{{<a!>},{<a!>},{<a!>},{<ab>}}", 3)]
-    fn test_example(#[case] s: &'static str, #[case] score: u32) {
+    fn examples(#[case] s: &'static str, #[case] score: u32) {
         let input = Input::from(s);
         assert_eq!(solve(input), score);
     }

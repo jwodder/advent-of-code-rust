@@ -25,7 +25,7 @@ mod tests {
     #[rstest]
     #[case("abcdef", 609043)]
     #[case("pqrstuv", 1048970)]
-    fn test_solve(#[case] s: &'static str, #[case] nonce: u32) {
+    fn examples(#[case] s: &'static str, #[case] nonce: u32) {
         let input = Input::from(s);
         assert_eq!(solve(input), nonce);
     }

@@ -17,6 +17,7 @@ fn tokenize(s: &str) -> Tokenize<'_> {
     }
 }
 
+#[derive(Clone, Debug)]
 struct Tokenize<'a> {
     inner: Peekable<std::str::Chars<'a>>,
 }
@@ -100,7 +101,7 @@ mod tests {
     #[case("5 + (8 * 3 + 9 + 3 * 4 * 3)", 1445)]
     #[case("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 669060)]
     #[case("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 23340)]
-    fn test_eval_expr(#[case] s: &str, #[case] value: u64) {
+    fn examples(#[case] s: &str, #[case] value: u64) {
         assert_eq!(eval_expr(s), value);
     }
 }

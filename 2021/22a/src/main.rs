@@ -2,7 +2,6 @@ use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashSet;
 use std::ops::RangeInclusive;
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Step {
@@ -36,7 +35,7 @@ impl Step {
     }
 }
 
-impl FromStr for Step {
+impl std::str::FromStr for Step {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Step, ParseError> {
@@ -99,7 +98,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "on x=10..12,y=10..12,z=10..12\n",
             "on x=11..13,y=11..13,z=11..13\n",
@@ -110,7 +109,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "on x=-20..26,y=-36..17,z=-47..7\n",
             "on x=-20..33,y=-21..23,z=-26..28\n",

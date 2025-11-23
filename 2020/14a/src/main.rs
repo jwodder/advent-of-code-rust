@@ -1,14 +1,14 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 enum Instruction {
     SetMask(Vec<Option<bool>>),
     SetMem(u64, u64),
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
@@ -37,6 +37,7 @@ impl FromStr for Instruction {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct State {
     mask: Vec<Option<bool>>,
     memory: HashMap<u64, u64>,
@@ -98,7 +99,7 @@ mod tests {
     #[case(11, 73)]
     #[case(101, 101)]
     #[case(0, 64)]
-    fn test_apply_mask(#[case] value: u64, #[case] masked: u64) {
+    fn apply_mask(#[case] value: u64, #[case] masked: u64) {
         let mask = [
             None,
             None,
@@ -137,11 +138,11 @@ mod tests {
             Some(false),
             None,
         ];
-        assert_eq!(apply_mask(&mask[..], value), masked);
+        assert_eq!(super::apply_mask(&mask[..], value), masked);
     }
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X\n",
             "mem[8] = 11\n",

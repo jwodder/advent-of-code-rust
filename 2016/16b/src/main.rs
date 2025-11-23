@@ -35,7 +35,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         assert_eq!(dragon("10000", 20), "01100");
     }
 }

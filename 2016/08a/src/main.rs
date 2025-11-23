@@ -1,14 +1,14 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Operation {
     Rect { width: usize, height: usize },
     RotateRow { y: usize, by: usize },
     RotateColumn { x: usize, by: usize },
 }
 
-impl FromStr for Operation {
+impl std::str::FromStr for Operation {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Operation, ParseError> {

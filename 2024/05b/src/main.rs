@@ -6,6 +6,7 @@ struct Rule {
     before: u32,
     after: u32,
 }
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Update {
     page_positions: HashMap<u32, usize>,
@@ -94,7 +95,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "47|53\n",
             "97|13\n",

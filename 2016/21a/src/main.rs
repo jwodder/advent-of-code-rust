@@ -130,7 +130,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "swap position 4 with position 0\n",
             "swap letter d with letter b\n",

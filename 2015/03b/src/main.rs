@@ -50,7 +50,7 @@ mod tests {
     #[case("^v", 3)]
     #[case("^>v<", 3)]
     #[case("^v^v^v^v^v", 11)]
-    fn test_visited(#[case] s: &'static str, #[case] qty: usize) {
+    fn visited(#[case] s: &'static str, #[case] qty: usize) {
         let input = Input::from(s);
         assert_eq!(solve(input), qty);
     }

@@ -1,8 +1,8 @@
 use adventutil::Input;
 use std::collections::VecDeque;
 use std::num::ParseIntError;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Intcode(Vec<i32>);
 
 impl Intcode {
@@ -76,7 +76,7 @@ impl Intcode {
     }
 }
 
-impl FromStr for Intcode {
+impl std::str::FromStr for Intcode {
     type Err = ParseIntError;
 
     fn from_str(s: &str) -> Result<Intcode, ParseIntError> {
@@ -114,14 +114,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let mut program = "3,0,4,0,99".parse::<Intcode>().unwrap();
         let output = program.run(VecDeque::from([42]));
         assert_eq!(output, [42]);
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let mut program = "1002,4,3,4,33".parse::<Intcode>().unwrap();
         let output = program.run(VecDeque::new());
         assert_eq!(output, []);

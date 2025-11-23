@@ -5,7 +5,6 @@
 use adventutil::Input;
 use adventutil::gridgeom::{Point, PointBounds, Vector};
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Star {
@@ -20,7 +19,7 @@ impl Star {
     }
 }
 
-impl FromStr for Star {
+impl std::str::FromStr for Star {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Star, ParseError> {

@@ -23,7 +23,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("1721\n979\n366\n299\n675\n1456");
         assert_eq!(solve(input), 241861950);
     }

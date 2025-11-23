@@ -52,21 +52,21 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_split_atoms() {
+    fn split_atoms() {
         assert_eq!(
-            split_atoms("CRnFYMgAr".into()),
+            super::split_atoms("CRnFYMgAr".into()),
             ["C", "Rn", "F", "Y", "Mg", "Ar"]
         );
     }
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("H => HO\nH => OH\nO => HH\n\nHOH\n");
         assert_eq!(solve(input), 4);
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from("H => HO\nH => OH\nO => HH\n\nHOHOHO\n");
         assert_eq!(solve(input), 7);
     }

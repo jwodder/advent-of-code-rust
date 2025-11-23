@@ -3,15 +3,15 @@ use adventutil::index::Index;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashMap;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Preference {
     person: String,
     neighbor: String,
     happiness: i32,
 }
 
-impl FromStr for Preference {
+impl std::str::FromStr for Preference {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Preference, ParseError> {
@@ -65,7 +65,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Alice would gain 54 happiness units by sitting next to Bob.\n",
             "Alice would lose 79 happiness units by sitting next to Carol.\n",

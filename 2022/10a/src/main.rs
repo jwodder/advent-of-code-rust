@@ -1,13 +1,13 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Instruction {
     Addx(i32),
     Noop,
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
@@ -51,7 +51,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "addx 15\n",
             "addx -11\n",

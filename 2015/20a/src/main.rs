@@ -12,6 +12,7 @@ fn factor(n: u32) -> Factors {
     Factors::new(n)
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Factors {
     n: u32,
     inner: Primeish,
@@ -51,6 +52,7 @@ impl Iterator for Factors {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Primeish(u32);
 
 impl Primeish {
@@ -77,9 +79,9 @@ fn presents(houseno: u32) -> u32 {
     sigma(houseno) * 10
 }
 
-fn solve(input: Input) -> usize {
+fn solve(input: Input) -> u32 {
     let target = input.parse::<u32>();
-    (1..).position(|i| presents(i) >= target).unwrap() + 1
+    (1..).find(|&i| presents(i) >= target).unwrap()
 }
 
 fn main() {
@@ -101,7 +103,7 @@ mod tests {
     #[case(7, 80)]
     #[case(8, 150)]
     #[case(9, 130)]
-    fn test_presents(#[case] houseno: u32, #[case] gifts: u32) {
+    fn examples(#[case] houseno: u32, #[case] gifts: u32) {
         assert_eq!(presents(houseno), gifts);
     }
 }

@@ -5,10 +5,10 @@ use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashMap;
-use std::str::FromStr;
 
 type RuleMap = HashMap<usize, Rule>;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 enum Rule {
     Terminal(char),
     Reference(usize),
@@ -49,6 +49,7 @@ impl Rule {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct IndexedRule {
     index: usize,
     rule: Rule,
@@ -60,7 +61,7 @@ impl IndexedRule {
     }
 }
 
-impl FromStr for IndexedRule {
+impl std::str::FromStr for IndexedRule {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<IndexedRule, ParseError> {
@@ -109,7 +110,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "0: 4 1 5\n",
             "1: 2 3 | 3 2\n",

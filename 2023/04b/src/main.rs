@@ -1,7 +1,6 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::{HashMap, HashSet, VecDeque};
-use std::str::FromStr;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Card {
@@ -16,7 +15,7 @@ impl Card {
     }
 }
 
-impl FromStr for Card {
+impl std::str::FromStr for Card {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Card, ParseError> {
@@ -66,7 +65,7 @@ mod tests {
     use rstest::rstest;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53\n",
             "Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19\n",
@@ -85,7 +84,7 @@ mod tests {
     #[case("Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83", 1)]
     #[case("Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36", 0)]
     #[case("Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11", 0)]
-    fn test_card(#[case] c: Card, #[case] matches: usize) {
+    fn card_points(#[case] c: Card, #[case] matches: usize) {
         assert_eq!(c.matches(), matches);
     }
 }

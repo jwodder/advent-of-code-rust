@@ -41,7 +41,7 @@ mod tests {
     #[case("2,3,1", 78)]
     #[case("3,2,1", 438)]
     #[case("3,1,2", 1836)]
-    fn test_solve(#[case] s: &'static str, #[case] output: u32) {
+    fn examples(#[case] s: &'static str, #[case] output: u32) {
         assert_eq!(solve(Input::from(s)), output);
     }
 }

@@ -20,7 +20,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let mut program = "109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99"
             .parse::<Intcode>()
             .unwrap();
@@ -35,7 +35,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let mut program = "1102,34915192,34915192,7,4,7,99,0"
             .parse::<Intcode>()
             .unwrap();
@@ -46,7 +46,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let mut program = "104,1125899906842624,99".parse::<Intcode>().unwrap();
         let mut io = VecIO::default();
         program.run(&mut io).unwrap();

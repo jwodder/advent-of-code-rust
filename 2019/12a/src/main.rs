@@ -1,7 +1,7 @@
 use adventutil::pullparser::{ParseError, PullParser};
 use adventutil::{Input, unordered_index_pairs};
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Vector {
     x: i32,
     y: i32,
@@ -14,6 +14,7 @@ impl Vector {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Moon {
     pos: Vector,
     velocity: Vector,
@@ -31,7 +32,7 @@ impl Moon {
     }
 }
 
-impl FromStr for Moon {
+impl std::str::FromStr for Moon {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Moon, ParseError> {
@@ -78,7 +79,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "<x=-1, y=0, z=2>\n",
             "<x=2, y=-10, z=-7>\n",
@@ -89,7 +90,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "<x=-8, y=-10, z=0>\n",
             "<x=5, y=5, z=10>\n",

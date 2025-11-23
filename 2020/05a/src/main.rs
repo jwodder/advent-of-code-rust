@@ -67,7 +67,7 @@ mod tests {
     #[case("BFFFBBFRRR", 567)]
     #[case("FFFBBBFRRR", 119)]
     #[case("BBFFBBFRLL", 820)]
-    fn test_pass2id(#[case] pass: &str, #[case] id: u32) {
+    fn examples(#[case] pass: &str, #[case] id: u32) {
         assert_eq!(pass2id(pass), id);
     }
 }

@@ -1,7 +1,5 @@
 use adventutil::Input;
 use std::cmp::Ordering;
-use std::num::ParseIntError;
-use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -28,7 +26,7 @@ impl Ord for Packet {
     }
 }
 
-impl FromStr for Packet {
+impl std::str::FromStr for Packet {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Packet, ParseError> {
@@ -65,7 +63,7 @@ enum ParseError {
     #[error("packet does not start with '['")]
     BadStart,
     #[error("invalid integer: {0}")]
-    InvalidInt(#[from] ParseIntError),
+    InvalidInt(#[from] std::num::ParseIntError),
     #[error("packet has trailing characters: {0:?}")]
     TrailingCharacters(String),
 }
@@ -134,12 +132,12 @@ mod tests {
         List(vec![Int(1), List(vec![Int(2), List(vec![Int(3), List(vec![Int(4), List(vec![Int(5), Int(6), Int(0)])])])]), Int(8), Int(9)]),
         Ordering::Greater,
     )]
-    fn test_ord_packet(#[case] left: Packet, #[case] right: Packet, #[case] cmp: Ordering) {
+    fn ord_packet(#[case] left: Packet, #[case] right: Packet, #[case] cmp: Ordering) {
         assert_eq!(left.cmp(&right), cmp);
     }
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "[1,1,3,1,1]\n",
             "[1,1,5,1,1]\n",

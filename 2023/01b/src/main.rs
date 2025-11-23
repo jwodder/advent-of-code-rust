@@ -57,7 +57,7 @@ mod tests {
     use rstest::rstest;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "two1nine\n",
             "eightwothree\n",
@@ -78,7 +78,7 @@ mod tests {
     #[case("4nineeightseven2", 42)]
     #[case("zoneight234", 14)]
     #[case("7pqrstsixteen", 76)]
-    fn test_line2number(#[case] line: &str, #[case] number: u32) {
-        assert_eq!(line2number(line), number);
+    fn line2number(#[case] line: &str, #[case] number: u32) {
+        assert_eq!(super::line2number(line), number);
     }
 }

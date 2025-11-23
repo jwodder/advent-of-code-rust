@@ -215,7 +215,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         assert_eq!(solve("dabAcCaCBAcCcaDA"), 4);
     }
 }

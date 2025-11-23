@@ -3,15 +3,15 @@ use adventutil::index::Index;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashMap;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Preference {
     person: String,
     neighbor: String,
     happiness: i32,
 }
 
-impl FromStr for Preference {
+impl std::str::FromStr for Preference {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Preference, ParseError> {

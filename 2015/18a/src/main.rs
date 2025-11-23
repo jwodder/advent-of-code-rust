@@ -1,7 +1,7 @@
 use adventutil::Input;
 use adventutil::grid::{Grid, GridFromError};
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct ConwayLights(Grid<bool>);
 
 impl ConwayLights {
@@ -13,15 +13,15 @@ impl ConwayLights {
     }
 
     fn lit(self) -> usize {
-        self.0.into_values().filter(|&b| b).count()
+        self.0.into_true_coords().count()
     }
 }
 
-impl FromStr for ConwayLights {
+impl std::str::FromStr for ConwayLights {
     type Err = GridFromError;
 
     fn from_str(s: &str) -> Result<ConwayLights, Self::Err> {
-        <Grid<bool>>::from_drawing(s).map(ConwayLights)
+        Grid::from_drawing(s).map(ConwayLights)
     }
 }
 
@@ -42,7 +42,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(".#.#.#\n...##.\n#....#\n..#...\n#.#..#\n####..\n");
         assert_eq!(solve(input, 4), 4);
     }

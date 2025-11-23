@@ -1,6 +1,7 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Node {
@@ -31,7 +32,7 @@ fn solve(input: Input) -> usize {
         .paragraphs()
         .collect_tuple()
         .expect("Input is not exactly two paragraphs");
-    let mut nodes = std::collections::HashMap::new();
+    let mut nodes = HashMap::new();
     for ln in node_lines.lines() {
         let Node { name, left, right } = ln.parse::<Node>().unwrap();
         nodes.insert(name, (left, right));

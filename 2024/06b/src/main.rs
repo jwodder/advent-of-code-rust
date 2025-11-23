@@ -1,5 +1,6 @@
 use adventutil::Input;
 use adventutil::grid::{Coords, Direction, Grid};
+use std::collections::HashSet;
 
 fn solve(input: Input) -> usize {
     let mut start = None;
@@ -25,7 +26,7 @@ fn solve(input: Input) -> usize {
     let start = start.expect("starting position not found");
     let mut pos = start;
     let mut facing = Direction::North;
-    let mut visited = std::collections::HashSet::from([pos]);
+    let mut visited = HashSet::from([pos]);
     loop {
         let Some(pos2) = map.bounds().move_in(pos, facing) else {
             break;
@@ -55,7 +56,7 @@ fn add_obstruction(map: &Grid<bool>, p: Coords) -> Grid<bool> {
 fn is_infinite_loop(map: &Grid<bool>, start: Coords) -> bool {
     let mut pos = start;
     let mut facing = Direction::North;
-    let mut visited = std::collections::HashSet::from([(pos, facing)]);
+    let mut visited = HashSet::from([(pos, facing)]);
     loop {
         let Some(pos2) = map.bounds().move_in(pos, facing) else {
             return false;
@@ -80,7 +81,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "....#.....\n",
             ".........#\n",

@@ -37,7 +37,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "1163751742\n",
             "1381373672\n",

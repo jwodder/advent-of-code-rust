@@ -1,6 +1,5 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Command {
@@ -9,7 +8,7 @@ enum Command {
     Up(u32),
 }
 
-impl FromStr for Command {
+impl std::str::FromStr for Command {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Command, ParseError> {
@@ -25,6 +24,7 @@ impl FromStr for Command {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Location {
     hpos: u32,
     depth: u32,
@@ -79,7 +79,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "forward 5\n",
             "down 5\n",

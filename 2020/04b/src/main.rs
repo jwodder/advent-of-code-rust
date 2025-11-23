@@ -1,7 +1,6 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
 enum Field {
@@ -68,7 +67,7 @@ impl Field {
     }
 }
 
-impl FromStr for Field {
+impl std::str::FromStr for Field {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Field, ParseError> {
@@ -87,6 +86,7 @@ impl FromStr for Field {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Passport {
     fields: HashMap<Field, String>,
 }
@@ -99,7 +99,7 @@ impl Passport {
     }
 }
 
-impl FromStr for Passport {
+impl std::str::FromStr for Passport {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Passport, ParseError> {
@@ -129,24 +129,23 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use Field::*;
     use rstest::rstest;
 
     #[rstest]
-    #[case(Byr, "2002", true)]
-    #[case(Byr, "2003", false)]
-    #[case(Hgt, "60in", true)]
-    #[case(Hgt, "190cm", true)]
-    #[case(Hgt, "190in", false)]
-    #[case(Hgt, "190", false)]
-    #[case(Hcl, "#123abc", true)]
-    #[case(Hcl, "#123abz", false)]
-    #[case(Hcl, "123abc", false)]
-    #[case(Ecl, "brn", true)]
-    #[case(Ecl, "wat", false)]
-    #[case(Pid, "000000001", true)]
-    #[case(Pid, "0123456789", false)]
-    fn test_field_valid(#[case] field: Field, #[case] value: &str, #[case] valid: bool) {
+    #[case(Field::Byr, "2002", true)]
+    #[case(Field::Byr, "2003", false)]
+    #[case(Field::Hgt, "60in", true)]
+    #[case(Field::Hgt, "190cm", true)]
+    #[case(Field::Hgt, "190in", false)]
+    #[case(Field::Hgt, "190", false)]
+    #[case(Field::Hcl, "#123abc", true)]
+    #[case(Field::Hcl, "#123abz", false)]
+    #[case(Field::Hcl, "123abc", false)]
+    #[case(Field::Ecl, "brn", true)]
+    #[case(Field::Ecl, "wat", false)]
+    #[case(Field::Pid, "000000001", true)]
+    #[case(Field::Pid, "0123456789", false)]
+    fn field_valid(#[case] field: Field, #[case] value: &str, #[case] valid: bool) {
         assert_eq!(field.valid(value), valid);
     }
 
@@ -183,7 +182,7 @@ mod tests {
         "iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719",
         true
     )]
-    fn test_passport_valid(#[case] passport: Passport, #[case] valid: bool) {
+    fn passport_valid(#[case] passport: Passport, #[case] valid: bool) {
         assert_eq!(passport.valid(), valid);
     }
 }

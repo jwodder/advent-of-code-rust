@@ -2,14 +2,14 @@ use super::grid::Grid;
 use anyhow::{Context, bail};
 use serde::{Deserialize, Deserializer, de::Error};
 
-#[derive(Debug, Deserialize, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
 struct Font {
     height: usize,
     #[serde(rename = "glyph")]
     glyphs: Vec<Glyph>,
 }
 
-#[derive(Debug, Deserialize, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
 struct Glyph {
     character: char,
     #[serde(deserialize_with = "deserialize_bitmap")]
@@ -134,7 +134,7 @@ mod tests {
     }
 
     #[test]
-    fn test_trim_drawing() {
+    fn trimming() {
         let drawing = Grid::from_drawing(concat!(
             ".........\n",
             ".........\n",
@@ -155,7 +155,7 @@ mod tests {
     }
 
     #[test]
-    fn test_ocr_normal_font() {
+    fn ocr_normal_font() {
         let drawing = Grid::from_drawing(concat!(
             ".##..####.###..##..#..#.#...#\n",
             "#..#.#.....#..#..#.#..#.#...#\n",
@@ -169,7 +169,7 @@ mod tests {
     }
 
     #[test]
-    fn test_ocr_large_font_untrimmed() {
+    fn ocr_large_font_untrimmed() {
         let drawing = Grid::from_drawing(concat!(
             "...##....#####....####..\n",
             "..#..#...#....#..#....#.\n",

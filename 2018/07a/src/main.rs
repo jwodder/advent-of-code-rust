@@ -1,16 +1,16 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::{HashMap, HashSet};
-use std::str::FromStr;
 
 type Step = char;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Precondition {
     before: Step,
     after: Step,
 }
 
-impl FromStr for Precondition {
+impl std::str::FromStr for Precondition {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Precondition, ParseError> {
@@ -55,7 +55,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Step C must be finished before step A can begin.\n",
             "Step C must be finished before step F can begin.\n",

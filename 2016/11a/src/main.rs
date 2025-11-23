@@ -263,7 +263,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.\n",
             "The second floor contains a hydrogen generator.\n",
