@@ -1,13 +1,13 @@
 use adventutil::Input;
 use adventutil::numtheory::crt;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Problem {
     buses: Vec<(i64, i64)>,
 }
 
-impl FromStr for Problem {
+impl std::str::FromStr for Problem {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Problem, ParseError> {
@@ -55,7 +55,7 @@ mod tests {
     #[case("0\n67,x,7,59,61", 779210)]
     #[case("0\n67,7,x,59,61", 1261476)]
     #[case("0\n1789,37,47,1889", 1202161486)]
-    fn test_solve(#[case] s: &'static str, #[case] timestamp: i64) {
+    fn examples(#[case] s: &'static str, #[case] timestamp: i64) {
         assert_eq!(solve(Input::from(s)), timestamp);
     }
 }

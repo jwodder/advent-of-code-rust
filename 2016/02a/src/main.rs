@@ -34,7 +34,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("ULL\nRRDDD\nLURDL\nUUUUD\n");
         assert_eq!(solve(input), "1985");
     }

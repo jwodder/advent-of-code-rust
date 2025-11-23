@@ -16,7 +16,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("5");
         assert_eq!(solve(input), 3);
     }

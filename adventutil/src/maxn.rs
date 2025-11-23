@@ -54,17 +54,17 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_maxn() {
+    fn basic() {
         assert_eq!(maxn(5, [1, 10, 5, 42, 3, 0, 23, 17]), [42, 23, 17, 10, 5]);
     }
 
     #[test]
-    fn test_maxn_less_than_n() {
+    fn less_than_n() {
         assert_eq!(maxn(5, [1, 10, 5]), [10, 5, 1]);
     }
 
     #[test]
-    fn test_maxn_empty() {
+    fn empty() {
         assert_eq!(maxn::<u32, _>(5, []), []);
     }
 }

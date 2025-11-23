@@ -1,15 +1,15 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashSet;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Operation {
     Acc(i32),
     Jmp(i32),
     Nop,
 }
 
-impl FromStr for Operation {
+impl std::str::FromStr for Operation {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Operation, ParseError> {
@@ -58,7 +58,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "nop +0\n",
             "acc +1\n",

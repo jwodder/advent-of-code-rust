@@ -37,7 +37,7 @@ mod tests {
     #[case("<!!>", 0)]
     #[case("<!!!>>", 0)]
     #[case("<{o\"i!a,<{i<a>", 10)]
-    fn test_example(#[case] s: &'static str, #[case] score: u32) {
+    fn examples(#[case] s: &'static str, #[case] score: u32) {
         let input = Input::from(s);
         assert_eq!(solve(input), score);
     }

@@ -35,7 +35,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         assert_eq!(safe_in_rows(".^^.^.^^^^", 10), 38);
     }
 }

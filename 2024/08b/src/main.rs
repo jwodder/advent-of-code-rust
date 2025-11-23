@@ -66,7 +66,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "............\n",
             "........0...\n",
@@ -85,7 +85,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "T.........\n",
             "...T......\n",

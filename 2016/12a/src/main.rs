@@ -1,5 +1,6 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
+use std::collections::HashMap;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 enum Register {
@@ -81,7 +82,7 @@ impl std::str::FromStr for Instruction {
 
 fn solve(input: Input) -> i32 {
     let instructions = input.parse_lines::<Instruction>().collect::<Vec<_>>();
-    let mut registers = std::collections::HashMap::from([
+    let mut registers = HashMap::from([
         (Register::A, 0i32),
         (Register::B, 0i32),
         (Register::C, 0i32),
@@ -131,7 +132,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "cpy 41 a\n",
             "inc a\n",

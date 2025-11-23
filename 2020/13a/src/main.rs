@@ -1,13 +1,13 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Problem {
     earliest_time: u32,
     buses: Vec<u32>,
 }
 
-impl FromStr for Problem {
+impl std::str::FromStr for Problem {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Problem, ParseError> {
@@ -53,7 +53,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("939\n7,13,x,x,59,x,31,19\n");
         assert_eq!(solve(input), 295);
     }

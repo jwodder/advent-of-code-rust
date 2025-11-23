@@ -94,7 +94,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_sort_rays() {
+    fn sort_rays() {
         let mut rays = vec![
             Ray::new(1, 6),
             Ray::new(2, 3),
@@ -166,7 +166,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             ".#..##.###...#######\n",
             "##.############..##.\n",

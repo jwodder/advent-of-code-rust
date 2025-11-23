@@ -1,7 +1,6 @@
 use adventutil::Input;
 use adventutil::grid::Grid;
 use adventutil::pullparser::ParseError;
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Tile {
@@ -10,7 +9,7 @@ enum Tile {
     Occupied,
 }
 
-impl FromStr for Tile {
+impl std::str::FromStr for Tile {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Tile, ParseError> {
@@ -59,7 +58,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "L.LL.LL.LL\n",
             "LLLLLLL.LL\n",

@@ -1,11 +1,12 @@
 use adventutil::Input;
 use md5::{Digest, Md5};
+use std::collections::VecDeque;
 
 fn solve(input: Input) -> usize {
     let salt = input.read();
     let salt = salt.trim();
     let mut hashes = (0..).map(|i| hex::encode(Md5::digest(format!("{salt}{i}"))));
-    let mut kiloblock = std::collections::VecDeque::with_capacity(1000);
+    let mut kiloblock = VecDeque::with_capacity(1000);
     for _ in 0..1000 {
         kiloblock.push_back(hashes.next().unwrap());
     }
@@ -38,7 +39,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from("abc");
         assert_eq!(solve(input), 22728);
     }

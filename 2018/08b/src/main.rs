@@ -1,8 +1,7 @@
 use adventutil::Input;
-use std::num::ParseIntError;
-use std::str::SplitWhitespace;
 use thiserror::Error;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Node {
     #[allow(unused)]
     children: Vec<Node>,
@@ -54,8 +53,9 @@ impl Node {
     }
 }
 
+#[derive(Clone, Debug)]
 struct NumberStream<'a> {
-    inner: SplitWhitespace<'a>,
+    inner: std::str::SplitWhitespace<'a>,
 }
 
 impl<'a> NumberStream<'a> {
@@ -89,7 +89,7 @@ enum ParseError {
     #[error("input had trailing components")]
     Trailing,
     #[error("invalid integer: {0}")]
-    InvalidInt(#[from] ParseIntError),
+    InvalidInt(#[from] std::num::ParseIntError),
 }
 
 fn solve(input: Input) -> usize {
@@ -105,7 +105,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2");
         assert_eq!(solve(input), 66);
     }

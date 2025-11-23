@@ -1,8 +1,8 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::ops::RangeInclusive;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Password {
     char_qty: RangeInclusive<usize>,
     char_c: char,
@@ -17,7 +17,7 @@ impl Password {
     }
 }
 
-impl FromStr for Password {
+impl std::str::FromStr for Password {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Password, ParseError> {
@@ -55,7 +55,7 @@ mod tests {
     #[case("1-3 a: abcde", true)]
     #[case("1-3 b: cdefg", false)]
     #[case("2-9 c: ccccccccc", true)]
-    fn test_valid(#[case] password: Password, #[case] valid: bool) {
+    fn examples(#[case] password: Password, #[case] valid: bool) {
         assert_eq!(password.valid(), valid);
     }
 }

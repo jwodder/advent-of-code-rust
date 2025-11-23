@@ -1,5 +1,6 @@
 use adventutil::Input;
 use adventutil::grid::{Coords, Direction, Grid};
+use std::collections::HashSet;
 
 fn solve(input: Input) -> usize {
     let mut start = None;
@@ -24,7 +25,7 @@ fn solve(input: Input) -> usize {
     let map = Grid::try_from(map).unwrap();
     let mut pos = start.expect("starting position not found");
     let mut facing = Direction::North;
-    let mut visited = std::collections::HashSet::from([pos]);
+    let mut visited = HashSet::from([pos]);
     loop {
         let Some(pos2) = map.bounds().move_in(pos, facing) else {
             break;
@@ -48,7 +49,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "....#.....\n",
             ".........#\n",

@@ -3,8 +3,8 @@ use adventutil::grid::{Coords, Grid, GridBounds};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashSet;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Dot {
     x: usize,
     y: usize,
@@ -16,7 +16,7 @@ impl From<Dot> for Coords {
     }
 }
 
-impl FromStr for Dot {
+impl std::str::FromStr for Dot {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Dot, ParseError> {
@@ -27,12 +27,13 @@ impl FromStr for Dot {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Fold {
     OverHorizontal(usize),
     OverVertical(usize),
 }
 
-impl FromStr for Fold {
+impl std::str::FromStr for Fold {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Fold, ParseError> {
@@ -117,7 +118,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "6,10\n",
             "0,14\n",

@@ -101,8 +101,8 @@ mod tests {
     #[case("D2FE28", Packet::Literal {version: 6, value: 2021})]
     #[case("38006F45291200", Packet::Operator {version: 1, op: 6, packets: vec![Packet::Literal {version: 6, value: 10}, Packet::Literal {version: 2, value: 20}]})]
     #[case("EE00D40C823060", Packet::Operator {version: 7, op: 3, packets: vec![Packet::Literal {version: 2, value: 1}, Packet::Literal {version: 4, value: 2}, Packet::Literal {version: 1, value: 3}]})]
-    fn test_decode(#[case] s: &str, #[case] packet: Packet) {
-        assert_eq!(decode(s), packet);
+    fn decode(#[case] s: &str, #[case] packet: Packet) {
+        assert_eq!(super::decode(s), packet);
     }
 
     #[rstest]
@@ -110,7 +110,7 @@ mod tests {
     #[case("620080001611562C8802118E34", 12)]
     #[case("C0015000016115A2E0802F182340", 23)]
     #[case("A0016C880162017C3686B18A3D4780", 31)]
-    fn test_solve(#[case] s: &'static str, #[case] value: u64) {
+    fn examples(#[case] s: &'static str, #[case] value: u64) {
         assert_eq!(solve(Input::from(s)), value);
     }
 }

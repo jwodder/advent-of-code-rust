@@ -129,7 +129,7 @@ mod tests {
     #[case("F600BC2D8F", 0)]
     #[case("9C005AC2F8F0", 0)]
     #[case("9C0141080250320F1802104A08", 1)]
-    fn test_solve(#[case] s: &'static str, #[case] value: u64) {
+    fn examples(#[case] s: &'static str, #[case] value: u64) {
         assert_eq!(solve(Input::from(s)), value);
     }
 }

@@ -31,7 +31,7 @@ mod tests {
     #[case("))(", -1)]
     #[case(")))", -3)]
     #[case(")())())", -3)]
-    fn test_walk(#[case] s: &'static str, #[case] floor: i32) {
+    fn walk(#[case] s: &'static str, #[case] floor: i32) {
         let input = Input::from(s);
         assert_eq!(solve(input), floor);
     }

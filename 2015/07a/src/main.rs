@@ -1,8 +1,8 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct State {
     // Mapping of connected wires to their assigned values
     assigned: HashMap<Wire, u16>,
@@ -130,7 +130,7 @@ impl Instruction {
     }
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
@@ -182,7 +182,7 @@ impl FromStr for Instruction {
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 struct Wire(String);
 
-impl FromStr for Wire {
+impl std::str::FromStr for Wire {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Wire, ParseError> {
@@ -200,7 +200,7 @@ enum WireOrNum {
     Num(u16),
 }
 
-impl FromStr for WireOrNum {
+impl std::str::FromStr for WireOrNum {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<WireOrNum, ParseError> {
@@ -228,7 +228,7 @@ mod tests {
     #[case("NOT e -> f", Not {input: WireOrNum::Wire(Wire("e".into())), output: Wire("f".into())})]
     #[case("x OR y -> e", Or {left: WireOrNum::Wire(Wire("x".into())), right: WireOrNum::Wire(Wire("y".into())), output: Wire("e".into())})]
     #[case("y RSHIFT 2 -> g", RShift {left: WireOrNum::Wire(Wire("y".into())), right: WireOrNum::Num(2), output: Wire("g".into())})]
-    fn test_parse_instruction(#[case] s: &str, #[case] inst: Instruction) {
+    fn parse_instruction(#[case] s: &str, #[case] inst: Instruction) {
         assert_eq!(s.parse::<Instruction>().unwrap(), inst);
     }
 }

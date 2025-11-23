@@ -1,6 +1,7 @@
 use adventutil::Input;
 use adventutil::counter::Counter;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Population {
     // Counts of the number of lanternfish with each timer value
     timers: Counter<u32>,
@@ -48,13 +49,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1a() {
+    fn example1a() {
         let input = Input::from("3,4,3,1,2");
         assert_eq!(solve(input, 18), 26);
     }
 
     #[test]
-    fn test_example1b() {
+    fn example1b() {
         let input = Input::from("3,4,3,1,2");
         assert_eq!(solve(input, 80), 5934);
     }

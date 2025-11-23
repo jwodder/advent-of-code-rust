@@ -24,7 +24,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "eedadn\n", "drvtee\n", "eandsr\n", "raavrd\n", "atevrs\n", "tsrnev\n", "sdttsa\n",
             "rasrtv\n", "nssdts\n", "ntnada\n", "svetve\n", "tesnvt\n", "vntsnd\n", "vrdear\n",

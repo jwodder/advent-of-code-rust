@@ -1,8 +1,8 @@
 use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser};
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Room {
     name: String,
     sector: u32,
@@ -27,7 +27,7 @@ impl Room {
     }
 }
 
-impl FromStr for Room {
+impl std::str::FromStr for Room {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Room, ParseError> {
@@ -68,7 +68,7 @@ mod tests {
     #[case("a-b-c-d-e-f-g-h-987[abcde]", true)]
     #[case("not-a-real-room-404[oarel]", true)]
     #[case("totally-real-room-200[decoy]", false)]
-    fn test_valid(#[case] r: Room, #[case] valid: bool) {
+    fn examples(#[case] r: Room, #[case] valid: bool) {
         assert_eq!(r.valid(), valid);
     }
 }

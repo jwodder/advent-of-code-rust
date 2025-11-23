@@ -33,7 +33,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("5 9 2 8\n9 4 7 3\n3 8 6 5\n");
         assert_eq!(solve(input), 9);
     }

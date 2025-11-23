@@ -1,6 +1,5 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 enum Color {
@@ -9,7 +8,7 @@ enum Color {
     Blue,
 }
 
-impl FromStr for Color {
+impl std::str::FromStr for Color {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Color, ParseError> {
@@ -29,7 +28,7 @@ struct Revelation {
     blue: u32,
 }
 
-impl FromStr for Revelation {
+impl std::str::FromStr for Revelation {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Revelation, ParseError> {
@@ -66,7 +65,7 @@ impl Game {
     }
 }
 
-impl FromStr for Game {
+impl std::str::FromStr for Game {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Game, ParseError> {
@@ -97,7 +96,7 @@ mod tests {
     use rstest::rstest;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green\n",
             "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue\n",
@@ -123,7 +122,7 @@ mod tests {
         false
     )]
     #[case("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green", true)]
-    fn test_is_possible(#[case] game: Game, #[case] possible: bool) {
+    fn is_possible(#[case] game: Game, #[case] possible: bool) {
         assert_eq!(game.is_possible(), possible);
     }
 }

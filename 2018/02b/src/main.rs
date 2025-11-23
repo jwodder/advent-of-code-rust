@@ -36,7 +36,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("abcde\nfghij\nklmno\npqrst\nfguij\naxcye\nwvxyz\n");
         assert_eq!(solve(input), "fgij");
     }

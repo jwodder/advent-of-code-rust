@@ -47,7 +47,7 @@ mod tests {
     #[case(111111, true)]
     #[case(223450, false)]
     #[case(123789, false)]
-    fn test_valid(#[case] n: u32, #[case] v: bool) {
+    fn examples(#[case] n: u32, #[case] v: bool) {
         assert_eq!(valid(n), v);
     }
 }

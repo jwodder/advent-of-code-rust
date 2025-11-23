@@ -1,9 +1,10 @@
 use adventutil::grid::{Coords, Direction, GridBounds};
 use adventutil::{Input, unit_dijkstra_length};
+use std::collections::HashSet;
 
 fn solve(input: Input, size: usize) -> String {
     let bounds = GridBounds::new(size + 1, size + 1);
-    let mut corrupted = std::collections::HashSet::new();
+    let mut corrupted = HashSet::new();
     for ln in input.lines() {
         let Some((xs, ys)) = ln.trim().split_once(',') else {
             panic!("Line does not contain a comma: {ln:?}");

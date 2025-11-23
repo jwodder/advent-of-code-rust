@@ -59,8 +59,8 @@ mod tests {
     #[case(1, 2, 3)]
     #[case(4, 2, 12)]
     #[case(1, 5, 15)]
-    fn test_coord2n(#[case] row: UInt, #[case] column: UInt, #[case] n: UInt) {
-        assert_eq!(coord2n(row, column), n);
+    fn coord2n(#[case] row: UInt, #[case] column: UInt, #[case] n: UInt) {
+        assert_eq!(super::coord2n(row, column), n);
     }
 
     #[rstest]
@@ -68,7 +68,7 @@ mod tests {
     #[case(2, 1, 31916031)]
     #[case(3, 1, 16080970)]
     #[case(6, 6, 27995004)]
-    fn test_coord2code(#[case] row: UInt, #[case] column: UInt, #[case] code: UInt) {
-        assert_eq!(coord2code(row, column), code);
+    fn coord2code(#[case] row: UInt, #[case] column: UInt, #[case] code: UInt) {
+        assert_eq!(super::coord2code(row, column), code);
     }
 }

@@ -45,7 +45,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from("5-8\n0-2\n4-7\n");
         assert_eq!(solve(input), 3);
     }

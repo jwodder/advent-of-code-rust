@@ -61,12 +61,12 @@ mod tests {
     #[case("(((({<>}<{<{<>}{[]{[]{}", 1480781)]
     #[case("{<[[]]>}<{[{[{[]{()[[[]", 995444)]
     #[case("<{([{{}}[<[[[<>{}]]]>[]]", 294)]
-    fn test_score_line(#[case] s: &str, #[case] score: u64) {
-        assert_eq!(score_line(s).unwrap(), score);
+    fn score_line(#[case] s: &str, #[case] score: u64) {
+        assert_eq!(super::score_line(s).unwrap(), score);
     }
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "[({(<(())[]>[[{[]{<()<>>\n",
             "[(()[<>])]({[<{<<[]>>(\n",

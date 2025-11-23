@@ -4,6 +4,7 @@ use adventutil::gridgeom::{Point, Vector};
 use adventutil::intcode::{Intcode, IntcodeIO};
 use std::collections::HashSet;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Hull {
     white: HashSet<Point>,
     painted: HashSet<Point>,

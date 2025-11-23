@@ -35,7 +35,7 @@ mod tests {
     #[case("21", "1211")]
     #[case("1211", "111221")]
     #[case("111221", "312211")]
-    fn test_look_and_say(#[case] before: &str, #[case] after: &str) {
+    fn examples(#[case] before: &str, #[case] after: &str) {
         assert_eq!(look_and_say(before), after);
     }
 }

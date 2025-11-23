@@ -76,7 +76,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "###########\n",
             "#0.1.....2#\n",

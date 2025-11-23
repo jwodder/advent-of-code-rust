@@ -3,15 +3,15 @@ use adventutil::index::Index;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashMap;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Distance {
     point_a: String,
     point_b: String,
     dist: usize,
 }
 
-impl FromStr for Distance {
+impl std::str::FromStr for Distance {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Distance, ParseError> {
@@ -60,7 +60,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "London to Dublin = 464\n",
             "London to Belfast = 518\n",

@@ -1,7 +1,8 @@
 use adventutil::Input;
+use std::collections::HashSet;
 
 fn is_valid(phrase: &str) -> bool {
-    let mut seen = std::collections::HashSet::new();
+    let mut seen = HashSet::new();
     for word in phrase.split_ascii_whitespace() {
         let mut chrs = word.chars().collect::<Vec<_>>();
         chrs.sort_unstable();
@@ -31,7 +32,7 @@ mod tests {
     #[case("a ab abc abd abf abj", true)]
     #[case("iiii oiii ooii oooi oooo", true)]
     #[case("oiii ioii iioi iiio", false)]
-    fn test_is_valid(#[case] phrase: &str, #[case] b: bool) {
+    fn examples(#[case] phrase: &str, #[case] b: bool) {
         assert_eq!(is_valid(phrase), b);
     }
 }

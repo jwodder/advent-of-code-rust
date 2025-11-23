@@ -2,6 +2,7 @@ use adventutil::Input;
 use adventutil::intcode::{Intcode, IntcodeIO};
 use std::collections::HashMap;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Screen {
     drawn: HashMap<(i64, i64), i64>,
     state: OutputState,
@@ -37,6 +38,7 @@ impl IntcodeIO for Screen {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum OutputState {
     Start,
     XSent(i64),

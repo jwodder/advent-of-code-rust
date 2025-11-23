@@ -54,7 +54,7 @@ mod tests {
     #[case(12, 3)]
     #[case(23, 2)]
     #[case(1024, 31)]
-    fn test_examples(#[case] n: u32, #[case] steps: u32) {
+    fn examples(#[case] n: u32, #[case] steps: u32) {
         assert_eq!(step_count(n), steps);
     }
 
@@ -64,7 +64,7 @@ mod tests {
     #[case(7, 2)]
     #[case(9, 2)]
     #[case(25, 4)]
-    fn test_my_examples(#[case] n: u32, #[case] steps: u32) {
+    fn my_examples(#[case] n: u32, #[case] steps: u32) {
         assert_eq!(step_count(n), steps);
     }
 
@@ -76,7 +76,7 @@ mod tests {
     #[case(10, 2, 9)]
     #[case(17, 2, 9)]
     #[case(25, 2, 9)]
-    fn test_split_layer(#[case] n: u32, #[case] layer: u32, #[case] layer_floor: u32) {
-        assert_eq!(split_layer(n), (layer, layer_floor));
+    fn split_layer(#[case] n: u32, #[case] layer: u32, #[case] layer_floor: u32) {
+        assert_eq!(super::split_layer(n), (layer, layer_floor));
     }
 }

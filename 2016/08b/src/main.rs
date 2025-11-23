@@ -1,15 +1,15 @@
 use adventutil::Input;
 use adventutil::grid::Grid;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Operation {
     Rect { width: usize, height: usize },
     RotateRow { y: usize, by: usize },
     RotateColumn { x: usize, by: usize },
 }
 
-impl FromStr for Operation {
+impl std::str::FromStr for Operation {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Operation, ParseError> {
@@ -34,7 +34,6 @@ impl FromStr for Operation {
 }
 
 fn solve(input: Input) -> String {
-    // TODO: Operate on an adventutil::Grid throughout?
     let mut grid = vec![vec![false; 50]; 6];
     for op in input.parse_lines::<Operation>() {
         match op {

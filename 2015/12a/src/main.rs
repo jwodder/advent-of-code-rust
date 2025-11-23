@@ -1,5 +1,6 @@
 use adventutil::Input;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct IntParser {
     sign: i32,
     value: u32,
@@ -65,7 +66,7 @@ mod tests {
     #[case(r#"[-1,{"a":1}]"#, 0)]
     #[case("[]", 0)]
     #[case("{}", 0)]
-    fn test_sum_nums(#[case] s: &'static str, #[case] total: i32) {
+    fn sum_nums(#[case] s: &'static str, #[case] total: i32) {
         let input = Input::from(s);
         assert_eq!(solve(input), total);
     }

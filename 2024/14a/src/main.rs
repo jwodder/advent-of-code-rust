@@ -105,7 +105,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "p=0,4 v=3,-3\n",
             "p=6,3 v=-1,-3\n",

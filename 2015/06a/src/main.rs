@@ -2,8 +2,8 @@ use adventutil::Input;
 use adventutil::area::{self, Area};
 use adventutil::grid::{Coords, Grid, GridBounds};
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Instruction {
     TurnOn(Coords, Coords),
     TurnOff(Coords, Coords),
@@ -23,7 +23,7 @@ impl Instruction {
     }
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {

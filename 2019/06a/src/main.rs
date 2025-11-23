@@ -10,6 +10,7 @@ fn parse_orbit(s: &str) -> Result<(String, String), ParseError> {
     Ok((center, in_orbit))
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct DepthLookup {
     outer2inner: HashMap<usize, usize>,
     cache: HashMap<usize, u32>,
@@ -58,7 +59,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "COM)B\n", "B)C\n", "C)D\n", "D)E\n", "E)F\n", "B)G\n", "G)H\n", "D)I\n", "E)J\n",
             "J)K\n", "K)L\n",

@@ -37,7 +37,7 @@ mod tests {
     #[case("abcd[bddb]xyyx", false)]
     #[case("aaaa[qwer]tyui", false)]
     #[case("ioxxoj[asdfgh]zxcvbn", true)]
-    fn test_supports_tls(#[case] ip: &str, #[case] tls: bool) {
+    fn examples(#[case] ip: &str, #[case] tls: bool) {
         assert_eq!(supports_tls(ip), tls);
     }
 }

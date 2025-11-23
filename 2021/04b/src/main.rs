@@ -2,7 +2,7 @@ use adventutil::grid::{Coords, Grid};
 use adventutil::{Input, parse_csv};
 use std::collections::HashSet;
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Board {
     grid: Grid<u32>,
     marked: HashSet<Coords>,
@@ -40,6 +40,7 @@ impl Board {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Bingo {
     numbers: Vec<u32>,
     boards: Vec<Board>,
@@ -91,7 +92,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1\n",
             "\n",

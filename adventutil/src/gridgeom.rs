@@ -1,6 +1,4 @@
 use super::grid::Coords;
-use std::iter::{FusedIterator, Sum};
-use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Range, Sub, SubAssign};
 use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Default, Hash, Eq, PartialEq)]
@@ -49,7 +47,7 @@ impl Vector {
     }
 }
 
-impl Add<Vector> for Point {
+impl std::ops::Add<Vector> for Point {
     type Output = Point;
 
     fn add(self, rhs: Vector) -> Point {
@@ -60,7 +58,7 @@ impl Add<Vector> for Point {
     }
 }
 
-impl Add<Point> for Vector {
+impl std::ops::Add<Point> for Vector {
     type Output = Point;
 
     fn add(self, rhs: Point) -> Point {
@@ -71,13 +69,13 @@ impl Add<Point> for Vector {
     }
 }
 
-impl AddAssign<Vector> for Point {
+impl std::ops::AddAssign<Vector> for Point {
     fn add_assign(&mut self, rhs: Vector) {
         *self = *self + rhs;
     }
 }
 
-impl Add<Vector> for Vector {
+impl std::ops::Add<Vector> for Vector {
     type Output = Vector;
 
     fn add(self, rhs: Vector) -> Vector {
@@ -88,13 +86,13 @@ impl Add<Vector> for Vector {
     }
 }
 
-impl AddAssign<Vector> for Vector {
+impl std::ops::AddAssign<Vector> for Vector {
     fn add_assign(&mut self, rhs: Vector) {
         *self = *self + rhs;
     }
 }
 
-impl Sub<Vector> for Point {
+impl std::ops::Sub<Vector> for Point {
     type Output = Point;
 
     fn sub(self, rhs: Vector) -> Point {
@@ -105,13 +103,13 @@ impl Sub<Vector> for Point {
     }
 }
 
-impl SubAssign<Vector> for Point {
+impl std::ops::SubAssign<Vector> for Point {
     fn sub_assign(&mut self, rhs: Vector) {
         *self = *self - rhs;
     }
 }
 
-impl Sub<Vector> for Vector {
+impl std::ops::Sub<Vector> for Vector {
     type Output = Vector;
 
     fn sub(self, rhs: Vector) -> Vector {
@@ -122,13 +120,13 @@ impl Sub<Vector> for Vector {
     }
 }
 
-impl SubAssign<Vector> for Vector {
+impl std::ops::SubAssign<Vector> for Vector {
     fn sub_assign(&mut self, rhs: Vector) {
         *self = *self - rhs;
     }
 }
 
-impl Sub<Point> for Point {
+impl std::ops::Sub<Point> for Point {
     type Output = Vector;
 
     fn sub(self, rhs: Point) -> Vector {
@@ -139,7 +137,7 @@ impl Sub<Point> for Point {
     }
 }
 
-impl Neg for Vector {
+impl std::ops::Neg for Vector {
     type Output = Vector;
 
     fn neg(self) -> Vector {
@@ -150,7 +148,7 @@ impl Neg for Vector {
     }
 }
 
-impl Mul<i32> for Vector {
+impl std::ops::Mul<i32> for Vector {
     type Output = Vector;
 
     fn mul(self, rhs: i32) -> Vector {
@@ -161,7 +159,7 @@ impl Mul<i32> for Vector {
     }
 }
 
-impl Mul<Vector> for i32 {
+impl std::ops::Mul<Vector> for i32 {
     type Output = Vector;
 
     fn mul(self, rhs: Vector) -> Vector {
@@ -172,13 +170,13 @@ impl Mul<Vector> for i32 {
     }
 }
 
-impl MulAssign<i32> for Vector {
+impl std::ops::MulAssign<i32> for Vector {
     fn mul_assign(&mut self, rhs: i32) {
         *self = *self * rhs;
     }
 }
 
-impl Sum for Vector {
+impl std::iter::Sum for Vector {
     fn sum<I: Iterator<Item = Vector>>(iter: I) -> Vector {
         iter.fold(Vector::default(), |u, v| u + v)
     }
@@ -208,7 +206,7 @@ pub fn points_added(p: Point, v: Vector) -> Result<PointsAdded, NotCardinalError
 pub struct PointsAdded {
     p: Point,
     unit: Vector,
-    inner: Range<u32>,
+    inner: std::ops::Range<u32>,
 }
 
 impl Iterator for PointsAdded {
@@ -225,7 +223,7 @@ impl Iterator for PointsAdded {
     }
 }
 
-impl FusedIterator for PointsAdded {}
+impl std::iter::FusedIterator for PointsAdded {}
 
 impl ExactSizeIterator for PointsAdded {}
 
@@ -324,7 +322,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_points_added_zero_vector() {
+    fn points_added_zero_vector() {
         let mut iter = points_added(Point { x: 23, y: 42 }, Vector { x: 0, y: 0 }).unwrap();
         assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
@@ -332,7 +330,7 @@ mod tests {
     }
 
     #[test]
-    fn test_points_added_northwards() {
+    fn points_added_northwards() {
         let mut iter = points_added(Point { x: 23, y: 42 }, Vector { x: 0, y: 7 }).unwrap();
         assert_eq!(iter.size_hint(), (7, Some(7)));
         assert_eq!(iter.next(), Some(Point { x: 23, y: 43 }));
@@ -354,7 +352,7 @@ mod tests {
     }
 
     #[test]
-    fn test_points_added_westwards() {
+    fn points_added_westwards() {
         let mut iter = points_added(Point { x: 23, y: 42 }, Vector { x: -7, y: 0 }).unwrap();
         assert_eq!(iter.size_hint(), (7, Some(7)));
         assert_eq!(iter.next(), Some(Point { x: 22, y: 42 }));
@@ -376,7 +374,7 @@ mod tests {
     }
 
     #[test]
-    fn test_points_added_diagonal() {
+    fn points_added_diagonal() {
         assert_eq!(
             points_added(Point { x: 23, y: 42 }, Vector { x: -7, y: 5 }),
             Err(NotCardinalError(Vector { x: -7, y: 5 }))

@@ -1,6 +1,5 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 enum Color {
@@ -9,7 +8,7 @@ enum Color {
     Blue,
 }
 
-impl FromStr for Color {
+impl std::str::FromStr for Color {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Color, ParseError> {
@@ -43,7 +42,7 @@ impl CubeSet {
     }
 }
 
-impl FromStr for CubeSet {
+impl std::str::FromStr for CubeSet {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<CubeSet, ParseError> {
@@ -82,7 +81,7 @@ impl Game {
     }
 }
 
-impl FromStr for Game {
+impl std::str::FromStr for Game {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Game, ParseError> {
@@ -109,7 +108,7 @@ mod tests {
     use rstest::rstest;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green\n",
             "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue\n",
@@ -132,7 +131,7 @@ mod tests {
         630
     )]
     #[case("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green", 36)]
-    fn test_required_power(#[case] game: Game, #[case] power: u32) {
+    fn required_power(#[case] game: Game, #[case] power: u32) {
         assert_eq!(game.required_power(), power);
     }
 }

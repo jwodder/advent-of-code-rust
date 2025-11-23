@@ -47,7 +47,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi\n");
         assert_eq!(solve(input), 31);
     }

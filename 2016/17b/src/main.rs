@@ -126,7 +126,7 @@ mod tests {
     #[case("ihgpwlah", 370)]
     #[case("kglvqrro", 492)]
     #[case("ulqzkmiv", 830)]
-    fn test_example(#[case] passcode: &'static str, #[case] longest_path: usize) {
+    fn example1(#[case] passcode: &'static str, #[case] longest_path: usize) {
         let input = Input::from(passcode);
         assert_eq!(solve(input), longest_path);
     }

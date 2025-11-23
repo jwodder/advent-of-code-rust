@@ -2,8 +2,8 @@ use adventutil::Input;
 use adventutil::gridgeom::Point;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashSet;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Sensor {
     pos: Point,
     beacon: Point,
@@ -35,7 +35,7 @@ impl Sensor {
     }
 }
 
-impl FromStr for Sensor {
+impl std::str::FromStr for Sensor {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Sensor, ParseError> {
@@ -80,7 +80,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Sensor at x=2, y=18: closest beacon is at x=-2, y=15\n",
             "Sensor at x=9, y=16: closest beacon is at x=10, y=16\n",

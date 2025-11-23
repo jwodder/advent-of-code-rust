@@ -1,7 +1,6 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::iter::repeat_n;
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Reindeer {
@@ -22,7 +21,7 @@ impl Reindeer {
     }
 }
 
-impl FromStr for Reindeer {
+impl std::str::FromStr for Reindeer {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Reindeer, ParseError> {
@@ -97,12 +96,12 @@ mod tests {
     #[case(DANCER, 12, 176)]
     #[case(COMET, 1000, 1120)]
     #[case(DANCER, 1000, 1056)]
-    fn test_positions(#[case] deer: Reindeer, #[case] time: usize, #[case] pos: usize) {
+    fn positions(#[case] deer: Reindeer, #[case] time: usize, #[case] pos: usize) {
         assert_eq!(deer.positions().nth(time - 1).unwrap(), pos);
     }
 
     #[test]
-    fn test_example1a() {
+    fn example1a() {
         let input = Input::from(concat!(
             "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.\n",
             "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.\n",
@@ -111,7 +110,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example1b() {
+    fn example1b() {
         let input = Input::from(concat!(
             "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.\n",
             "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.\n",

@@ -26,7 +26,7 @@ mod tests {
 
     #[test]
     #[ignore]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("abc");
         assert_eq!(solve(input), "18f47a30");
     }

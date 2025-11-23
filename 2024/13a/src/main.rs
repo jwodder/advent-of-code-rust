@@ -151,7 +151,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "Button A: X+94, Y+34\n",
             "Button B: X+22, Y+67\n",

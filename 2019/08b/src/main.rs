@@ -36,7 +36,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("0222112222120000");
         assert_eq!(render(input, 2, 2).draw().to_string(), ".#\n#.");
     }

@@ -41,7 +41,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "MMMSXXMASM\n",
             "MSAMXMSMSA\n",

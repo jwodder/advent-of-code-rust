@@ -3,8 +3,8 @@ use adventutil::pullparser::ParseError;
 use adventutil::{Input, parse_csv};
 use itertools::Itertools;
 use std::collections::HashSet;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Direction {
     Up(i32),
     Down(i32),
@@ -12,7 +12,7 @@ enum Direction {
     Right(i32),
 }
 
-impl FromStr for Direction {
+impl std::str::FromStr for Direction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Direction, ParseError> {
@@ -72,13 +72,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("R8,U5,L5,D3\nU7,R6,D4,L4\n");
         assert_eq!(solve(input), 6);
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "R75,D30,R83,U83,L12,D49,R71,U7,L72\n",
             "U62,R66,U55,R34,D71,R55,D58,R83\n",
@@ -87,7 +87,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let input = Input::from(concat!(
             "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51\n",
             "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7\n",

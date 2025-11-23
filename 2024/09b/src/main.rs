@@ -97,7 +97,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from("2333133121414131402");
         assert_eq!(solve(input), 2858);
     }

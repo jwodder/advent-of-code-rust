@@ -4,8 +4,8 @@ use adventutil::gridgeom::{Point, PointBounds, points_added};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
 use std::collections::HashSet;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct RockPath(Vec<Point>);
 
 impl RockPath {
@@ -18,7 +18,7 @@ impl RockPath {
     }
 }
 
-impl FromStr for RockPath {
+impl std::str::FromStr for RockPath {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<RockPath, ParseError> {
@@ -32,6 +32,7 @@ impl FromStr for RockPath {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Tile {
     Air,
     Rock,
@@ -93,7 +94,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("498,4 -> 498,6 -> 496,6\n503,4 -> 502,4 -> 502,9 -> 494,9\n");
         assert_eq!(solve(input), 24);
     }

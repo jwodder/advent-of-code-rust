@@ -1,6 +1,5 @@
 use super::iter::{AdjacentCells, AdjacentWrapCells, CardinalNeighbors, CardinalNeighborsWrap};
 use super::{Coords, Direction, Grid};
-use std::ops::Deref;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Cell<'a, T> {
@@ -125,7 +124,7 @@ impl<'a, T> Cell<'a, T> {
     }
 }
 
-impl<T> Deref for Cell<'_, T> {
+impl<T> std::ops::Deref for Cell<'_, T> {
     type Target = T;
 
     fn deref(&self) -> &T {
@@ -151,7 +150,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_cell_corner() {
+    fn cell_corner() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -183,7 +182,7 @@ mod tests {
     }
 
     #[test]
-    fn test_cell_adjacent() {
+    fn cell_adjacent() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -201,7 +200,7 @@ mod tests {
     }
 
     #[test]
-    fn test_cell_adjacent_wrap() {
+    fn cell_adjacent_wrap() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {

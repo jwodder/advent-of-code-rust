@@ -47,7 +47,7 @@ mod tests {
     #[case(r#"[1,{"c":"red","b":2},3]"#, 4)]
     #[case(r#"{"d":"red","e":[1,2,3,4],"f":5}"#, 0)]
     #[case(r#"[1,"red",5]"#, 6)]
-    fn test_solve(#[case] s: &'static str, #[case] total: i32) {
+    fn examples(#[case] s: &'static str, #[case] total: i32) {
         assert_eq!(solve(Input::from(s)), total);
     }
 }

@@ -4,7 +4,6 @@ use std::collections::{
     hash_map::{IntoIter, IntoValues},
 };
 use std::hash::Hash;
-use std::ops::Index;
 
 #[derive(Clone, Debug)]
 pub struct Counter<T> {
@@ -77,7 +76,7 @@ impl<T: Eq + Hash> FromIterator<T> for Counter<T> {
     }
 }
 
-impl<T, U> Index<&U> for Counter<T>
+impl<T, U> std::ops::Index<&U> for Counter<T>
 where
     T: Eq + Hash + Borrow<U>,
     U: Eq + Hash + ?Sized,

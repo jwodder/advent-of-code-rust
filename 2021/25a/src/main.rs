@@ -1,7 +1,6 @@
 use adventutil::Input;
 use adventutil::grid::{Cell, Grid, ParseGridError};
 use std::fmt;
-use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -21,7 +20,7 @@ impl fmt::Display for Cucumber {
     }
 }
 
-impl FromStr for Cucumber {
+impl std::str::FromStr for Cucumber {
     type Err = ParseCucumberError;
 
     fn from_str(s: &str) -> Result<Cucumber, ParseCucumberError> {
@@ -34,7 +33,7 @@ impl FromStr for Cucumber {
     }
 }
 
-#[derive(Debug, Error)]
+#[derive(Clone, Debug, Eq, Error, PartialEq)]
 #[error("invalid cell: {0:?}")]
 struct ParseCucumberError(String);
 
@@ -85,7 +84,7 @@ impl fmt::Display for State {
     }
 }
 
-impl FromStr for State {
+impl std::str::FromStr for State {
     type Err = ParseGridError<ParseCucumberError>;
 
     fn from_str(s: &str) -> Result<State, Self::Err> {
@@ -106,7 +105,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let state = "...>>>>>...".parse::<State>().unwrap();
         let state = state.step();
         assert_eq!(state, "...>>>>.>..".parse().unwrap());
@@ -115,7 +114,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let state = concat!(
             "..........\n",
             ".>v....v..\n",
@@ -136,7 +135,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let state = concat!(
             "...>...\n",
             ".......\n",
@@ -203,7 +202,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example4_steps() {
+    fn example4_steps() {
         let state = concat!(
             "v...>>.vv>\n",
             ".vv>>.vv..\n",
@@ -295,7 +294,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example4_stopping_point() {
+    fn example4_stopping_point() {
         let input = Input::from(concat!(
             "v...>>.vv>\n",
             ".vv>>.vv..\n",

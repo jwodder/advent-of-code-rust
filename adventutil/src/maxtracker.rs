@@ -281,7 +281,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_max_tracker() {
+    fn max_tracker() {
         let mut tracker = MaxTracker::new();
         assert_eq!(tracker.get(), None);
         tracker.add(23);
@@ -293,7 +293,7 @@ mod tests {
     }
 
     #[test]
-    fn test_first_max_key_tracker() {
+    fn first_max_key_tracker() {
         let mut tracker = FirstMaxKeyTracker::new();
         assert_eq!(tracker.get(), None);
         tracker.add("apple", 23);
@@ -307,7 +307,7 @@ mod tests {
     }
 
     #[test]
-    fn test_last_max_key_tracker() {
+    fn last_max_key_tracker() {
         let mut tracker = LastMaxKeyTracker::new();
         assert_eq!(tracker.get(), None);
         tracker.add("apple", 23);
@@ -321,7 +321,7 @@ mod tests {
     }
 
     #[test]
-    fn test_min_tracker() {
+    fn min_tracker() {
         let mut tracker = MinTracker::new();
         assert_eq!(tracker.get(), None);
         tracker.add(23);
@@ -333,7 +333,7 @@ mod tests {
     }
 
     #[test]
-    fn test_first_min_key_tracker() {
+    fn first_min_key_tracker() {
         let mut tracker = FirstMinKeyTracker::new();
         assert_eq!(tracker.get(), None);
         tracker.add("apple", 23);
@@ -347,7 +347,7 @@ mod tests {
     }
 
     #[test]
-    fn test_last_min_key_tracker() {
+    fn last_min_key_tracker() {
         let mut tracker = LastMinKeyTracker::new();
         assert_eq!(tracker.get(), None);
         tracker.add("apple", 23);

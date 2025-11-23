@@ -48,7 +48,6 @@ pub fn crt<T: PrimInt + Euclid + Signed, I: IntoIterator<Item = (T, T)>>(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use rstest::rstest;
 
     #[rstest]
@@ -62,7 +61,7 @@ mod tests {
     #[case(0, 3, None)]
     #[case(5, 1, None)]
     #[case(5, 0, None)]
-    fn test_modinverse(#[case] a: i32, #[case] n: i32, #[case] inv: Option<i32>) {
-        assert_eq!(modinverse(a, n), inv);
+    fn modinverse(#[case] a: i32, #[case] n: i32, #[case] inv: Option<i32>) {
+        assert_eq!(super::modinverse(a, n), inv);
     }
 }

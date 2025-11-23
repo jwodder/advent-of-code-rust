@@ -1,8 +1,8 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::{FromBits, Input};
 use std::collections::HashSet;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct PlantAutomaton {
     state: HashSet<isize>,
     rules: HashSet<u8>,
@@ -33,7 +33,7 @@ impl PlantAutomaton {
     }
 }
 
-impl FromStr for PlantAutomaton {
+impl std::str::FromStr for PlantAutomaton {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<PlantAutomaton, ParseError> {
@@ -78,7 +78,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "initial state: #..#.#..##......###...###\n",
             "\n",

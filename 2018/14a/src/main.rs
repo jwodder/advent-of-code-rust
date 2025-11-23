@@ -49,7 +49,7 @@ mod tests {
     #[case("5", "0124515891")]
     #[case("18", "9251071085")]
     #[case("2018", "5941429882")]
-    fn example(#[case] num: &'static str, #[case] answer: &str) {
+    fn examples(#[case] num: &'static str, #[case] answer: &str) {
         let input = Input::from(num);
         assert_eq!(solve(input), answer);
     }

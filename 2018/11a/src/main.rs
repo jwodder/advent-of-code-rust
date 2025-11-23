@@ -2,8 +2,8 @@ use adventutil::Input;
 use adventutil::grid::{Coords, Grid, GridBounds};
 use itertools::Itertools;
 use std::num::ParseIntError;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct FuelGrid {
     serial_no: isize,
 }
@@ -25,7 +25,7 @@ impl FuelGrid {
     }
 }
 
-impl FromStr for FuelGrid {
+impl std::str::FromStr for FuelGrid {
     type Err = ParseIntError;
 
     fn from_str(s: &str) -> Result<FuelGrid, ParseIntError> {
@@ -59,7 +59,7 @@ mod tests {
     #[case(122, 79, 57, -5)]
     #[case(217, 196, 39, 0)]
     #[case(101, 153, 71, 4)]
-    fn test_power_level(
+    fn examples(
         #[case] x: usize,
         #[case] y: usize,
         #[case] serial_no: isize,

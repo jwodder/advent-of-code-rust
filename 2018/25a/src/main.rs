@@ -49,7 +49,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "0,0,0,0\n",
             "3,0,0,0\n",
@@ -64,7 +64,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "-1,2,2,0\n",
             "0,0,2,-2\n",
@@ -81,7 +81,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let input = Input::from(concat!(
             "1,-1,0,1\n",
             "2,0,-1,0\n",
@@ -98,7 +98,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example4() {
+    fn example4() {
         let input = Input::from(concat!(
             "1,-1,-1,-2\n",
             "-2,-2,0,1\n",

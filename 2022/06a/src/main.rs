@@ -26,7 +26,7 @@ mod tests {
     #[case("nppdvjthqldpwncqszvftbrmjlhg", 6)]
     #[case("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10)]
     #[case("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11)]
-    fn test_solve(#[case] s: &'static str, #[case] output: usize) {
+    fn examples(#[case] s: &'static str, #[case] output: usize) {
         assert_eq!(solve(Input::from(s)), output);
     }
 }

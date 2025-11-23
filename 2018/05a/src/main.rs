@@ -31,7 +31,7 @@ mod tests {
     #[case("abAB", 4)]
     #[case("aabAAB", 6)]
     #[case("dabAcCaCBAcCcaDA", 10)]
-    fn test_solve(#[case] s: &'static str, #[case] units: usize) {
+    fn examples(#[case] s: &'static str, #[case] units: usize) {
         let input = Input::from(s);
         assert_eq!(solve(input), units);
     }

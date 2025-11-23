@@ -2,8 +2,8 @@ use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector, points_added};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashSet;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Motion {
     Up(i32),
     Down(i32),
@@ -23,7 +23,7 @@ impl Motion {
     }
 }
 
-impl FromStr for Motion {
+impl std::str::FromStr for Motion {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Motion, ParseError> {
@@ -68,7 +68,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("R 4\nU 4\nL 3\nD 1\nR 4\nD 1\nL 5\nR 2\n");
         assert_eq!(solve(input), 13);
     }

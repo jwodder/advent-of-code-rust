@@ -1,9 +1,7 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::iter::{Sum, once};
-use std::ops::Add;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Ingredient {
     capacity: i32,
     durability: i32,
@@ -24,7 +22,7 @@ impl Ingredient {
     }
 }
 
-impl FromStr for Ingredient {
+impl std::str::FromStr for Ingredient {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Ingredient, ParseError> {
@@ -50,7 +48,7 @@ impl FromStr for Ingredient {
     }
 }
 
-#[derive(Default)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 struct Score {
     capacity: i32,
     durability: i32,
@@ -65,7 +63,7 @@ impl Score {
     }
 }
 
-impl Add for Score {
+impl std::ops::Add for Score {
     type Output = Score;
 
     fn add(self, rhs: Score) -> Score {
@@ -79,7 +77,7 @@ impl Add for Score {
     }
 }
 
-impl Sum for Score {
+impl std::iter::Sum for Score {
     fn sum<I: Iterator<Item = Score>>(iter: I) -> Score {
         iter.fold(Score::default(), |a, b| a + b)
     }
@@ -105,7 +103,7 @@ fn partitions(qty: i32, bins: usize) -> Box<dyn Iterator<Item = Vec<i32>>> {
     if bins == 0 {
         panic!("Partitioning into 0 bins");
     } else if bins == 1 {
-        Box::new(once(vec![qty]))
+        Box::new(std::iter::once(vec![qty]))
     } else {
         Box::new((0..=qty).flat_map(move |i| {
             partitions(qty - i, bins - 1).map(move |mut p| {
@@ -125,7 +123,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8\n",
             "Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3\n",

@@ -5,7 +5,7 @@ const BRACKET_SCORE: usize = 57;
 const BRACE_SCORE: usize = 1197;
 const ANGLE_SCORE: usize = 25137;
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 enum Classification {
     Valid,
     Corrupt(usize),
@@ -71,12 +71,12 @@ mod tests {
     #[case("[{[{({}]{}}([{[{{{}}([]", Corrupt(BRACKET_SCORE))]
     #[case("[<(<(<(<{}))><([]([]()", Corrupt(PAREN_SCORE))]
     #[case("<{([([[(<>()){}]>(<<{{", Corrupt(ANGLE_SCORE))]
-    fn test_classify(#[case] s: &str, #[case] c: Classification) {
-        assert_eq!(classify(s), c);
+    fn classify(#[case] s: &str, #[case] c: Classification) {
+        assert_eq!(super::classify(s), c);
     }
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "[({(<(())[]>[[{[]{<()<>>\n",
             "[(()[<>])]({[<{<<[]>>(\n",

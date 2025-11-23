@@ -18,7 +18,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from("199\n200\n208\n210\n200\n207\n240\n269\n260\n263\n");
         assert_eq!(solve(input), 7);
     }

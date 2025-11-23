@@ -48,13 +48,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(".#..#\n.....\n#####\n....#\n...##\n");
         assert_eq!(solve(input), 8);
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "......#.#.\n",
             "#..#.#....\n",
@@ -71,7 +71,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let input = Input::from(concat!(
             "#.#...#.#.\n",
             ".###....#.\n",
@@ -88,7 +88,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example4() {
+    fn example4() {
         let input = Input::from(concat!(
             ".#..#..###\n",
             "####.###.#\n",
@@ -105,7 +105,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example5() {
+    fn example5() {
         let input = Input::from(concat!(
             ".#..##.###...#######\n",
             "##.############..##.\n",

@@ -1,8 +1,8 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use itertools::Itertools;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Crates {
     stacks: Vec<Vec<char>>,
 }
@@ -24,7 +24,7 @@ impl Crates {
     }
 }
 
-impl FromStr for Crates {
+impl std::str::FromStr for Crates {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Crates, ParseError> {
@@ -42,13 +42,14 @@ impl FromStr for Crates {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Movement {
     qty: usize,
     from_stack: usize,
     to_stack: usize,
 }
 
-impl FromStr for Movement {
+impl std::str::FromStr for Movement {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Movement, ParseError> {
@@ -91,7 +92,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "    [D]    \n",
             "[N] [C]    \n",

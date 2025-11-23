@@ -47,7 +47,7 @@ mod tests {
     #[case(vec![4, 8, 2, 2, 6, 1, 5, 8], vec![3, 4, 0, 4, 0, 4, 3, 8])]
     #[case(vec![3, 4, 0, 4, 0, 4, 3, 8], vec![0, 3, 4, 1, 5, 5, 1, 8])]
     #[case(vec![0, 3, 4, 1, 5, 5, 1, 8], vec![0, 1, 0, 2, 9, 4, 9, 8])]
-    fn example1(#[case] digits_in: Vec<i32>, #[case] digits_out: Vec<i32>) {
+    fn examples(#[case] digits_in: Vec<i32>, #[case] digits_out: Vec<i32>) {
         assert_eq!(advance(&digits_in), digits_out);
     }
 }

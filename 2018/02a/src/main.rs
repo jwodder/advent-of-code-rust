@@ -38,12 +38,12 @@ mod tests {
     #[case("aabcdd", true, false)]
     #[case("abcdee", true, false)]
     #[case("ababab", false, true)]
-    fn test_box_properties(#[case] boxid: &str, #[case] two: bool, #[case] three: bool) {
-        assert_eq!(box_properties(boxid.into()), (two, three));
+    fn box_properties(#[case] boxid: &str, #[case] two: bool, #[case] three: bool) {
+        assert_eq!(super::box_properties(boxid.into()), (two, three));
     }
 
     #[test]
-    fn test_checksum() {
+    fn example1() {
         let input = Input::from("abcdef\nbababc\nabbcde\nabcccd\naabcdd\nabcdee\nababab\n");
         assert_eq!(solve(input), 12);
     }

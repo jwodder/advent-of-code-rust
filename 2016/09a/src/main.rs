@@ -34,7 +34,7 @@ mod tests {
     #[case("A(2x2)BCD(2x2)EFG", 11)]
     #[case("(6x1)(1x3)A", 6)]
     #[case("X(8x2)(3x3)ABCY", 18)]
-    fn test_example(#[case] s: &'static str, #[case] length: usize) {
+    fn examples(#[case] s: &'static str, #[case] length: usize) {
         let input = Input::from(s);
         assert_eq!(solve(input), length);
     }

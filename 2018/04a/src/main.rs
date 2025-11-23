@@ -2,9 +2,8 @@ use adventutil::Input;
 use adventutil::counter::Counter;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
-use std::str::FromStr;
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Event {
     BeginShift {
         timestamp: Timestamp,
@@ -28,7 +27,7 @@ impl Event {
     }
 }
 
-impl FromStr for Event {
+impl std::str::FromStr for Event {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Event, ParseError> {
@@ -71,7 +70,7 @@ struct Timestamp {
     minute: usize,
 }
 
-impl FromStr for Timestamp {
+impl std::str::FromStr for Timestamp {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Timestamp, ParseError> {
@@ -91,7 +90,7 @@ impl FromStr for Timestamp {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum State {
     Awake {
         guard_id: usize,
@@ -149,7 +148,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "[1518-11-01 00:00] Guard #10 begins shift\n",
             "[1518-11-01 00:05] falls asleep\n",

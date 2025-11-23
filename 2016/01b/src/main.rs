@@ -2,14 +2,14 @@ use adventutil::Input;
 use adventutil::gridgeom::{Point, PointsAdded, Vector, points_added};
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashSet;
-use std::str::FromStr;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Instruction {
     Left(i32),
     Right(i32),
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
@@ -74,7 +74,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         assert_eq!(solve(Input::from("R8, R4, R4, R8")), 4);
     }
 }

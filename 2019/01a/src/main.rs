@@ -22,7 +22,7 @@ mod tests {
     #[case(14, 2)]
     #[case(1969, 654)]
     #[case(100756, 33583)]
-    fn test_fuel(#[case] mass: u32, #[case] needed: u32) {
+    fn examples(#[case] mass: u32, #[case] needed: u32) {
         assert_eq!(fuel(mass), needed);
     }
 }

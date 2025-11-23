@@ -1,14 +1,14 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
-use std::str::FromStr;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 enum Instruction {
     SetMask(Vec<Option<bool>>),
     SetMem(u64, u64),
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {
@@ -37,6 +37,7 @@ impl FromStr for Instruction {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct State {
     mask: Vec<Option<bool>>,
     memory: HashMap<u64, u64>,
@@ -107,98 +108,102 @@ fn main() {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_apply_mask_example1() {
-        let mask = [
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            None,
-            Some(true),
-            Some(false),
-            Some(false),
-            Some(true),
-            None,
-        ];
-        let mut masked = apply_mask(&mask[..], 42);
-        masked.sort_unstable();
-        assert_eq!(masked, [26, 27, 58, 59]);
+    mod apply_mask {
+        use super::*;
+
+        #[test]
+        fn example1() {
+            let mask = [
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                None,
+                Some(true),
+                Some(false),
+                Some(false),
+                Some(true),
+                None,
+            ];
+            let mut masked = apply_mask(&mask[..], 42);
+            masked.sort_unstable();
+            assert_eq!(masked, [26, 27, 58, 59]);
+        }
+
+        #[test]
+        fn example2() {
+            let mask = [
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                None,
+                Some(false),
+                None,
+                None,
+            ];
+            let mut masked = apply_mask(&mask[..], 26);
+            masked.sort_unstable();
+            assert_eq!(masked, [16, 17, 18, 19, 24, 25, 26, 27]);
+        }
     }
 
     #[test]
-    fn test_apply_mask_example2() {
-        let mask = [
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            Some(false),
-            None,
-            Some(false),
-            None,
-            None,
-        ];
-        let mut masked = apply_mask(&mask[..], 26);
-        masked.sort_unstable();
-        assert_eq!(masked, [16, 17, 18, 19, 24, 25, 26, 27]);
-    }
-
-    #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "mask = 000000000000000000000000000000X1001X\n",
             "mem[42] = 100\n",

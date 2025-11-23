@@ -1,6 +1,5 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Register {
@@ -8,7 +7,7 @@ enum Register {
     B,
 }
 
-impl FromStr for Register {
+impl std::str::FromStr for Register {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Register, ParseError> {
@@ -29,7 +28,7 @@ enum Instruction {
     Jio(Register, i32),
 }
 
-impl FromStr for Instruction {
+impl std::str::FromStr for Instruction {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Instruction, ParseError> {

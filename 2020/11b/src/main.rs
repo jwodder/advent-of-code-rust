@@ -1,8 +1,6 @@
 use adventutil::Input;
 use adventutil::grid::{Cell, Direction, Grid};
 use adventutil::pullparser::ParseError;
-use std::iter::successors;
-use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Tile {
@@ -11,7 +9,7 @@ enum Tile {
     Occupied,
 }
 
-impl FromStr for Tile {
+impl std::str::FromStr for Tile {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Tile, ParseError> {
@@ -46,7 +44,7 @@ fn step(layout: &Grid<Tile>) -> Grid<Tile> {
 fn visible_occupied(cell: &Cell<'_, Tile>) -> usize {
     let mut occupied = 0;
     for d in Direction::adjacent() {
-        for c in successors(Some(*cell), |c| c.neighbor(d)).skip(1) {
+        for c in std::iter::successors(Some(*cell), |c| c.neighbor(d)).skip(1) {
             match *c {
                 Tile::Floor => (),
                 Tile::Empty => break,
@@ -69,7 +67,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "L.LL.LL.LL\n",
             "LLLLLLL.LL\n",

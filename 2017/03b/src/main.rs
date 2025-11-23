@@ -142,7 +142,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_loop_iter() {
+    fn loop_iter() {
         let mut iter = LoopIter::new();
         assert_eq!(iter.next(), Some(Point { x: 0, y: 0 })); // 1
         assert_eq!(iter.next(), Some(Point { x: 1, y: 0 })); // 2
@@ -170,7 +170,7 @@ mod tests {
     }
 
     #[test]
-    fn test_spiral_iter() {
+    fn spiral_iter() {
         let mut iter = SpiralIter::new();
         assert_eq!(iter.next(), Some(1));
         assert_eq!(iter.next(), Some(1));

@@ -1,5 +1,4 @@
 use num_traits::{NumCast, PrimInt, one, zero};
-use std::iter::FusedIterator;
 use std::ops::Range;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
@@ -116,7 +115,7 @@ impl<T: PrimInt> Iterator for IntoIter<T> {
     }
 }
 
-impl<T: PrimInt> FusedIterator for IntoIter<T> {}
+impl<T: PrimInt> std::iter::FusedIterator for IntoIter<T> {}
 
 impl<T: PrimInt> ExactSizeIterator for IntoIter<T> {}
 
@@ -125,7 +124,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_iter_3x2() {
+    fn iter_3x2() {
         let area = Area {
             start_x: 0,
             end_x: 3,
@@ -151,7 +150,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_3x2_offset() {
+    fn iter_3x2_offset() {
         let area = Area {
             start_x: 5,
             end_x: 8,
@@ -177,7 +176,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_0x2() {
+    fn iter_0x2() {
         let area = Area {
             start_x: 0,
             end_x: 0,
@@ -191,7 +190,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_3x0() {
+    fn iter_3x0() {
         let area = Area {
             start_x: 0,
             end_x: 3,
@@ -205,7 +204,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_0x0() {
+    fn iter_0x0() {
         let area = Area {
             start_x: 0,
             end_x: 0,

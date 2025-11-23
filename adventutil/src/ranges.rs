@@ -54,30 +54,30 @@ mod tests {
 
     #[test]
     #[allow(clippy::reversed_empty_ranges)]
-    fn test_ranges_overlap() {
-        assert!(ranges_overlap(0..5, 0..3));
-        assert!(ranges_overlap(0..3, 0..5));
-        assert!(ranges_overlap(3..7, 0..10));
-        assert!(!ranges_overlap(0..3, 3..5));
-        assert!(ranges_overlap(0..=3, 3..5));
-        assert!(ranges_overlap::<usize, _, _>(.., ..));
-        assert!(!ranges_overlap(0..5, 3..0));
-        assert!(!ranges_overlap(
+    fn ranges_overlap() {
+        assert!(super::ranges_overlap(0..5, 0..3));
+        assert!(super::ranges_overlap(0..3, 0..5));
+        assert!(super::ranges_overlap(3..7, 0..10));
+        assert!(!super::ranges_overlap(0..3, 3..5));
+        assert!(super::ranges_overlap(0..=3, 3..5));
+        assert!(super::ranges_overlap::<usize, _, _>(.., ..));
+        assert!(!super::ranges_overlap(0..5, 3..0));
+        assert!(!super::ranges_overlap(
             (Bound::Excluded(usize::MAX), Bound::Unbounded),
             0..5
         ));
-        assert!(!ranges_overlap(
+        assert!(!super::ranges_overlap(
             (Bound::Unbounded, Bound::Excluded(usize::MIN)),
             0..5
         ));
-        assert!(ranges_overlap(
+        assert!(super::ranges_overlap(
             (Bound::Excluded(usize::MIN), Bound::Unbounded),
             0..5
         ));
-        assert!(ranges_overlap(
+        assert!(super::ranges_overlap(
             (Bound::Unbounded, Bound::Excluded(usize::MAX)),
             0..5
         ));
-        assert!(ranges_overlap(.., 0..5));
+        assert!(super::ranges_overlap(.., 0..5));
     }
 }

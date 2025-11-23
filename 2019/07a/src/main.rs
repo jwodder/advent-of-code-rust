@@ -36,7 +36,7 @@ mod tests {
         "3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0",
         65210
     )]
-    fn test_solve(#[case] program: &'static str, #[case] thrust: i64) {
+    fn examples(#[case] program: &'static str, #[case] thrust: i64) {
         let input = Input::from(program);
         assert_eq!(solve(input), thrust);
     }

@@ -1,11 +1,11 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use std::collections::HashMap;
-use std::str::FromStr;
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 struct Color(String);
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct Relation {
     container: Color,
     contents: Vec<(usize, Color)>,
@@ -17,7 +17,7 @@ impl Relation {
     }
 }
 
-impl FromStr for Relation {
+impl std::str::FromStr for Relation {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Relation, ParseError> {
@@ -70,7 +70,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             "light red bags contain 1 bright white bag, 2 muted yellow bags.\n",
             "dark orange bags contain 3 bright white bags, 4 muted yellow bags.\n",
@@ -86,7 +86,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "shiny gold bags contain 2 dark red bags.\n",
             "dark red bags contain 2 dark orange bags.\n",

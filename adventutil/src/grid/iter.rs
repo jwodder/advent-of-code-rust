@@ -1,5 +1,4 @@
 use super::{Cell, Coords, Direction, Grid, GridBounds};
-use std::iter::FusedIterator;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct IterCoords {
@@ -45,7 +44,7 @@ impl Iterator for IterCoords {
     }
 }
 
-impl FusedIterator for IterCoords {}
+impl std::iter::FusedIterator for IterCoords {}
 
 impl ExactSizeIterator for IterCoords {}
 
@@ -78,7 +77,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
-impl<T> FusedIterator for Iter<'_, T> {}
+impl<T> std::iter::FusedIterator for Iter<'_, T> {}
 
 impl<T> ExactSizeIterator for Iter<'_, T> {}
 
@@ -110,7 +109,7 @@ impl<T> Iterator for IntoIter<T> {
     }
 }
 
-impl<T> FusedIterator for IntoIter<T> {}
+impl<T> std::iter::FusedIterator for IntoIter<T> {}
 
 impl<T> ExactSizeIterator for IntoIter<T> {}
 
@@ -140,7 +139,7 @@ impl Iterator for IntoTrueCoords {
     }
 }
 
-impl FusedIterator for IntoTrueCoords {}
+impl std::iter::FusedIterator for IntoTrueCoords {}
 
 impl ExactSizeIterator for IntoTrueCoords {}
 
@@ -172,7 +171,7 @@ impl<'a, T> Iterator for IterCells<'a, T> {
     }
 }
 
-impl<T> FusedIterator for IterCells<'_, T> {}
+impl<T> std::iter::FusedIterator for IterCells<'_, T> {}
 
 impl<T> ExactSizeIterator for IterCells<'_, T> {}
 
@@ -205,7 +204,7 @@ impl<'a, T> Iterator for Columns<'a, T> {
     }
 }
 
-impl<T> FusedIterator for Columns<'_, T> {}
+impl<T> std::iter::FusedIterator for Columns<'_, T> {}
 
 impl<T> ExactSizeIterator for Columns<'_, T> {}
 
@@ -239,7 +238,7 @@ impl Iterator for Cardinals {
     }
 }
 
-impl FusedIterator for Cardinals {}
+impl std::iter::FusedIterator for Cardinals {}
 
 impl ExactSizeIterator for Cardinals {}
 
@@ -277,7 +276,7 @@ impl Iterator for Adjacent {
     }
 }
 
-impl FusedIterator for Adjacent {}
+impl std::iter::FusedIterator for Adjacent {}
 
 impl ExactSizeIterator for Adjacent {}
 
@@ -314,7 +313,7 @@ impl<'a, T> Iterator for AdjacentCells<'a, T> {
     }
 }
 
-impl<T> FusedIterator for AdjacentCells<'_, T> {}
+impl<T> std::iter::FusedIterator for AdjacentCells<'_, T> {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AdjacentWrapCells<'a, T> {
@@ -350,7 +349,7 @@ impl<'a, T> Iterator for AdjacentWrapCells<'a, T> {
     }
 }
 
-impl<T> FusedIterator for AdjacentWrapCells<'_, T> {}
+impl<T> std::iter::FusedIterator for AdjacentWrapCells<'_, T> {}
 
 impl<T> ExactSizeIterator for AdjacentWrapCells<'_, T> {}
 
@@ -388,7 +387,7 @@ impl Iterator for NeighborCoords {
     }
 }
 
-impl FusedIterator for NeighborCoords {}
+impl std::iter::FusedIterator for NeighborCoords {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AdjacentCoords {
@@ -424,7 +423,7 @@ impl Iterator for AdjacentCoords {
     }
 }
 
-impl FusedIterator for AdjacentCoords {}
+impl std::iter::FusedIterator for AdjacentCoords {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CardinalNeighbors<'a, T> {
@@ -459,7 +458,7 @@ impl<'a, T> Iterator for CardinalNeighbors<'a, T> {
     }
 }
 
-impl<T> FusedIterator for CardinalNeighbors<'_, T> {}
+impl<T> std::iter::FusedIterator for CardinalNeighbors<'_, T> {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CardinalNeighborsWrap<'a, T> {
@@ -495,7 +494,7 @@ impl<'a, T> Iterator for CardinalNeighborsWrap<'a, T> {
     }
 }
 
-impl<T> FusedIterator for CardinalNeighborsWrap<'_, T> {}
+impl<T> std::iter::FusedIterator for CardinalNeighborsWrap<'_, T> {}
 
 impl<T> ExactSizeIterator for CardinalNeighborsWrap<'_, T> {}
 
@@ -504,7 +503,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_iter() {
+    fn iter() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -537,7 +536,7 @@ mod tests {
     }
 
     #[test]
-    fn test_into_iter() {
+    fn into_iter() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -570,7 +569,7 @@ mod tests {
     }
 
     #[test]
-    fn test_columns() {
+    fn columns() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -591,7 +590,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_coords_3x2() {
+    fn iter_coords_3x2() {
         let mut iter = IterCoords::new(3, 2);
         assert_eq!(iter.size_hint(), (6, Some(6)));
         assert_eq!(iter.next(), Some(Coords::new(0, 0)));
@@ -611,7 +610,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_coords_0x2() {
+    fn iter_coords_0x2() {
         let mut iter = IterCoords::new(0, 2);
         assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
@@ -619,7 +618,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_coords_3x0() {
+    fn iter_coords_3x0() {
         let mut iter = IterCoords::new(3, 0);
         assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
@@ -627,7 +626,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_coords_0x0() {
+    fn iter_coords_0x0() {
         let mut iter = IterCoords::new(0, 0);
         assert_eq!(iter.size_hint(), (0, Some(0)));
         assert_eq!(iter.next(), None);
@@ -635,7 +634,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_cells() {
+    fn iter_cells() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -658,7 +657,7 @@ mod tests {
     }
 
     #[test]
-    fn test_cardinals() {
+    fn cardinals() {
         let mut iter = Direction::cardinals();
         assert_eq!(iter.size_hint(), (4, Some(4)));
         assert_eq!(iter.next(), Some(Direction::North));
@@ -674,7 +673,7 @@ mod tests {
     }
 
     #[test]
-    fn test_adjacent_dirs() {
+    fn adjacent_dirs() {
         let mut iter = Direction::adjacent();
         assert_eq!(iter.size_hint(), (8, Some(8)));
         assert_eq!(iter.next(), Some(Direction::NorthWest));
@@ -698,7 +697,7 @@ mod tests {
     }
 
     #[test]
-    fn test_neighbor_coords() {
+    fn neighbor_coords() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -716,7 +715,7 @@ mod tests {
     }
 
     #[test]
-    fn test_neighbor_coords_partial() {
+    fn neighbor_coords_partial() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -732,7 +731,7 @@ mod tests {
     }
 
     #[test]
-    fn test_neighbor_coords_outer() {
+    fn neighbor_coords_outer() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -746,7 +745,7 @@ mod tests {
     }
 
     #[test]
-    fn test_adjacent_coords() {
+    fn adjacent_coords() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -768,7 +767,7 @@ mod tests {
     }
 
     #[test]
-    fn test_adjacent_coords_partial() {
+    fn adjacent_coords_partial() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {
@@ -785,7 +784,7 @@ mod tests {
     }
 
     #[test]
-    fn test_adjacent_coords_outer() {
+    fn adjacent_coords_outer() {
         let gr = Grid {
             data: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
             bounds: GridBounds {

@@ -1,5 +1,6 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::{Input, components};
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct ProgramSpec {
@@ -21,7 +22,7 @@ impl std::str::FromStr for ProgramSpec {
 
 fn solve(input: Input) -> usize {
     let mut ids = Vec::new();
-    let mut ids2pipes = std::collections::HashMap::new();
+    let mut ids2pipes = HashMap::new();
     for spec in input.parse_lines::<ProgramSpec>() {
         ids.push(spec.id);
         ids2pipes.insert(spec.id, spec.pipes_to);
@@ -38,7 +39,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         let input = Input::from(concat!(
             "0 <-> 2\n",
             "1 <-> 1\n",

@@ -25,7 +25,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn example1() {
         assert_eq!(knot_hash(5, [3, 4, 1, 5]), 12);
     }
 }

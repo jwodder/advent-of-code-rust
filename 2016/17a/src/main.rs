@@ -118,7 +118,7 @@ mod tests {
     #[case("ihgpwlah", "DDRRRD")]
     #[case("kglvqrro", "DDUDRLRRUDRD")]
     #[case("ulqzkmiv", "DRURDRUDDLLDLUURRDULRLDUUDDDRR")]
-    fn test_example(#[case] passcode: &'static str, #[case] path: &str) {
+    fn example1(#[case] passcode: &'static str, #[case] path: &str) {
         let input = Input::from(passcode);
         assert_eq!(solve(input), path);
     }

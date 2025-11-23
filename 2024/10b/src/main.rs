@@ -27,7 +27,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_example1() {
+    fn example1() {
         let input = Input::from(concat!(
             ".....0.\n",
             "..4321.\n",
@@ -41,7 +41,7 @@ mod tests {
     }
 
     #[test]
-    fn test_example2() {
+    fn example2() {
         let input = Input::from(concat!(
             "..90..9\n",
             "...1.98\n",
@@ -55,13 +55,13 @@ mod tests {
     }
 
     #[test]
-    fn test_example3() {
+    fn example3() {
         let input = Input::from("012345\n123456\n234567\n345678\n4.6789\n56789.\n");
         assert_eq!(solve(input), 227);
     }
 
     #[test]
-    fn test_example4() {
+    fn example4() {
         let input = Input::from(concat!(
             "89010123\n",
             "78121874\n",

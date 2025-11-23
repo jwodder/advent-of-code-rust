@@ -1,5 +1,6 @@
 use adventutil::Input;
 use md5::{Digest, Md5};
+use std::collections::VecDeque;
 
 fn stretch_md5(salt: &str, i: usize) -> String {
     let mut s = format!("{salt}{i}");
@@ -13,7 +14,7 @@ fn solve(input: Input) -> usize {
     let salt = input.read();
     let salt = salt.trim();
     let mut hashes = (0..).map(|i| stretch_md5(salt, i));
-    let mut kiloblock = std::collections::VecDeque::with_capacity(1000);
+    let mut kiloblock = VecDeque::with_capacity(1000);
     for _ in 0..1000 {
         kiloblock.push_back(hashes.next().unwrap());
     }
@@ -47,7 +48,7 @@ mod tests {
 
     #[test]
     #[ignore]
-    fn test_example() {
+    fn example1() {
         let input = Input::from("abc");
         assert_eq!(solve(input), 22551);
     }
