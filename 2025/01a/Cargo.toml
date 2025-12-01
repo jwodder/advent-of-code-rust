@@ -1,0 +1,17 @@
+[package]
+name = "advent-of-code-2025-01a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2025, problem 01a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[dev-dependencies]
+rstest.workspace = true
+
+[lints]
+workspace = true
