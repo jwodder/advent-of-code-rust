@@ -1,9 +1,8 @@
 // Idea behind solution: Assume the platform state eventually enters a cycle
 // (the graph kind, not the kind we're doing to the platform).  Turns out, it
 // does!
-use adventutil::Input;
 use adventutil::grid::{Coords, Direction, Grid, ParseGridError};
-use std::collections::{HashMap, hash_map::Entry};
+use adventutil::{Input, cyclic_nth};
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct Platform(Grid<char>);
@@ -72,27 +71,16 @@ impl std::str::FromStr for Platform {
 }
 
 fn solve(input: Input) -> usize {
-    let mut state = input.parse::<Platform>();
-    let mut seen = HashMap::from([(state.clone(), 0)]);
-    let n = 1_000_000_000;
-    for i in 1..n {
-        state.cycle();
-        match seen.entry(state.clone()) {
-            Entry::Occupied(e) => {
-                let &j = e.get();
-                let k = (n - j) % (i - j) + j;
-                let bill = seen
-                    .into_iter()
-                    .find_map(|(st, x)| (x == k).then_some(st))
-                    .unwrap();
-                return bill.load();
-            }
-            Entry::Vacant(e) => {
-                e.insert(i);
-            }
-        }
-    }
-    state.load()
+    cyclic_nth(
+        input.parse::<Platform>(),
+        |st| {
+            let mut next = st.clone();
+            next.cycle();
+            next
+        },
+        1_000_000_000,
+    )
+    .load()
 }
 
 fn main() {
