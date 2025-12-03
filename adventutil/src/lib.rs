@@ -472,6 +472,35 @@ where
     comps
 }
 
+/// Given a pure function `advance()` that ultimately enters a cycle,
+/// `cyclic_nth(state, advance, n)` determines the result of applying
+/// `advance()` to `state` `n` times.
+pub fn cyclic_nth<T, F>(mut state: T, mut advance: F, n: u64) -> T
+where
+    T: Eq + Hash,
+    F: FnMut(&T) -> T,
+{
+    let mut seen = HashMap::new();
+    for i in 0..n {
+        let newstate = advance(&state);
+        match seen.entry(state) {
+            Entry::Occupied(e) => {
+                let &j = e.get();
+                let k = (n - j) % (i - j) + j;
+                return seen
+                    .into_iter()
+                    .find_map(|(st, x)| (x == k).then_some(st))
+                    .unwrap();
+            }
+            Entry::Vacant(e) => {
+                e.insert(i);
+            }
+        }
+        state = newstate;
+    }
+    state
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
