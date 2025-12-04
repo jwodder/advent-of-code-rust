@@ -2970,6 +2970,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2025-04a"
+version = "0.0.0"
+dependencies = [
+ "adventutil",
+]
+
+[[package]]
 name = "adventutil"
 version = "0.0.0"
 dependencies = [
