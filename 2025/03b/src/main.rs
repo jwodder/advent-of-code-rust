@@ -10,7 +10,7 @@ fn max_joltage(joltages: Vec<u64>) -> u64 {
                 break;
             }
             tbl[i][length] = std::cmp::max(
-                joltages[i] * std::iter::repeat_n(10, length - 1).product::<u64>()
+                joltages[i] * 10u64.pow(u32::try_from(length - 1).unwrap())
                     + tbl[i + 1][length - 1],
                 tbl[i + 1][length],
             );
