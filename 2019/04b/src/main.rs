@@ -1,17 +1,9 @@
 use adventutil::Input;
-use adventutil::pullparser::{ParseError, PullParser, Token};
+use adventutil::ranges::parse_range;
 use itertools::Itertools;
-use std::ops::RangeInclusive;
-
-fn parse_range(s: &str) -> Result<RangeInclusive<u32>, ParseError> {
-    let mut parser = PullParser::new(s);
-    let start = parser.parse_to::<u32, _>('-')?;
-    let end = parser.parse_to::<u32, _>(Token::Eof)?;
-    Ok(start..=end)
-}
 
 fn solve(input: Input) -> usize {
-    let range = parse_range(input.read().trim()).expect("Parse error");
+    let range = parse_range::<u32>(input.read().trim()).expect("Parse error");
     range.filter(|&n| valid(n)).count()
 }
 

@@ -1,4 +1,5 @@
 use adventutil::Input;
+use adventutil::ranges::parse_range;
 use std::cmp::Ordering;
 use std::ops::RangeInclusive;
 
@@ -59,10 +60,7 @@ fn solve(input: Input) -> u64 {
         .expect("input should not be empty");
     let mut fresh = InclusiveRangeSet::new();
     for ln in fresh_text.lines() {
-        let (start, end) = ln.split_once('-').unwrap();
-        let start = start.parse::<u64>().unwrap();
-        let end = end.parse::<u64>().unwrap();
-        fresh.insert(start..=end);
+        fresh.insert(parse_range::<u64>(ln).unwrap());
     }
     fresh.0.into_iter().map(|r| *r.end() - *r.start() + 1).sum()
 }

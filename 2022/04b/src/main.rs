@@ -1,5 +1,6 @@
+use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
-use adventutil::{Input, ranges::ranges_overlap};
+use adventutil::ranges::{parse_range, ranges_overlap};
 use std::ops::RangeInclusive;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -19,14 +20,9 @@ impl std::str::FromStr for RangePair {
 
     fn from_str(s: &str) -> Result<RangePair, ParseError> {
         let mut parser = PullParser::new(s);
-        let start1 = parser.parse_to::<u32, _>('-')?;
-        let end1 = parser.parse_to::<u32, _>(',')?;
-        let start2 = parser.parse_to::<u32, _>('-')?;
-        let end2 = parser.parse_to::<u32, _>(Token::Eof)?;
-        Ok(RangePair {
-            first: start1..=end1,
-            second: start2..=end2,
-        })
+        let first = parse_range::<u32>(parser.scan_to(',')?)?;
+        let second = parse_range::<u32>(parser.scan_to(Token::Eof)?)?;
+        Ok(RangePair { first, second })
     }
 }
 

@@ -1,8 +1,9 @@
 use adventutil::Input;
+use adventutil::ranges::parse_range;
 
-fn invalid_sum(start: u64, end: u64) -> u64 {
+fn invalid_sum(r: std::ops::RangeInclusive<u64>) -> u64 {
     let mut accum = 0;
-    'i: for i in start..=end {
+    'i: for i in r {
         let s = format!("{i}");
         for m in 1..=(s.len() / 2) {
             if s.len().is_multiple_of(m) {
@@ -22,12 +23,7 @@ fn solve(input: Input) -> u64 {
         .read()
         .trim()
         .split(',')
-        .map(|s| {
-            let (start, end) = s.split_once('-').unwrap();
-            let start = start.parse::<u64>().unwrap();
-            let end = end.parse::<u64>().unwrap();
-            invalid_sum(start, end)
-        })
+        .map(|s| invalid_sum(parse_range::<u64>(s).unwrap()))
         .sum()
 }
 
