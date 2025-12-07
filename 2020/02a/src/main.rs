@@ -1,5 +1,6 @@
 use adventutil::Input;
 use adventutil::pullparser::{ParseError, PullParser, Token};
+use adventutil::ranges::parse_range;
 use std::ops::RangeInclusive;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -22,13 +23,12 @@ impl std::str::FromStr for Password {
 
     fn from_str(s: &str) -> Result<Password, ParseError> {
         let mut parser = PullParser::new(s);
-        let start = parser.parse_to::<usize, _>('-')?;
-        let end = parser.parse_to::<usize, _>(Token::Whitespace)?;
+        let char_qty = parse_range::<usize>(parser.scan_to(Token::Whitespace)?)?;
         let char_c = parser.parse_to::<char, _>(':')?;
         parser.skip(Token::Whitespace)?;
         let password = parser.parse_to::<String, _>(Token::Eof)?;
         Ok(Password {
-            char_qty: start..=end,
+            char_qty,
             char_c,
             password,
         })

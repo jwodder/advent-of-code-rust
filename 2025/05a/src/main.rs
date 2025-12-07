@@ -1,4 +1,5 @@
 use adventutil::Input;
+use adventutil::ranges::parse_range;
 use itertools::Itertools;
 use std::cmp::Ordering;
 use std::ops::RangeInclusive;
@@ -74,10 +75,7 @@ fn solve(input: Input) -> usize {
         .expect("Input is not exactly two paragraphs");
     let mut fresh = InclusiveRangeSet::new();
     for ln in fresh_text.lines() {
-        let (start, end) = ln.split_once('-').unwrap();
-        let start = start.parse::<u64>().unwrap();
-        let end = end.parse::<u64>().unwrap();
-        fresh.insert(start..=end);
+        fresh.insert(parse_range::<u64>(ln).unwrap());
     }
     let mut qty = 0;
     for ln in available.lines() {

@@ -1,5 +1,6 @@
-use num_traits::{Bounded, PrimInt};
-use std::ops::{Bound, RangeBounds};
+use crate::pullparser::{ParseError, PullParser, Token};
+use num_traits::{Bounded, Num, PrimInt};
+use std::ops::{Bound, RangeBounds, RangeInclusive};
 
 pub trait FromBound: Sized {
     fn from_start_bound(bound: Bound<Self>) -> Option<Self>; // returns an inclusive bound
@@ -46,6 +47,18 @@ where
     };
     let maximum = max1.min(max2);
     minimum <= maximum
+}
+
+pub fn parse_range<T>(s: &str) -> Result<RangeInclusive<T>, ParseError>
+where
+    T: Num<FromStrRadixErr = std::num::ParseIntError>,
+{
+    let mut parser = PullParser::new(s);
+    let start = parser.scan_to('-')?;
+    let start = T::from_str_radix(start, 10)?;
+    let end = parser.scan_to(Token::Eof)?;
+    let end = T::from_str_radix(end, 10)?;
+    Ok(start..=end)
 }
 
 #[cfg(test)]

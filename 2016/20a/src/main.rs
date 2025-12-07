@@ -1,5 +1,6 @@
 use adventutil::Input;
-use adventutil::pullparser::{ParseError, PullParser, Token};
+use adventutil::pullparser::ParseError;
+use adventutil::ranges::parse_range;
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 struct Range {
@@ -11,9 +12,7 @@ impl std::str::FromStr for Range {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Range, ParseError> {
-        let mut parser = PullParser::new(s);
-        let start = parser.parse_to::<u32, _>('-')?;
-        let end = parser.parse_to::<u32, _>(Token::Eof)?;
+        let (start, end) = parse_range::<u32>(s)?.into_inner();
         Ok(Range { start, end })
     }
 }
