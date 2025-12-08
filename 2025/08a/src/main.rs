@@ -14,10 +14,10 @@ struct Junction {
 
 impl Junction {
     fn distance(self, other: Junction) -> f64 {
-        let d = self.x.abs_diff(other.x).pow(2)
-            + self.y.abs_diff(other.y).pow(2)
-            + self.z.abs_diff(other.z).pow(2);
-        (d as f64).sqrt()
+        let xdiff = self.x.abs_diff(other.x) as f64;
+        let ydiff = self.y.abs_diff(other.y) as f64;
+        let zdiff = self.z.abs_diff(other.z) as f64;
+        (zdiff.mul_add(zdiff, xdiff.mul_add(xdiff, ydiff * ydiff))).sqrt()
     }
 }
 
