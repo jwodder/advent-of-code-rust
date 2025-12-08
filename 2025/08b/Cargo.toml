@@ -6,7 +6,7 @@ description = "Solution to Advent of Code 2025, problem 08b"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
-keywords = ["graph-theory", "taxicab-metric"]
+keywords = ["graph-theory"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
