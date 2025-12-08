@@ -2,7 +2,8 @@ use adventutil::counter::Counter;
 use adventutil::maxn::maxn;
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::{Input, unordered_pairs};
-use std::collections::HashMap;
+use ordered_float::OrderedFloat;
+use std::collections::{BTreeMap, HashMap};
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 struct Junction {
@@ -84,17 +85,13 @@ impl CircuitWorld {
 
 fn solve(input: Input, connections: usize) -> u64 {
     let junctions = input.parse_lines::<Junction>().collect::<Vec<_>>();
-    let mut distances = Vec::<(f64, Junction, Junction)>::new();
+    let mut distances = BTreeMap::<OrderedFloat<f64>, Vec<(Junction, Junction)>>::new();
     for (&a, &b) in unordered_pairs(&junctions) {
-        let dist = a.distance(b);
-        let i = match distances.binary_search_by(|(d2, _, _)| d2.total_cmp(&dist)) {
-            Ok(i) => i,
-            Err(i) => i,
-        };
-        distances.insert(i, (dist, a, b));
+        let dist = OrderedFloat(a.distance(b));
+        distances.entry(dist).or_default().push((a, b));
     }
     let mut circuits = CircuitWorld::new();
-    for (_, a, b) in distances.into_iter().take(connections) {
+    for (a, b) in distances.into_values().flatten().take(connections) {
         circuits.connect(a, b);
     }
     let (a, b, c) = circuits.largest();

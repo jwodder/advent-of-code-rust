@@ -10,6 +10,7 @@ keywords = ["graph-theory", "taxicab-metric"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
+ordered-float.workspace = true
 
 [lints]
 workspace = true
