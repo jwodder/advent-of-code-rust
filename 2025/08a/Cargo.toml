@@ -1,0 +1,15 @@
+[package]
+name = "advent-of-code-2025-08a"
+edition.workspace = true
+rust-version.workspace = true
+description = "Solution to Advent of Code 2025, problem 08a"
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords = ["graph-theory", "taxicab-metric"]
+
+[dependencies]
+adventutil = { path = "../../adventutil" }
+
+[lints]
+workspace = true
