@@ -3035,6 +3035,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2025-08b"
+version = "0.0.0"
+dependencies = [
+ "adventutil",
+ "ordered-float",
+]
+
+[[package]]
 name = "adventutil"
 version = "0.0.0"
 dependencies = [
