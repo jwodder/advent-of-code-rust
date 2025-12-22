@@ -1,6 +1,5 @@
 use adventutil::Input;
 use adventutil::gridgeom::{Point, Vector};
-use adventutil::maxtracker::MaxTracker;
 use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
@@ -16,25 +15,19 @@ impl World {
         let mut seen = HashSet::new();
         let mut nodes = vec![Point::ORIGIN];
         let mut dist = 0;
-        let mut tracker = MaxTracker::new();
         while !nodes.is_empty() {
             let mut nodes2 = Vec::new();
             for current in nodes {
-                let mut any_steps = false;
                 for &p in &self.0[&current] {
                     if seen.insert(p) {
-                        any_steps = true;
                         nodes2.push(p);
                     }
-                }
-                if !any_steps {
-                    tracker.add(dist);
                 }
             }
             nodes = nodes2;
             dist += 1;
         }
-        tracker.get().unwrap()
+        dist - 1
     }
 }
 
