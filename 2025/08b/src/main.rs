@@ -1,9 +1,7 @@
 use adventutil::pullparser::{ParseError, PullParser, Token};
 use adventutil::{Input, unordered_pairs};
 use ordered_float::OrderedFloat;
-use std::cell::RefCell;
-use std::collections::{BTreeMap, HashMap, HashSet};
-use std::rc::Rc;
+use std::collections::{BTreeMap, HashMap};
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 struct Junction {
@@ -34,46 +32,59 @@ impl std::str::FromStr for Junction {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-struct CircuitWorld(HashMap<Junction, Rc<RefCell<HashSet<Junction>>>>);
+struct CircuitWorld {
+    junctions2circuits: HashMap<Junction, usize>,
+    circuit_sizes: HashMap<usize, usize>,
+    next_id: usize,
+}
 
 impl CircuitWorld {
     fn new() -> CircuitWorld {
-        CircuitWorld(HashMap::new())
+        CircuitWorld {
+            junctions2circuits: HashMap::new(),
+            circuit_sizes: HashMap::new(),
+            next_id: 0,
+        }
     }
 
     // Returns the size of the resulting circuit
     fn connect(&mut self, a: Junction, b: Junction) -> usize {
-        match (self.0.get(&a), self.0.get(&b)) {
-            (Some(ca), Some(cb)) if Rc::ptr_eq(ca, cb) => ca.borrow().len(),
+        match (
+            self.junctions2circuits.get(&a).copied(),
+            self.junctions2circuits.get(&b).copied(),
+        ) {
+            (Some(ca), Some(cb)) if ca == cb => self.circuit_sizes.get(&ca).copied().unwrap(),
             (Some(ca), Some(cb)) => {
-                let mut cam = ca.borrow_mut();
-                let mut updates = HashMap::new();
-                for &j in cb.borrow().iter() {
-                    cam.insert(j);
-                    updates.insert(j, Rc::clone(ca));
+                let cb_size = self.circuit_sizes.get(&cb).copied().unwrap();
+                let ca_size = self.circuit_sizes.get_mut(&ca).unwrap();
+                *ca_size += cb_size;
+                let r = *ca_size;
+                for p in &mut self.junctions2circuits {
+                    if *p.1 == cb {
+                        *p.1 = ca;
+                    }
                 }
-                let r = cam.len();
-                drop(cam);
-                self.0.extend(updates);
                 r
             }
             (Some(ca), None) => {
-                ca.borrow_mut().insert(b);
-                let r = ca.borrow().len();
-                self.0.insert(b, Rc::clone(ca));
-                r
+                self.junctions2circuits.insert(b, ca);
+                let sz = self.circuit_sizes.get_mut(&ca).unwrap();
+                *sz += 1;
+                *sz
             }
             (None, Some(cb)) => {
-                cb.borrow_mut().insert(a);
-                let r = cb.borrow().len();
-                self.0.insert(a, Rc::clone(cb));
-                r
+                self.junctions2circuits.insert(a, cb);
+                let sz = self.circuit_sizes.get_mut(&cb).unwrap();
+                *sz += 1;
+                *sz
             }
             (None, None) => {
-                let c = Rc::new(RefCell::new(HashSet::from([a, b])));
-                self.0.insert(a, Rc::clone(&c));
-                self.0.insert(b, c);
-                2
+                let cid = self.next_id;
+                self.next_id += 1;
+                self.junctions2circuits.insert(a, cid);
+                self.junctions2circuits.insert(b, cid);
+                self.circuit_sizes.insert(cid, 2);
+                1
             }
         }
     }
