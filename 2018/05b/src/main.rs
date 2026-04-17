@@ -190,10 +190,7 @@ fn solve(s: &str) -> usize {
 
 fn react(chars: &mut DoubleIndexList<'_, u8>) -> usize {
     let mut cursor = chars.cursor();
-    loop {
-        let Some(c1) = cursor.current().copied() else {
-            break;
-        };
+    while let Some(c1) = cursor.current().copied() {
         let Some(c2) = cursor.peek_next().copied() else {
             break;
         };
