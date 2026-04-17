@@ -38,13 +38,7 @@ impl Platform {
         for mut c in iter {
             if self.0[c] == 'O' {
                 self.0[c] = '.';
-                loop {
-                    let Some(c2) = bounds.move_in(c, dir) else {
-                        break;
-                    };
-                    if self.0[c2] != '.' {
-                        break;
-                    }
+                while let Some(c2) = bounds.move_in(c, dir).filter(|&c2| self.0[c2] == '.') {
                     c = c2;
                 }
                 self.0[c] = 'O';

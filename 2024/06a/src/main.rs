@@ -26,10 +26,7 @@ fn solve(input: Input) -> usize {
     let mut pos = start.expect("starting position not found");
     let mut facing = Direction::North;
     let mut visited = HashSet::from([pos]);
-    loop {
-        let Some(pos2) = map.bounds().move_in(pos, facing) else {
-            break;
-        };
+    while let Some(pos2) = map.bounds().move_in(pos, facing) {
         if map[pos2] {
             facing = facing.turn_right();
         } else {

@@ -130,7 +130,7 @@ fn gcd(mut a: u64, mut b: u64) -> u64 {
 
 fn lcm(x: u64, y: u64) -> u64 {
     let d = gcd(x, y);
-    if d == 0 { 0 } else { x * y / d }
+    y.checked_div(d).map_or(0, |i| x * i)
 }
 
 fn main() {
