@@ -6,7 +6,7 @@ description = "Solution to Advent of Code 2018, problem 16b"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
-keywords = ["interpreter"]
+keywords = ["interpreter", "logic-grid"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }

@@ -6,6 +6,7 @@ description = "Solution to Advent of Code 2021, problem 08b"
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
+keywords = ["logic-grid"]
 
 [dependencies]
 adventutil = { path = "../../adventutil" }
