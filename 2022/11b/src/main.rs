@@ -100,7 +100,7 @@ fn solve(input: Input) -> u64 {
     let mut inspected = Counter::new();
     for _ in 0..10000 {
         for i in 0..(monkeys.len()) {
-            let items = monkeys[i].items.drain(..).collect::<Vec<_>>();
+            let items = std::mem::take(&mut monkeys[i].items);
             for mut worry in items {
                 inspected.add(i);
                 worry = monkeys[i].op.apply(worry) % modulus;
