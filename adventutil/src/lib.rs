@@ -1,5 +1,6 @@
 pub mod area;
 pub mod counter;
+pub mod dil;
 pub mod grid;
 pub mod gridgeom;
 pub mod index;
