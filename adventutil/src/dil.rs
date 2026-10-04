@@ -167,3 +167,166 @@ struct Adjacent {
     prev_index: Option<usize>,
     next_index: Option<usize>,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn empty() {
+        let dil = DoubleIndexList::<usize>::new(&[]);
+        assert_eq!(dil.len(), 0);
+        assert!(dil.is_empty());
+        assert_eq!(dil.get(0), None);
+        assert_eq!(dil.get_next(0), None);
+        assert_eq!(dil.next_index(0), None);
+        assert_eq!(dil.prev_index(0), None);
+    }
+
+    #[test]
+    fn empty_cursor() {
+        let mut dil = DoubleIndexList::<usize>::new(&[]);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+    }
+
+    #[test]
+    fn remove_from_empty() {
+        let dil = DoubleIndexList::<usize>::new(&[]);
+        let mut dil2 = dil.clone();
+        dil2.remove(0);
+        assert_eq!(dil, dil2);
+    }
+
+    #[test]
+    fn three() {
+        let dil = DoubleIndexList::new(&[1usize, 2, 3]);
+        assert_eq!(dil.len(), 3);
+        assert!(!dil.is_empty());
+        assert_eq!(dil.get(0), Some(&1));
+        assert_eq!(dil.get_next(0), Some(&2));
+        assert_eq!(dil.next_index(0), Some(1));
+        assert_eq!(dil.prev_index(0), None);
+        assert_eq!(dil.next_index(1), Some(2));
+        assert_eq!(dil.prev_index(1), Some(0));
+        assert_eq!(dil.next_index(2), None);
+        assert_eq!(dil.prev_index(2), Some(1));
+    }
+
+    #[test]
+    fn three_cursor() {
+        let mut dil = DoubleIndexList::new(&[1usize, 2, 3]);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        assert_eq!(cursor.peek_next(), Some(&2));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&2));
+        assert_eq!(cursor.peek_next(), Some(&3));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&3));
+        assert_eq!(cursor.peek_next(), None);
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+    }
+
+    #[test]
+    fn remove_head() {
+        let mut dil = DoubleIndexList::new(&[1usize, 2, 3]);
+        dil.remove(0);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&2));
+        assert_eq!(cursor.peek_next(), Some(&3));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&3));
+        assert_eq!(cursor.peek_next(), None);
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+    }
+
+    #[test]
+    fn remove_middle() {
+        let mut dil = DoubleIndexList::new(&[1usize, 2, 3]);
+        dil.remove(1);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        assert_eq!(cursor.peek_next(), Some(&3));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&3));
+        assert_eq!(cursor.peek_next(), None);
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+    }
+
+    #[test]
+    fn remove_end() {
+        let mut dil = DoubleIndexList::new(&[1usize, 2, 3]);
+        dil.remove(2);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        assert_eq!(cursor.peek_next(), Some(&2));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&2));
+        assert_eq!(cursor.peek_next(), None);
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+    }
+
+    #[test]
+    fn remove_current_head() {
+        let mut dil = DoubleIndexList::new(&[1usize, 2, 3]);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        assert_eq!(cursor.peek_next(), Some(&2));
+        cursor.remove_current();
+        assert_eq!(cursor.current(), Some(&2));
+        assert_eq!(cursor.peek_next(), Some(&3));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&3));
+        assert_eq!(cursor.peek_next(), None);
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+    }
+
+    #[test]
+    fn remove_current_middle() {
+        let mut dil = DoubleIndexList::new(&[1usize, 2, 3]);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        assert_eq!(cursor.peek_next(), Some(&2));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&2));
+        assert_eq!(cursor.peek_next(), Some(&3));
+        cursor.remove_current();
+        assert_eq!(cursor.current(), Some(&3));
+        assert_eq!(cursor.peek_next(), None);
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+    }
+
+    #[test]
+    fn remove_current_end() {
+        let mut dil = DoubleIndexList::new(&[1usize, 2, 3]);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        assert_eq!(cursor.peek_next(), Some(&2));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&2));
+        assert_eq!(cursor.peek_next(), Some(&3));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&3));
+        assert_eq!(cursor.peek_next(), None);
+        cursor.remove_current();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), None);
+    }
+}
