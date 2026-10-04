@@ -329,4 +329,47 @@ mod tests {
         assert_eq!(cursor.current(), None);
         assert_eq!(cursor.peek_next(), None);
     }
+
+    #[test]
+    fn remove_two() {
+        let mut dil = DoubleIndexList::new(&[1usize, 2, 3, 4, 5]);
+
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&2));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&3));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&4));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&5));
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        cursor.move_next();
+
+        dil.remove(1);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&3));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&4));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&5));
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        cursor.move_next();
+
+        dil.remove(2);
+        let mut cursor = dil.cursor();
+        assert_eq!(cursor.current(), Some(&1));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&3));
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&5));
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        cursor.move_next();
+    }
 }
