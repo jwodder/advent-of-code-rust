@@ -4,15 +4,18 @@
 /// list in constant time by adjusting the previous & next adjacencies to skip
 /// over the element.
 ///
-/// The indices used by the various methods are increasing, but once elements
-/// have been removed, they're no longer contiguous, and operating on the index
-/// of a removed element produces unspecified results.  Thus, it is recommended
-/// to interact with the list via a cursor.
+/// Most `DoubleIndexList` methods act on *backing indices* that identify
+/// elements by their index in the original unaltered slice (rather than by
+/// their index in the sequence obtained by iterating over the
+/// `DoubleIndexList`).  These indices are increasing, but once elements have
+/// been removed, they're no longer contiguous, and operating on the index of a
+/// removed element produces unspecified results.  Thus, it is recommended to
+/// interact with a list via a cursor.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct DoubleIndexList<'a, T> {
     data: &'a [T],
     adjacencies: Vec<Adjacent>,
-    // Index of the first element; `None` if there are no elements
+    // Backing index of the first element; `None` if there are no elements
     first: Option<usize>,
     len: usize,
 }
@@ -47,33 +50,41 @@ impl<'a, T> DoubleIndexList<'a, T> {
         self.len = self.data.len();
     }
 
-    /// Retrieve the value at the given index
+    /// Retrieve the value at the given backing index
     pub fn get(&self, index: usize) -> Option<&'a T> {
         self.data.get(index)
     }
 
-    /// Retrieve the value after the value at the given index.
+    /// Retrieve the value after the value at the given backing index.
     ///
-    /// If `index` was previously removed, the results are unspecified.
+    /// If the element at `index` was previously removed from the list and
+    /// there has not been an intervening reset, the results are unspecified.
     pub fn get_next(&self, index: usize) -> Option<&'a T> {
         self.data.get(self.next_index(index)?)
     }
 
-    /// Return the index of the element immediately after the given index.
+    /// Return the backing index of the element immediately after the given
+    /// backing index.
     ///
-    /// If `index` was previously removed, the results are unspecified.
+    /// If the element at `index` was previously removed from the list and
+    /// there has not been an intervening reset, the results are unspecified.
     pub fn next_index(&self, index: usize) -> Option<usize> {
         self.adjacencies.get(index)?.next_index
     }
 
-    /// Return the index of the element immediately before the given index.
+    /// Return the backing index of the element immediately before the given
+    /// backing index.
     ///
-    /// If `index` was previously removed, the results are unspecified.
+    /// If the element at `index` was previously removed from the list and
+    /// there has not been an intervening reset, the results are unspecified.
     pub fn prev_index(&self, index: usize) -> Option<usize> {
         self.adjacencies.get(index)?.prev_index
     }
 
-    /// Remove the value at the given index
+    /// Remove the value at the given backing index.
+    ///
+    /// If the element at `index` was previously removed from the list and
+    /// there has not been an intervening reset, the results are unspecified.
     pub fn remove(&mut self, index: usize) {
         let Some(adj) = self.adjacencies.get(index).copied() else {
             return;
@@ -111,6 +122,7 @@ impl<'a, T> DoubleIndexList<'a, T> {
 #[derive(Debug, Eq, PartialEq)]
 pub struct Cursor<'a, 'c, T> {
     list: &'c mut DoubleIndexList<'a, T>,
+    // Backing index of the current location in `list`
     index: Option<usize>,
 }
 
@@ -365,7 +377,7 @@ mod tests {
         let mut cursor = dil.cursor();
         assert_eq!(cursor.current(), Some(&1));
         cursor.move_next();
-        assert_eq!(cursor.current(), Some(&3));
+        assert_eq!(cursor.current(), Some(&4));
         cursor.move_next();
         assert_eq!(cursor.current(), Some(&5));
         cursor.move_next();
