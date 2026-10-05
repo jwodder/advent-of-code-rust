@@ -3489,7 +3489,6 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "fern",
- "fs-err",
  "futures-util",
  "log",
  "tokio",
