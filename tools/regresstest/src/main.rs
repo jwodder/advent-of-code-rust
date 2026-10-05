@@ -1,5 +1,6 @@
 use futures_util::stream::{StreamExt, iter};
-use std::fmt::{self, Write as _};
+use std::fmt;
+use std::io::Write;
 use std::path::Path;
 use std::process::ExitCode;
 use std::time::{Duration, Instant};
@@ -112,17 +113,16 @@ impl Reporter {
     }
 
     fn write_slowest(&self) -> std::io::Result<()> {
-        let mut s = String::from("## Slowest Solutions\n\n| Problem | Runtime |\n| --- | --- |\n");
+        let mut out = std::io::stdout().lock();
+        writeln!(
+            &mut out,
+            "## Slowest Solutions\n\n| Problem | Runtime |\n| --- | --- |"
+        )?;
         for name in &self.timeouts {
-            let _ = writeln!(&mut s, "| {name} | TIMEOUT |");
+            writeln!(&mut out, "| {name} | TIMEOUT |")?;
         }
         for (name, dur) in &self.slowest {
-            let _ = writeln!(&mut s, "| {name} | {dur:?} |");
-        }
-        if let Some(path) = std::env::var_os("GITHUB_STEP_SUMMARY") {
-            fs_err::write(path, s)?;
-        } else {
-            print!("\n{s}");
+            writeln!(&mut out, "| {name} | {dur:?} |")?;
         }
         Ok(())
     }

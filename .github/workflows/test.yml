@@ -218,6 +218,6 @@ jobs:
         run: cargo hack --workspace build --bins --release --verbose
 
       - name: Run regression tests
-        run: cargo run -r -p regresstest
+        run: cargo run -r -p regresstest > "$GITHUB_STEP_SUMMARY"
 
 # vim:set et sts=2:
