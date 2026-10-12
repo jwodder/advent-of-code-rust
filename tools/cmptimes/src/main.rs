@@ -76,10 +76,9 @@ fn main() -> anyhow::Result<()> {
             .arg(&args.committishes)
             .arg("-n")
             .arg("{committish}")
-            .arg("--shell=none")
             .arg("-s")
             .arg(format!(
-                "bash -c 'git checkout {{committish}} && cargo build -r -p {package}'"
+                "git checkout {{committish}} && cargo build -r -p {package}"
             ))
             .arg("-w1")
             .arg("--export-json")
@@ -119,7 +118,7 @@ fn main() -> anyhow::Result<()> {
 #[derive(Clone, Debug, PartialEq)]
 struct Reporter {
     committishes: Vec<String>,
-    reports: BTreeMap<Problem, BTreeMap<String, HyperfineResult>>,
+    reports: BTreeMap<Problem, BTreeMap<String, HyperfineTimes>>,
     report_all: bool,
 }
 
@@ -136,7 +135,7 @@ impl Reporter {
         let rs = hfr
             .results
             .into_iter()
-            .map(|r| (r.command.clone(), r))
+            .map(|r| (r.name, r.summary.time_wall_clock))
             .collect::<BTreeMap<_, _>>();
         self.reports.insert(pr, rs);
     }
@@ -159,7 +158,7 @@ impl Reporter {
         Ok(())
     }
 
-    fn is_notable(&self, rs: &BTreeMap<String, HyperfineResult>) -> bool {
+    fn is_notable(&self, rs: &BTreeMap<String, HyperfineTimes>) -> bool {
         if self.report_all {
             return true;
         }
@@ -220,17 +219,19 @@ struct HyperfineReport {
 
 #[derive(Clone, Debug, Deserialize, PartialEq)]
 struct HyperfineResult {
-    command: String,
+    name: String,
+    summary: HyperfineSummary,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq)]
+struct HyperfineSummary {
+    time_wall_clock: HyperfineTimes,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq)]
+struct HyperfineTimes {
     mean: f64,
     stddev: f64,
-    // median: f64,
-    // user: f64,
-    // system: f64,
-    // min: f64,
-    // max: f64,
-    // times: Vec<f64>
-    // exit_codes: Vec<u32>,
-    // parameters: HashMap<String, String>,
 }
 
 fn get_git_head(dirpath: &Path) -> anyhow::Result<String> {
