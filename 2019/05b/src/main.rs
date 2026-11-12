@@ -82,12 +82,12 @@ impl Intcode {
     fn get_params(&self, op_index: usize, qty: usize) -> Vec<Parameter> {
         let mut params = Vec::with_capacity(qty);
         let mut opcode = self.0[op_index] / 100;
-        for i in (op_index + 1)..(op_index + 1 + qty) {
+        for &p in &self.0[(op_index + 1)..(op_index + 1 + qty)] {
             match opcode % 10 {
                 0 => params.push(Parameter::Address(
-                    usize::try_from(self.0[i]).expect("Address out of usize range"),
+                    usize::try_from(p).expect("Address out of usize range"),
                 )),
-                1 => params.push(Parameter::Value(self.0[i])),
+                1 => params.push(Parameter::Value(p)),
                 n => panic!("Invalid parameter mode {n}"),
             }
             opcode /= 10;
